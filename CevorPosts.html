@@ -79,66 +79,58 @@
         a:hover {
             color: #0057a3;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .auth-section {
+            display: none;
         }
-        li {
-            margin: 10px 0;
-        }
-        .posts-section {
-            margin-top: 30px;
-            text-align: left;
-        }
-        .post {
-            background-color: #e9ecef;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .post input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .post button {
-            padding: 8px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        .signup-form, .login-form {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Enter Hash to Perform Action</h2>
-        <input type="text" id="hash" placeholder="Enter hash...">
-        <button onclick="performAction()">Submit</button>
-        <p id="message"></p>
-
-        <div id="guide" class="guide" style="display:none;">
-            <h3>Available Hashes:</h3>
-            <ul>
-                <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
-                <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
-                <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
-                <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
-            </ul>
+        <div id="authSection" class="auth-section">
+            <h3>Login or Sign Up</h3>
+            <button onclick="showLogin()">Login</button>
+            <button onclick="showSignup()">Sign Up</button>
         </div>
 
-        <div id="postsSection" class="posts-section" style="display:none;">
-            <h3>Posts</h3>
-            <div id="postsList"></div>
-            <div class="post">
-                <input type="text" id="newPost" placeholder="Write your post...">
-                <button onclick="addPost()">Post</button>
+        <div id="loginForm" class="login-form">
+            <h3>Login</h3>
+            <input type="text" id="loginUsername" placeholder="Username">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <p id="loginMessage" class="error"></p>
+        </div>
+
+        <div id="signupForm" class="signup-form">
+            <h3>Sign Up</h3>
+            <input type="text" id="signupUsername" placeholder="Username">
+            <input type="password" id="signupPassword" placeholder="Password">
+            <button onclick="signup()">Sign Up</button>
+            <p id="signupMessage" class="error"></p>
+        </div>
+
+        <div id="actionSection" class="action-section">
+            <input type="text" id="hash" placeholder="Enter hash...">
+            <button onclick="performAction()">Submit</button>
+            <p id="message"></p>
+
+            <div id="guide" class="guide" style="display:none;">
+                <h3>Available Hashes:</h3>
+                <ul>
+                    <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
+                    <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
+                    <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
+                    <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
+                </ul>
             </div>
         </div>
     </div>
 
     <script>
+        // Hash actions
         const hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
                 message: "✅ Valid hash! Redirecting to GitHub download...",
@@ -160,21 +152,66 @@
 
         let posts = [];
 
+        // Check for saved login info
+        if (localStorage.getItem('username') && localStorage.getItem('password')) {
+            showActionSection();
+        } else {
+            showAuthSection();
+        }
+
+        function showAuthSection() {
+            document.getElementById('authSection').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function showSignup() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function login() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            const storedUsername = localStorage.getItem("username");
+            const storedPassword = localStorage.getItem("password");
+
+            if (username === storedUsername && password === storedPassword) {
+                showActionSection();
+            } else {
+                document.getElementById("loginMessage").textContent = "❌ Invalid username or password!";
+            }
+        }
+
+        function signup() {
+            const username = document.getElementById("signupUsername").value;
+            const password = document.getElementById("signupPassword").value;
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+
+            showActionSection();
+        }
+
+        function showActionSection() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('actionSection').style.display = 'block';
+        }
+
+        // Handle hash actions
         function performAction() {
             const userHash = document.getElementById("hash").value;
             const messageElement = document.getElementById("message");
             const guide = document.getElementById("guide");
-            const postsSection = document.getElementById("postsSection");
 
             if (userHash === "guide") {
                 messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
                 guide.style.display = "block";
-                postsSection.style.display = "none";
-            } else if (userHash === "posts") {
-                messageElement.innerHTML = "✅ Valid hash! Displaying posts section...";
-                guide.style.display = "none";
-                postsSection.style.display = "block";
-                displayPosts();
             } else if (hashMap[userHash]) {
                 messageElement.innerHTML = hashMap[userHash].message;
                 setTimeout(() => {
@@ -184,30 +221,7 @@
                 messageElement.innerHTML = "❌ Invalid hash! Please try again.";
                 messageElement.classList.add("error");
                 guide.style.display = "none";
-                postsSection.style.display = "none";
             }
-        }
-
-        function addPost() {
-            const newPostInput = document.getElementById("newPost");
-            const newPost = newPostInput.value.trim();
-
-            if (newPost) {
-                posts.push({ name: "Anonymous", content: newPost });
-                newPostInput.value = "";
-                displayPosts();
-            }
-        }
-
-        function displayPosts() {
-            const postsList = document.getElementById("postsList");
-            postsList.innerHTML = "";
-            posts.forEach(post => {
-                const postElement = document.createElement("div");
-                postElement.classList.add("post");
-                postElement.innerHTML = `<strong>${post.name}</strong>: ${post.content}`;
-                postsList.appendChild(postElement);
-            });
         }
     </script>
 </body>
