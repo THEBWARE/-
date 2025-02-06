@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Based on Hash</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        input {
+            padding: 12px;
+            width: 100%;
+            max-width: 350px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0057a3;
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007700;
+        }
+        #message.error {
+            color: #cc0000;
+        }
+        .guide {
+            margin-top: 20px;
+            text-align: left;
+            font-weight: normal;
+            color: #333;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #0057a3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .posts-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .post {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .post input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .post button {
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Hash to Perform Action</h2>
+        <input type="text" id="hash" placeholder="Enter hash...">
+        <button onclick="performAction()">Submit</button>
+        <p id="message"></p>
+
+        <div id="guide" class="guide" style="display:none;">
+            <h3>Available Hashes:</h3>
+            <ul>
+                <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
+                <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
+                <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
+                <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
+            </ul>
+        </div>
+
+        <div id="postsSection" class="posts-section" style="display:none;">
+            <h3>Posts</h3>
+            <div id="postsList"></div>
+            <div class="post">
+                <input type="text" id="newPost" placeholder="Write your post...">
+                <button onclick="addPost()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hashMap = {
+            "Y7TiVy1EWRWeOgJBOForpEN5r": {
+                message: "✅ Valid hash! Redirecting to GitHub download...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua"
+            },
+            "dgr": {
+                message: "✅ Valid hash! Redirecting to external download...",
+                url: "https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14"
+            },
+            "crv": {
+                message: "✅ Valid hash! Redirecting to Roblox download...",
+                url: "https://www.roblox.com/download/client?os=win"
+            },
+            "xenoexec": {
+                message: "✅ Valid hash! Redirecting to XenoExec release...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec"
+            }
+        };
+
+        let posts = [];
+
+        function performAction() {
+            const userHash = document.getElementById("hash").value;
+            const messageElement = document.getElementById("message");
+            const guide = document.getElementById("guide");
+            const postsSection = document.getElementById("postsSection");
+
+            if (userHash === "guide") {
+                messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
+                guide.style.display = "block";
+                postsSection.style.display = "none";
+            } else if (userHash === "posts") {
+                messageElement.innerHTML = "✅ Valid hash! Displaying posts section...";
+                guide.style.display = "none";
+                postsSection.style.display = "block";
+                displayPosts();
+            } else if (hashMap[userHash]) {
+                messageElement.innerHTML = hashMap[userHash].message;
+                setTimeout(() => {
+                    window.location.href = hashMap[userHash].url;
+                }, 1500); // 1.5-second delay before redirect
+            } else {
+                messageElement.innerHTML = "❌ Invalid hash! Please try again.";
+                messageElement.classList.add("error");
+                guide.style.display = "none";
+                postsSection.style.display = "none";
+            }
+        }
+
+        function addPost() {
+            const newPostInput = document.getElementById("newPost");
+            const newPost = newPostInput.value.trim();
+
+            if (newPost) {
+                posts.push({ name: "Anonymous", content: newPost });
+                newPostInput.value = "";
+                displayPosts();
+            }
+        }
+
+        function displayPosts() {
+            const postsList = document.getElementById("postsList");
+            postsList.innerHTML = "";
+            posts.forEach(post => {
+                const postElement = document.createElement("div");
+                postElement.classList.add("post");
+                postElement.innerHTML = `<strong>${post.name}</strong>: ${post.content}`;
+                postsList.appendChild(postElement);
+            });
+        }
+    </script>
+</body>
+</html>
