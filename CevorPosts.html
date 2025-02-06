@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Action Based on Hash</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6f7fd0, #e1e7fc);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,44 +21,67 @@
         }
         .container {
             background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
             width: 100%;
+            max-width: 450px;
+            transition: all 0.3s ease;
         }
         h2 {
             color: #333;
+            font-size: 26px;
             margin-bottom: 20px;
-            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h3 {
+            color: #555;
+            font-size: 22px;
+            margin-bottom: 15px;
         }
         input {
-            padding: 12px;
+            padding: 15px;
             width: 100%;
-            max-width: 350px;
+            max-width: 380px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 18px;
             margin-bottom: 20px;
-            transition: border-color 0.3s;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
         }
         input:focus {
-            border-color: #0066cc;
+            border-color: #007bff;
             outline: none;
+            background-color: #ffffff;
         }
         button {
-            padding: 12px 20px;
-            background-color: #0066cc;
+            padding: 12px 25px;
+            background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0057a3;
+            background-color: #0056b3;
+        }
+        .post {
+            background-color: #f1f1f1;
+            border-left: 5px solid #007bff;
+            padding: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #555;
+        }
+        .post h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #007bff;
         }
         #message {
             margin-top: 20px;
@@ -65,37 +91,45 @@
         #message.error {
             color: #cc0000;
         }
+        .auth-section, .action-section, .post-section {
+            display: none;
+        }
         .guide {
-            margin-top: 20px;
             text-align: left;
-            font-weight: normal;
-            color: #333;
+            margin-top: 20px;
+            font-size: 16px;
         }
         a {
-            color: #0066cc;
+            color: #007bff;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
         a:hover {
-            color: #0057a3;
+            color: #0056b3;
         }
-        .auth-section {
-            display: none;
+        .new-post {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #eef2f7;
+            border-radius: 10px;
         }
-        .signup-form, .login-form {
-            display: none;
+        .new-post input, .new-post button {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Enter Hash to Perform Action</h2>
+
+        <!-- Authentication Section -->
         <div id="authSection" class="auth-section">
             <h3>Login or Sign Up</h3>
             <button onclick="showLogin()">Login</button>
             <button onclick="showSignup()">Sign Up</button>
         </div>
 
+        <!-- Login Form -->
         <div id="loginForm" class="login-form">
             <h3>Login</h3>
             <input type="text" id="loginUsername" placeholder="Username">
@@ -104,6 +138,7 @@
             <p id="loginMessage" class="error"></p>
         </div>
 
+        <!-- Signup Form -->
         <div id="signupForm" class="signup-form">
             <h3>Sign Up</h3>
             <input type="text" id="signupUsername" placeholder="Username">
@@ -112,6 +147,7 @@
             <p id="signupMessage" class="error"></p>
         </div>
 
+        <!-- Action Section -->
         <div id="actionSection" class="action-section">
             <input type="text" id="hash" placeholder="Enter hash...">
             <button onclick="performAction()">Submit</button>
@@ -127,9 +163,59 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Post Section for Admin -->
+        <div id="postSection" class="post-section">
+            <h3>Owner Posts</h3>
+            <div id="postList"></div>
+            <div class="new-post">
+                <input type="text" id="newPostTitle" placeholder="Post Title">
+                <textarea id="newPostContent" placeholder="Post Content" rows="5"></textarea>
+                <button onclick="addPost()">Add Post</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Post management
+        const posts = [
+            {
+                title: "Welcome to the platform!",
+                content: "Here you can enter hashes to perform actions. Keep checking back for updates."
+            },
+            {
+                title: "New Feature Alert!",
+                content: "We have added a new hash for external downloads. Check it out!"
+            }
+        ];
+
+        // Display posts
+        function displayPosts() {
+            const postList = document.getElementById('postList');
+            postList.innerHTML = ''; // Clear existing posts
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+                postElement.innerHTML = `
+                    <h4>${post.title}</h4>
+                    <p>${post.content}</p>
+                `;
+                postList.appendChild(postElement);
+            });
+        }
+
+        function addPost() {
+            const title = document.getElementById('newPostTitle').value;
+            const content = document.getElementById('newPostContent').value;
+
+            if (title && content) {
+                posts.push({ title, content });
+                displayPosts();
+                document.getElementById('newPostTitle').value = '';
+                document.getElementById('newPostContent').value = '';
+            }
+        }
+
         // Hash actions
         const hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
@@ -150,6 +236,7 @@
             }
         };
 
+        // Show and hide sections
         let posts = [];
 
         // Check for saved login info
@@ -201,6 +288,8 @@
             document.getElementById('signupForm').style.display = 'none';
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('actionSection').style.display = 'block';
+            document.getElementById('postSection').style.display = 'block';
+            displayPosts();
         }
 
         // Handle hash actions
@@ -216,10 +305,9 @@
                 messageElement.innerHTML = hashMap[userHash].message;
                 setTimeout(() => {
                     window.location.href = hashMap[userHash].url;
-                }, 1500); // 1.5-second delay before redirect
+                }, 2000);
             } else {
                 messageElement.innerHTML = "❌ Invalid hash! Please try again.";
-                messageElement.classList.add("error");
                 guide.style.display = "none";
             }
         }
