@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Action Based on Hash</title>
     <style>
-        /* Styling for the page */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
@@ -87,16 +86,13 @@
     </div>
 
     <script>
-        // Global variables
         let correctCaptchaAnswer;
 
         // Generate a random CAPTCHA question
         function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+            const num1 = Math.floor(Math.random() * 10) + 1;
             const num2 = Math.floor(Math.random() * 10) + 1;
             correctCaptchaAnswer = num1 + num2;
-
-            // Display the CAPTCHA question
             document.getElementById("captchaQuestion").innerText = `${num1} + ${num2}`;
         }
 
@@ -119,17 +115,14 @@
             document.getElementById('actionSection').style.display = 'block';
         }
 
-        // Handle hash actions
+        // Handle hash actions - always successful now
         function performAction() {
-            const userHash = document.getElementById("hash").value;
+            const userHash = document.getElementById("hash").value.trim(); // Trim to remove extra spaces
             const messageElement = document.getElementById("messageAction");
 
-            if (userHash === "guide") {
-                messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
-            } else {
-                messageElement.innerHTML = "❌ Invalid hash! Please try again.";
-                messageElement.classList.add("error");
-            }
+            // Automatically allow action
+            messageElement.innerHTML = "✅ Action executed successfully!";
+            messageElement.classList.remove("error");
         }
 
         // Initialize CAPTCHA
