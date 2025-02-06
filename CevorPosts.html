@@ -65,68 +65,82 @@
         #message.error {
             color: #cc0000;
         }
+        .guide {
+            margin-top: 20px;
+            text-align: left;
+            font-weight: normal;
+            color: #333;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #0057a3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Enter Hash to Perform Action</h2>
-
-        <div id="captchaSection">
-            <p>CAPTCHA: What is <span id="captchaQuestion"></span> ?</p>
-            <input type="text" id="captchaAnswer" placeholder="Enter the answer">
-            <button onclick="validateCaptcha()">Submit</button>
-            <p id="message"></p>
-        </div>
-
-        <div id="actionSection" style="display: none;">
+        <div id="actionSection" class="action-section">
             <input type="text" id="hash" placeholder="Enter hash...">
             <button onclick="performAction()">Submit</button>
-            <p id="messageAction"></p>
+            <p id="message"></p>
+
+            <div id="guide" class="guide" style="display:none;">
+                <h3>Available Hashes:</h3>
+                <ul>
+                    <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
+                    <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
+                    <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
+                    <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
     <script>
-        let correctCaptchaAnswer;
+        // Hash actions
+        const hashMap = {
+            "Y7TiVy1EWRWeOgJBOForpEN5r": {
+                message: "✅ Valid hash! Redirecting to GitHub download...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua"
+            },
+            "dgr": {
+                message: "✅ Valid hash! Redirecting to external download...",
+                url: "https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14"
+            },
+            "crv": {
+                message: "✅ Valid hash! Redirecting to Roblox download...",
+                url: "https://www.roblox.com/download/client?os=win"
+            },
+            "xenoexec": {
+                message: "✅ Valid hash! Redirecting to XenoExec release...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec"
+            }
+        };
 
-        // Generate a random CAPTCHA question
-        function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            correctCaptchaAnswer = num1 + num2;
-            document.getElementById("captchaQuestion").innerText = `${num1} + ${num2}`;
-        }
-
-        // Validate CAPTCHA answer
-        function validateCaptcha() {
-            const userAnswer = document.getElementById("captchaAnswer").value;
+        function performAction() {
+            const userHash = document.getElementById("hash").value;
             const messageElement = document.getElementById("message");
+            const guide = document.getElementById("guide");
 
-            if (parseInt(userAnswer) === correctCaptchaAnswer) {
-                showActionSection();
+            if (userHash === "guide") {
+                messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
+                guide.style.display = "block";
+            } else if (hashMap[userHash]) {
+                messageElement.innerHTML = hashMap[userHash].message;
+                setTimeout(() => {
+                    window.location.href = hashMap[userHash].url;
+                }, 1500); // 1.5-second delay before redirect
             } else {
-                messageElement.innerHTML = "❌ Invalid CAPTCHA answer! Please try again.";
+                messageElement.innerHTML = "❌ Invalid hash! Please try again.";
                 messageElement.classList.add("error");
+                guide.style.display = "none";
             }
         }
-
-        // Show the action section
-        function showActionSection() {
-            document.getElementById('captchaSection').style.display = 'none';
-            document.getElementById('actionSection').style.display = 'block';
-        }
-
-        // Handle hash actions - always successful now
-        function performAction() {
-            const userHash = document.getElementById("hash").value.trim(); // Trim to remove extra spaces
-            const messageElement = document.getElementById("messageAction");
-
-            // Automatically allow action
-            messageElement.innerHTML = "✅ Action executed successfully!";
-            messageElement.classList.remove("error");
-        }
-
-        // Initialize CAPTCHA
-        generateCaptcha();
     </script>
 </body>
 </html>
