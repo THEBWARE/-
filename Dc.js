@@ -9,7 +9,29 @@ function createInterface() {
     container.style.backgroundColor = '#fff';
     container.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
     container.style.zIndex = '9999';
-    
+    container.style.cursor = 'move';
+
+    // Make it draggable
+    let offsetX, offsetY, isDragging = false;
+
+    container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - container.getBoundingClientRect().left;
+        offsetY = e.clientY - container.getBoundingClientRect().top;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            container.style.left = `${e.clientX - offsetX}px`;
+            container.style.top = `${e.clientY - offsetY}px`;
+            container.style.transform = 'none';
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
     const input = document.createElement('input');
     input.placeholder = 'Enter website URL (e.g., https://example.com)';
     input.style.width = '80%';
@@ -29,7 +51,7 @@ function createInterface() {
 
     const message = document.createElement('p');
     message.style.color = 'red';
-    
+
     const codeDiv = document.createElement('textarea');
     codeDiv.style.marginTop = '20px';
     codeDiv.style.width = '100%';
@@ -51,11 +73,19 @@ function createInterface() {
     copyButton.style.cursor = 'pointer';
     copyButton.style.marginTop = '10px';
 
+    const disclaimer = document.createElement('p');
+    disclaimer.innerText = 'Educational Purposes Only';
+    disclaimer.style.color = '#888';
+    disclaimer.style.fontSize = '12px';
+    disclaimer.style.textAlign = 'center';
+    disclaimer.style.marginTop = '10px';
+
     container.appendChild(input);
     container.appendChild(button);
     container.appendChild(message);
     container.appendChild(codeDiv);
     container.appendChild(copyButton);
+    container.appendChild(disclaimer);
     document.body.appendChild(container);
 
     button.addEventListener('click', async function () {
