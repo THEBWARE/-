@@ -7,47 +7,47 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            background: linear-gradient(45deg, #4e54c8, #8f94fb);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #333;
+            color: #fff;
+            text-align: center;
         }
         .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             width: 100%;
-            transition: all 0.3s ease;
-        }
-        .container:hover {
-            transform: scale(1.05);
+            max-width: 600px;
         }
         h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 26px;
+            color: #fff;
+            font-size: 32px;
             font-weight: bold;
+            margin-bottom: 30px;
         }
         input {
             padding: 15px;
             width: 100%;
-            max-width: 450px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            max-width: 500px;
+            border: 2px solid #fff;
+            border-radius: 15px;
             font-size: 18px;
             margin-bottom: 20px;
-            transition: border-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transition: border-color 0.3s, background-color 0.3s;
         }
         input:focus {
             border-color: #0066cc;
             outline: none;
+            background-color: rgba(255, 255, 255, 0.5);
         }
         button {
             padding: 15px 25px;
@@ -65,72 +65,62 @@
         #message {
             margin-top: 20px;
             font-weight: bold;
-            color: #007700;
+            color: #32CD32;
         }
         #message.error {
-            color: #cc0000;
+            color: #ff0000;
         }
         .guide {
             margin-top: 20px;
-            text-align: left;
             font-weight: normal;
-            color: #333;
         }
         a {
-            color: #0066cc;
+            color: #fff;
             text-decoration: none;
             transition: color 0.3s;
         }
         a:hover {
             color: #0057a3;
         }
-        .discord-button {
+        .discord-btn {
+            display: inline-block;
             background-color: #7289da;
-            border-radius: 12px;
             padding: 12px 20px;
-            font-size: 18px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            border-radius: 8px;
             margin-top: 20px;
-            width: 100%;
-            max-width: 450px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        .discord-button:hover {
-            background-color: #5b6eae;
+        .discord-btn:hover {
+            background-color: #5d72a1;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Enter Hash to Perform Action</h2>
-        <div id="actionSection" class="action-section">
-            <input type="text" id="hash" placeholder="Enter hash...">
-            <button onclick="performAction()">Submit</button>
-            <p id="message"></p>
+        <input type="text" id="hash" placeholder="Enter hash...">
+        <button onclick="performAction()">Submit</button>
+        <p id="message"></p>
 
-            <div id="guide" class="guide" style="display:none;">
-                <h3>Available Hashes:</h3>
-                <ul>
-                    <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
-                    <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
-                    <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
-                    <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
-                    <li><strong>UaOUqMM1Sth1PQL7jQNEd2zZz</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe" target="_blank">Cloudy Bootstrap Installer</a></li>
-                    <li><strong>QEyO6ISIrbFfVoCVUP75ZvhTP</strong>: <a href="https://pastebin.com/raw/9eFMh4rK" target="_blank">Pastebin Script</a></li>
-                </ul>
-            </div>
-
-            <!-- Discord Button -->
-            <a href="https://discord.com/invite/YOUR_INVITE_LINK" target="_blank">
-                <button class="discord-button">Join our Discord</button>
-            </a>
+        <div id="guide" class="guide" style="display:none;">
+            <h3>Available Hashes:</h3>
+            <ul>
+                <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
+                <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
+                <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
+                <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
+                <li><strong>UaOUqMM1Sth1PQL7jQNEd2zZz</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe" target="_blank">Cloudy Bootstrap Installer</a></li>
+                <li><strong>QEyO6ISIrbFfVoCVUP75ZvhTP</strong>: <a href="https://pastebin.com/raw/9eFMh4rK" target="_blank">Pastebin Script</a></li>
+            </ul>
         </div>
+
+        <a href="https://discord.gg/HCbg4VDE" class="discord-btn">Join Our Discord</a>
     </div>
 
     <script>
-        // Hash actions
         const hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
                 message: "✅ Valid hash! Redirecting to GitHub download...",
