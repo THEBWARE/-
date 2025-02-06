@@ -22,7 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
+            max-width: 600px;
             width: 100%;
         }
         h2 {
@@ -79,17 +79,28 @@
         a:hover {
             color: #0057a3;
         }
-        .auth-section {
+        .auth-section, .post-section {
             display: none;
         }
-        .signup-form, .login-form {
-            display: none;
+        .posts-list {
+            margin-top: 20px;
+            text-align: left;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .post-item {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Enter Hash to Perform Action</h2>
+
         <div id="authSection" class="auth-section">
             <h3>Login or Sign Up</h3>
             <button onclick="showLogin()">Login</button>
@@ -115,6 +126,7 @@
         <div id="actionSection" class="action-section">
             <input type="text" id="hash" placeholder="Enter hash...">
             <button onclick="performAction()">Submit</button>
+            <button onclick="showPosts()">Posts</button> <!-- Button for posts section -->
             <p id="message"></p>
 
             <div id="guide" class="guide" style="display:none;">
@@ -127,10 +139,19 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Posts Section -->
+        <div id="postSection" class="post-section">
+            <h3>Post Something</h3>
+            <textarea id="postContent" rows="4" cols="50" placeholder="Write your post here..."></textarea><br><br>
+            <button onclick="addPost()">Post</button>
+
+            <h3>Recent Posts</h3>
+            <ul id="postsList" class="posts-list"></ul>
+        </div>
     </div>
 
     <script>
-        // Hash actions
         const hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
                 message: "✅ Valid hash! Redirecting to GitHub download...",
@@ -203,13 +224,39 @@
             document.getElementById('actionSection').style.display = 'block';
         }
 
-        // Handle hash actions
+        function showPosts() {
+            document.getElementById('actionSection').style.display = 'none';
+            document.getElementById('postSection').style.display = 'block';
+        }
+
+        function addPost() {
+            const postContent = document.getElementById("postContent").value;
+            if (postContent) {
+                posts.push(postContent);
+                document.getElementById("postContent").value = ""; // Clear input
+                displayPosts();
+            }
+        }
+
+        function displayPosts() {
+            const postsList = document.getElementById("postsList");
+            postsList.innerHTML = "";
+            posts.forEach(post => {
+                const li = document.createElement("li");
+                li.classList.add("post-item");
+                li.textContent = post;
+                postsList.appendChild(li);
+            });
+        }
+
         function performAction() {
             const userHash = document.getElementById("hash").value;
             const messageElement = document.getElementById("message");
             const guide = document.getElementById("guide");
 
-            if (userHash === "guide") {
+            if (userHash === "posts") {
+                showPosts();
+            } else if (userHash === "guide") {
                 messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
                 guide.style.display = "block";
             } else if (hashMap[userHash]) {
