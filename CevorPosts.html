@@ -202,10 +202,11 @@
                 <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
                 <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
                 <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
-                <li><strong>UaOUqMM1Sth1PQL7jQNEd2zZz</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe" target="_blank">Cloudy Bootstrap Installer</a></li>
+                <li><strong>UaOUqMM1Sth1PQL7jQNEd2zZz</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe" target="_blank">Cloudy Bootstrap installer</a></li>
                 <li><strong>QEyO6ISIrbFfVoCVUP75ZvhTP</strong>: <a href="https://pastebin.com/raw/9eFMh4rK" target="_blank">Pastebin Script</a></li>
                 <li><strong>v5211s</strong>: <a href="https://www.rblxscripts.net/roblox-script-jailbreak-project-auto-auto-rob" target="_blank">Jailbreak Script</a></li>
                 <li><strong>cleverifiyme</strong>: <a href="https://clever.com/" target="_blank">Clever.com</a></li>
+                <li><strong>CB</strong>: <a href="https://github.com/Alveroalexandro56/-/releases/download/dsfgdfg/CevorBootstrapper.bat" target="_blank">CevorBootstrapper.bat Download</a></li>
             </ul>
         </div>
 
@@ -231,7 +232,7 @@
                 url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec"
             },
             "UaOUqMM1Sth1PQL7jQNEd2zZz": {
-                message: "✅ Valid hash! Redirecting to Cloudy Bootstrap Installer...",
+                message: "✅ Valid hash! Redirecting to Cloudy Bootstrap installer...",
                 url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe"
             },
             "QEyO6ISIrbFfVoCVUP75ZvhTP": {
@@ -245,26 +246,36 @@
             "cleverifiyme": {
                 message: "✅ Valid hash! Redirecting to Clever.com...",
                 url: "https://clever.com/"
+            },
+            "CB": {
+                message: "✅ Valid hash! Redirecting to CevorBootstrapper.bat download...",
+                url: "https://github.com/Alveroalexandro56/-/releases/download/dsfgdfg/CevorBootstrapper.bat"
+            },
+            "guide": {
+                message: "✅ Valid hash! Showing guide...",
+                guide: true
             }
         };
 
         function performAction() {
-            const userHash = document.getElementById("hash").value;
-            const messageElement = document.getElementById("message");
-            const guide = document.getElementById("guide");
+            const inputHash = document.getElementById('hash').value.trim().toLowerCase();
+            const messageElement = document.getElementById('message');
+            const guideElement = document.getElementById('guide');
+            
+            if (inputHash in hashMap) {
+                const action = hashMap[inputHash];
+                messageElement.textContent = action.message;
 
-            if (userHash === "guide") {
-                messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
-                guide.classList.add("open");
-            } else if (hashMap[userHash]) {
-                messageElement.innerHTML = hashMap[userHash].message;
-                setTimeout(() => {
-                    window.location.href = hashMap[userHash].url;
-                }, 1500); // 1.5-second delay before redirect
+                if (action.url) {
+                    window.location.href = action.url;
+                }
+
+                if (action.guide) {
+                    guideElement.classList.add('open');
+                }
             } else {
-                messageElement.innerHTML = "❌ Invalid hash! Please try again.";
-                messageElement.classList.add("error");
-                guide.classList.remove("open");
+                messageElement.textContent = "❌ Invalid hash! Please try again.";
+                messageElement.classList.add('error');
             }
         }
     </script>
