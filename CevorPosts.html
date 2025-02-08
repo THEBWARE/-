@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hash Action with Discord Support</title>
     <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #2c3e50, #34495e); /* Darker gradient for the background */
+            background: linear-gradient(45deg, #1a1a1a, #2c3e50);
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,44 +25,80 @@
             text-align: center;
             overflow: hidden;
         }
+
+        /* Container */
         .container {
             background: rgba(255, 255, 255, 0.1);
-            padding: 50px;
+            padding: 40px;
             border-radius: 25px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             width: 100%;
             max-width: 600px;
-            border: 2px solid #fff;
-            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            animation: fadeIn 1s ease-in-out;
         }
+
         .container:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9);
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Heading */
         h2 {
             color: #fff;
             font-size: 36px;
             font-weight: bold;
             margin-bottom: 30px;
             text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8);
+            animation: slideIn 1s ease-in-out;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Input Field */
         input {
             padding: 18px;
             width: 100%;
             max-width: 500px;
-            border: 2px solid #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 15px;
             font-size: 18px;
             margin-bottom: 25px;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.1);
             color: #fff;
-            transition: border-color 0.3s, background-color 0.3s;
+            transition: all 0.3s ease;
         }
+
         input:focus {
             border-color: #ff6347;
             outline: none;
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 99, 71, 0.5);
         }
+
+        /* Button */
         button {
             padding: 18px 28px;
             background-color: #ff6347;
@@ -64,31 +107,67 @@
             border-radius: 12px;
             cursor: pointer;
             font-size: 18px;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
         }
+
         button:hover {
             background-color: #e55342;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 99, 71, 0.6);
         }
+
+        /* Message */
         #message {
             margin-top: 20px;
             font-weight: bold;
             color: #32CD32;
+            animation: fadeIn 0.5s ease-in-out;
         }
+
         #message.error {
             color: #ff6347;
         }
+
+        /* Guide Section */
         .guide {
             margin-top: 20px;
             font-weight: normal;
+            text-align: left;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
         }
-        a {
+
+        .guide.open {
+            max-height: 500px; /* Adjust based on content */
+        }
+
+        .guide h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #ff6347;
+        }
+
+        .guide ul {
+            list-style-type: none;
+        }
+
+        .guide li {
+            margin-bottom: 10px;
+        }
+
+        .guide a {
             color: #fff;
             text-decoration: none;
             transition: color 0.3s;
         }
-        a:hover {
+
+        .guide a:hover {
             color: #ff6347;
         }
+
+        /* Discord Button */
         .discord-btn {
             display: inline-block;
             background-color: #7289da;
@@ -98,10 +177,14 @@
             text-decoration: none;
             color: #fff;
             font-size: 18px;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
         }
+
         .discord-btn:hover {
             background-color: #5d72a1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(114, 137, 218, 0.6);
         }
     </style>
 </head>
@@ -112,7 +195,7 @@
         <button onclick="performAction()">Submit</button>
         <p id="message"></p>
 
-        <div id="guide" class="guide" style="display:none;">
+        <div id="guide" class="guide">
             <h3>Available Hashes:</h3>
             <ul>
                 <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
@@ -172,7 +255,7 @@
 
             if (userHash === "guide") {
                 messageElement.innerHTML = "✅ Valid hash! Displaying guide...";
-                guide.style.display = "block";
+                guide.classList.add("open");
             } else if (hashMap[userHash]) {
                 messageElement.innerHTML = hashMap[userHash].message;
                 setTimeout(() => {
@@ -181,7 +264,7 @@
             } else {
                 messageElement.innerHTML = "❌ Invalid hash! Please try again.";
                 messageElement.classList.add("error");
-                guide.style.display = "none";
+                guide.classList.remove("open");
             }
         }
     </script>
