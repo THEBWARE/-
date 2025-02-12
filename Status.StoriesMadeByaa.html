@@ -44,7 +44,7 @@
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #e74c3c;
+            color: #2ecc71; /* Green for operational status */
             text-transform: uppercase;
         }
 
@@ -203,42 +203,22 @@
 <body>
     <div class="container fadeInEffect">
         <h1>StoriesMadeByaa Status</h1>
-        <div class="status">🔴 **Current Status: DOWN**</div>
-        <div class="update-time">📅 Last Updated: February 12, 2025, at 3:27 PM</div>
+        <div class="status">🟢 **Current Status: OPERATIONAL**</div>
+        <div class="update-time">📅 Last Updated: February 12, 2025, at 4:51 PM EST</div>
 
         <div class="content">
-            <div class="section-title">🚧 Error 503: Service Unavailable</div>
-            <p><strong>🔍 Issue Summary:</strong> Our servers are currently down due to unexpected technical difficulties.</p>
-        </div>
-
-        <div class="content">
-            <div class="section-title">⚠️ What Happened?</div>
-            <p>On February 12, 2025, a critical bug was detected that caused 100% of users to be taken to a different page because website was not loading correctly.</p>
-            <ul>
-                <li><strong>🚀 Excessive Traffic Load</strong> – The system experienced an overload of requests, exacerbating the issue.</li>
-                <li><strong>💾 Code Error</strong> – A coding error led to an incorrect routing path, redirecting all traffic to Roblox.</li>
-                <li><strong>🛠️ System Failure</strong> – The redirection was caused by an internal system failure that was not identified in time.</li>
-            </ul>
-        </div>
-
-        <div class="content">
-            <div class="section-title">🔧 Recovery Efforts:</div>
-            <ul>
-                <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
-                <li>✅ Corrected the routing logic – <span class="highlight">COMPLETED</span></li>
-                <li>✅ Monitoring system performance – <span class="highlight">COMPLETED</span></li>
-                <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
-            </ul>
+            <div class="section-title">✅ Service Restored</div>
+            <p><strong>🔍 Summary:</strong> The issue has been resolved, and the service is now fully operational.</p>
         </div>
 
         <div class="content">
             <div class="section-title">📢 Next Steps</div>
-            <p>We sincerely apologize for this issue. We're actively working to restore full access and ensure such incidents do not happen in the future.</p>
+            <p>We sincerely apologize for the inconvenience caused. We're actively working to prevent such incidents in the future.</p>
             <div class="important">What you can do:</div>
             <ul>
                 <li>✅ Refresh the page periodically for updates.</li>
-                <li>❌ Do not attempt to log in multiple times; it won't help.</li>
-                <li>✅ Keep an eye on our status page for updates on recovery progress.</li>
+                <li>✅ Report any issues you encounter.</li>
+                <li>✅ Keep an eye on our status page for updates.</li>
             </ul>
         </div>
 
@@ -262,6 +242,7 @@
             <label for="incidentSelect">Select a Past Incident:</label>
             <select id="incidentSelect" onchange="displayIncidentDetails()">
                 <option value="default">Select an incident...</option>
+                <option value="feb12_327pm">February 12, 2025, 3:27 PM EST</option>
                 <option value="dec24jan29">December 24, 2024 - January 29, 2025</option>
             </select>
 
@@ -300,7 +281,23 @@
             const incidentDetails = document.getElementById('incidentDetails');
             const selectedIncident = incidentSelect.value;
 
-            if (selectedIncident === 'dec24jan29') {
+            if (selectedIncident === 'feb12_327pm') {
+                incidentDetails.innerHTML = `
+                    <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 3:27 PM EST, the website failed to load due to a critical bug.</p>
+                    <ul>
+                        <li><strong>🚀 Excessive Traffic Load</strong> – The system experienced an overload of requests, exacerbating the issue.</li>
+                        <li><strong>💾 Code Error</strong> – A coding error caused the website to fail to load.</li>
+                        <li><strong>🛠️ System Failure</strong> – An internal system failure prevented the website from functioning.</li>
+                    </ul>
+                    <p><strong>🔧 Recovery Efforts:</strong></p>
+                    <ul>
+                        <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Corrected the routing logic – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Monitoring system performance – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
+                    </ul>
+                `;
+            } else if (selectedIncident === 'dec24jan29') {
                 incidentDetails.innerHTML = `
                     <p><strong>🔍 Incident Summary:</strong> From December 24, 2024, to January 29, 2025, a massive traffic overload and a routing issue caused the platform to redirect all users to Roblox. This was resolved after a thorough investigation and correction of the underlying issues.</p>
                     <ul>
