@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoriesMadeByaa Status</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 30px;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        .status {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #e74c3c;
+            text-transform: uppercase;
+        }
+
+        .update-time {
+            font-size: 1.2em;
+            color: #ecf0f1;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            font-size: 1.1em;
+            color: #fff;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            color: #ecf0f1;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            color: #bdc3c7;
+            font-size: 1.1em;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        .highlight {
+            color: #16a085;
+            font-weight: bold;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+
+        .footer {
+            font-size: 1em;
+            color: #ecf0f1;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .important {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .timer {
+            font-size: 1.4em;
+            color: #2ecc71;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .past-incidents {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #34495e;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .incident-title {
+            font-size: 1.8em;
+            color: #ecf0f1;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        select {
+            padding: 12px;
+            font-size: 1.2em;
+            width: 250px;
+            border-radius: 5px;
+            background-color: #fff;
+            border: none;
+            color: #34495e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border: 2px solid #e74c3c;
+        }
+
+        /* Auto-Refresh Checkbox */
+        .auto-refresh-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .auto-refresh-wrapper label {
+            font-size: 1.2em;
+            color: #ecf0f1;
+            margin-right: 10px;
+        }
+
+        .auto-refresh-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auto-refresh-wrapper input[type="checkbox"]:checked {
+            background-color: #e74c3c;
+        }
+
+        .auto-refresh-wrapper input[type="checkbox"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Animations */
+        .fadeInEffect {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container fadeInEffect">
+        <h1>StoriesMadeByaa Status</h1>
+        <div class="status">🔴 **Current Status: DOWN**</div>
+        <div class="update-time">📅 Last Updated: February 12, 2025, at 3:27 PM</div>
+
+        <div class="content">
+            <div class="section-title">🚧 Error 503: Service Unavailable</div>
+            <p><strong>🔍 Issue Summary:</strong> Our servers are currently down due to unexpected technical difficulties.</p>
+        </div>
+
+        <div class="content">
+            <div class="section-title">⚠️ What Happened?</div>
+            <p>On December 24, 2024, a critical bug was detected that caused 100% of users to be redirected to Roblox instead of StoriesMadeByaa. This was a system-wide issue affecting all users trying to access our platform.</p>
+            <ul>
+                <li><strong>🚀 Excessive Traffic Load</strong> – The system experienced an overload of requests, exacerbating the issue.</li>
+                <li><strong>💾 Code Error</strong> – A coding error led to an incorrect routing path, redirecting all traffic to Roblox.</li>
+                <li><strong>🛠️ System Failure</strong> – The redirection was caused by an internal system failure that was not identified in time.</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="section-title">🔧 Recovery Efforts:</div>
+            <ul>
+                <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
+                <li>✅ Corrected the routing logic – <span class="highlight">COMPLETED</span></li>
+                <li>✅ Monitoring system performance – <span class="highlight">ONGOING</span></li>
+                <li>✅ Full recovery – <span class="highlight">IN PROGRESS</span></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="section-title">📢 Next Steps</div>
+            <p>We sincerely apologize for this issue. We're actively working to restore full access and ensure such incidents do not happen in the future.</p>
+            <div class="important">What you can do:</div>
+            <ul>
+                <li>✅ Refresh the page periodically for updates.</li>
+                <li>❌ Do not attempt to log in multiple times; it won't help.</li>
+                <li>✅ Keep an eye on our status page for updates on recovery progress.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>We appreciate your patience and understanding!</p>
+            <p>– StoriesMadeByaa Tech Team</p>
+        </div>
+
+        <a href="#" class="button" onclick="window.location.reload();">Check for Updates</a>
+
+        <div class="auto-refresh-wrapper">
+            <label for="autoRefreshToggle">Enable Auto-Refresh</label>
+            <input type="checkbox" id="autoRefreshToggle" onchange="toggleAutoRefresh()">
+        </div>
+
+        <div class="timer" id="countdownTimer">Refreshing in: 30s</div>
+
+        <!-- Past Incidents Section -->
+        <div class="past-incidents">
+            <div class="incident-title">📉 Past Incidents</div>
+            <label for="incidentSelect">Select a Past Incident:</label>
+            <select id="incidentSelect" onchange="displayIncidentDetails()">
+                <option value="default">Select an incident...</option>
+                <option value="dec24jan29">December 24, 2024 - January 29, 2025</option>
+            </select>
+
+            <div id="incidentDetails" style="margin-top: 20px;">
+                <!-- Details of the selected incident will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let countdown = 30;
+        let autoRefreshEnabled = localStorage.getItem('autoRefreshEnabled') === 'true';
+        const timerElement = document.getElementById('countdownTimer');
+        const autoRefreshCheckbox = document.getElementById('autoRefreshToggle');
+
+        // Set checkbox state based on saved value
+        autoRefreshCheckbox.checked = autoRefreshEnabled;
+
+        function updateTimer() {
+            if (autoRefreshEnabled && countdown > 0) {
+                countdown--;
+                timerElement.textContent = `Refreshing in: ${countdown}s`;
+            } else if (autoRefreshEnabled && countdown === 0) {
+                location.reload();
+            }
+        }
+
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = autoRefreshCheckbox.checked;
+            localStorage.setItem('autoRefreshEnabled', autoRefreshEnabled);
+            countdown = 30;  // Reset countdown when auto-refresh is enabled
+        }
+
+        function displayIncidentDetails() {
+            const incidentSelect = document.getElementById('incidentSelect');
+            const incidentDetails = document.getElementById('incidentDetails');
+            const selectedIncident = incidentSelect.value;
+
+            if (selectedIncident === 'dec24jan29') {
+                incidentDetails.innerHTML = `
+                    <p><strong>🔍 Incident Summary:</strong> From December 24, 2024, to January 29, 2025, a massive traffic overload and a routing issue caused the platform to redirect all users to Roblox. This was resolved after a thorough investigation and correction of the underlying issues.</p>
+                    <ul>
+                        <li><strong>⚡ Issue Duration:</strong> 36 Days</li>
+                        <li><strong>🛠️ Recovery Status:</strong> Completed</li>
+                        <li><strong>🔧 Steps Taken:</strong> Traffic optimization and routing logic correction.</li>
+                    </ul>
+                `;
+            } else {
+                incidentDetails.innerHTML = '';
+            }
+        }
+
+        setInterval(updateTimer, 1000); // Update timer every second
+    </script>
+</body>
+</html>
