@@ -225,8 +225,10 @@
 <body>
     <div class="container">
         <h2>Cevor Posts</h2>
-        <input type="text" id="key" placeholder="Enter key...">
-        <button onclick="validateKey()">Validate Key</button>
+        <div id="keySection">
+            <input type="text" id="key" placeholder="Enter key...">
+            <button onclick="validateKey()">Validate Key</button>
+        </div>
         <div class="loader" id="loader"></div>
         <p id="message"></p>
 
@@ -234,6 +236,7 @@
         <div id="hashSection" style="display: none;">
             <input type="text" id="hash" placeholder="Enter hash...">
             <button onclick="performAction()">Submit</button>
+            <button onclick="signOut()" style="background-color: #555; margin-left: 10px;">Sign Out</button>
         </div>
 
         <!-- Guide Section -->
@@ -275,6 +278,7 @@
             const key = document.getElementById("key").value;
             const messageElement = document.getElementById("message");
             const loader = document.getElementById("loader");
+            const keySection = document.getElementById("keySection");
             const hashSection = document.getElementById("hashSection");
 
             // Show loader
@@ -291,7 +295,9 @@
                 if (validKeys.includes(key)) {
                     messageElement.textContent = "✅ Key validated!";
                     messageElement.classList.remove("error");
-                    hashSection.style.display = "block";
+                    keySection.style.display = "none"; // Hide key input section
+                    hashSection.style.display = "block"; // Show hash input section
+                    localStorage.setItem("cevorKey", key); // Store key in localStorage
                 } else {
                     messageElement.textContent = "❌ Invalid key!";
                     messageElement.classList.add("error");
@@ -322,6 +328,14 @@
                     messageElement.classList.remove("error");
                 }, 3000); // Clear error message after 3 seconds
             }
+        }
+
+        // Function to Sign Out
+        function signOut() {
+            localStorage.removeItem("cevorKey"); // Remove stored key
+            document.getElementById("keySection").style.display = "block"; // Show key input section
+            document.getElementById("hashSection").style.display = "none"; // Hide hash input section
+            document.getElementById("message").textContent = ""; // Clear any messages
         }
 
         // Hash Map for Valid Hashes
@@ -361,6 +375,15 @@
             "CB": {
                 message: "✅ Valid hash! Redirecting to CevorBootstrapper.bat download...",
                 url: "https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg"
+            }
+        };
+
+        // Check if the user is already signed in
+        window.onload = function () {
+            const storedKey = localStorage.getItem("cevorKey");
+            if (storedKey) {
+                document.getElementById("keySection").style.display = "none"; // Hide key input section
+                document.getElementById("hashSection").style.display = "block"; // Show hash input section
             }
         };
     </script>
