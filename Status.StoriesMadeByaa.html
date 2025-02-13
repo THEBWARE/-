@@ -44,7 +44,7 @@
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #f1c40f; /* Yellow for partial outage */
+            color: #2ecc71; /* Green for operational status */
             text-transform: uppercase;
         }
 
@@ -87,13 +87,13 @@
 
         .button {
             padding: 15px 30px;
-            background-color: #e74c3c;
+            background-color: #2ecc71;
             color: white;
             border: none;
             border-radius: 5px;
             font-size: 1.2em;
-            cursor: not-allowed; /* Indicate buttons are not working */
-            opacity: 0.5; /* Make buttons look disabled */
+            cursor: pointer;
+            opacity: 1;
             transition: all 0.3s ease;
             text-transform: uppercase;
             margin-top: 20px;
@@ -101,7 +101,7 @@
         }
 
         .button:hover {
-            background-color: #c0392b;
+            background-color: #27ae60;
         }
 
         .footer {
@@ -204,27 +204,27 @@
 <body>
     <div class="container fadeInEffect">
         <h1>StoriesMadeByaa Status</h1>
-        <div class="status">🟡 **Current Status: PARTIAL OUTAGE**</div>
-        <div class="update-time">📅 Last Updated: February 12, 2025, at 8:51 PM EST</div>
+        <div class="status">🟢 **Current Status: OPERATIONAL**</div>
+        <div class="update-time">📅 Last Updated: February 12, 2025, at 10:34 PM EST</div>
 
         <div class="content">
-            <div class="section-title">⚠️ Partial Outage</div>
-            <p><strong>🔍 Summary:</strong> Some features, including buttons, are currently not working. Our team is actively investigating the issue.</p>
+            <div class="section-title">✅ Everything is Working</div>
+            <p><strong>🔍 Summary:</strong> All systems are functioning normally. The partial outage earlier today has been resolved, and all features, including buttons, are now fully operational.</p>
+            <p><strong>📢 Detailed Update:</strong> Our team identified and fixed the issue causing the partial outage. The problem was related to a temporary routing error, which has now been corrected. We have also implemented additional monitoring to prevent similar issues in the future.</p>
         </div>
 
         <div class="content">
             <div class="section-title">📢 Next Steps</div>
-            <p>We apologize for the inconvenience. Our team is working to resolve the issue as quickly as possible.</p>
-            <div class="important">What you can do:</div>
+            <p>We appreciate your patience and understanding during the outage. Here’s what you can expect:</p>
             <ul>
-                <li>✅ Refresh the page periodically for updates.</li>
-                <li>✅ Report any issues you encounter.</li>
-                <li>✅ Keep an eye on our status page for updates.</li>
+                <li>✅ Continued monitoring of system performance.</li>
+                <li>✅ Regular updates to improve platform stability.</li>
+                <li>✅ Immediate notifications for any future incidents.</li>
             </ul>
         </div>
 
         <div class="footer">
-            <p>We appreciate your patience and understanding!</p>
+            <p>Thank you for your support and understanding!</p>
             <p>– StoriesMadeByaa Tech Team</p>
         </div>
 
@@ -243,6 +243,7 @@
             <label for="incidentSelect">Select a Past Incident:</label>
             <select id="incidentSelect" onchange="displayIncidentDetails()">
                 <option value="default">Select an incident...</option>
+                <option value="feb12_851pm">February 12, 2025, 8:51 PM EST</option>
                 <option value="feb12_327pm">February 12, 2025, 3:27 PM EST</option>
                 <option value="dec24jan29">December 24, 2024 - January 29, 2025</option>
             </select>
@@ -282,7 +283,23 @@
             const incidentDetails = document.getElementById('incidentDetails');
             const selectedIncident = incidentSelect.value;
 
-            if (selectedIncident === 'feb12_327pm') {
+            if (selectedIncident === 'feb12_851pm') {
+                incidentDetails.innerHTML = `
+                    <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 8:51 PM EST, a partial outage occurred due to a temporary routing error. Some features, including buttons, were not functioning properly.</p>
+                    <ul>
+                        <li><strong>🚀 Cause:</strong> A routing error caused by a recent system update.</li>
+                        <li><strong>🛠️ Resolution:</strong> The issue was resolved by rolling back the update and implementing a fix.</li>
+                        <li><strong>⏱️ Duration:</strong> 1 hour and 43 minutes.</li>
+                    </ul>
+                    <p><strong>🔧 Recovery Efforts:</strong></p>
+                    <ul>
+                        <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Rolled back the faulty update – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Implemented a permanent fix – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
+                    </ul>
+                `;
+            } else if (selectedIncident === 'feb12_327pm') {
                 incidentDetails.innerHTML = `
                     <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 3:27 PM EST, the website failed to load due to a critical bug.</p>
                     <ul>
