@@ -203,14 +203,38 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(114, 137, 218, 0.6);
         }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ff6347;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Cevor Posts</h2>
-        <input type="text" id="hash" placeholder="Enter hash...">
-        <button onclick="performAction()">Submit</button>
+        <input type="text" id="key" placeholder="Enter key...">
+        <button onclick="validateKey()">Validate Key</button>
+        <div class="loader" id="loader"></div>
         <p id="message"></p>
+
+        <!-- Hash Input (Hidden by Default) -->
+        <div id="hashSection" style="display: none;">
+            <input type="text" id="hash" placeholder="Enter hash...">
+            <button onclick="performAction()">Submit</button>
+        </div>
 
         <!-- Guide Section -->
         <div id="guide" class="guide">
@@ -233,6 +257,57 @@
     </div>
 
     <script>
+        const CURRENT_KEY = "897728"; // Current valid key
+
+        // Function to Validate Key
+        function validateKey() {
+            const key = document.getElementById("key").value;
+            const messageElement = document.getElementById("message");
+            const loader = document.getElementById("loader");
+            const hashSection = document.getElementById("hashSection");
+
+            // Show loader
+            loader.style.display = "block";
+            messageElement.textContent = "";
+
+            // Simulate key validation (replace with actual validation logic)
+            setTimeout(() => {
+                if (key === CURRENT_KEY) {
+                    messageElement.textContent = "✅ Key validated!";
+                    messageElement.classList.remove("error");
+                    hashSection.style.display = "block";
+                } else {
+                    messageElement.textContent = "❌ Invalid key!";
+                    messageElement.classList.add("error");
+                }
+                loader.style.display = "none";
+            }, 1000); // Simulate 1-second delay
+        }
+
+        // Function to Perform Action Based on Hash
+        function performAction() {
+            const hash = document.getElementById("hash").value;
+            const messageElement = document.getElementById("message");
+            const guideElement = document.getElementById("guide");
+
+            if (hash.toLowerCase() === 'guide') {
+                messageElement.textContent = '';
+                guideElement.classList.toggle('open');
+            } else if (hashMap[hash]) {
+                messageElement.textContent = hashMap[hash].message;
+                window.location.href = hashMap[hash].url;
+                guideElement.classList.remove('open');
+            } else {
+                messageElement.textContent = "❌ Invalid hash!";
+                messageElement.classList.add("error");
+                guideElement.classList.remove('open');
+                setTimeout(() => {
+                    messageElement.textContent = '';
+                    messageElement.classList.remove("error");
+                }, 3000); // Clear error message after 3 seconds
+            }
+        }
+
         // Hash Map for Valid Hashes
         const hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
@@ -272,30 +347,6 @@
                 url: "https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg"
             }
         };
-
-        // Function to Perform Action Based on Hash
-        function performAction() {
-            const hash = document.getElementById("hash").value;
-            const messageElement = document.getElementById("message");
-            const guideElement = document.getElementById("guide");
-
-            if (hash.toLowerCase() === 'guide') {
-                messageElement.textContent = '';
-                guideElement.classList.toggle('open');
-            } else if (hashMap[hash]) {
-                messageElement.textContent = hashMap[hash].message;
-                window.location.href = hashMap[hash].url;
-                guideElement.classList.remove('open');
-            } else {
-                messageElement.textContent = "❌ Invalid hash!";
-                messageElement.classList.add("error");
-                guideElement.classList.remove('open');
-                setTimeout(() => {
-                    messageElement.textContent = '';
-                    messageElement.classList.remove("error");
-                }, 3000); // Clear error message after 3 seconds
-            }
-        }
     </script>
 </body>
 </html>
