@@ -257,10 +257,21 @@
     </div>
 
     <script>
-        const CURRENT_KEY = "897728"; // Current valid key
+        let validKeys = []; // Array to store keys from Picadillo.txt
+
+        // Fetch keys from Picadillo.txt
+        async function loadKeys() {
+            try {
+                const response = await fetch('Picadillo.txt'); // Path to the file
+                const text = await response.text();
+                validKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
+            } catch (error) {
+                console.error('Error loading keys:', error);
+            }
+        }
 
         // Function to Validate Key
-        function validateKey() {
+        async function validateKey() {
             const key = document.getElementById("key").value;
             const messageElement = document.getElementById("message");
             const loader = document.getElementById("loader");
@@ -270,9 +281,14 @@
             loader.style.display = "block";
             messageElement.textContent = "";
 
-            // Simulate key validation (replace with actual validation logic)
+            // Ensure keys are loaded
+            if (validKeys.length === 0) {
+                await loadKeys();
+            }
+
+            // Simulate key validation
             setTimeout(() => {
-                if (key === CURRENT_KEY) {
+                if (validKeys.includes(key)) {
                     messageElement.textContent = "✅ Key validated!";
                     messageElement.classList.remove("error");
                     hashSection.style.display = "block";
