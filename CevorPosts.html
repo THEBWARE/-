@@ -3,333 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoriesMadeByaa Status</title>
+    <title>Cevor Posts</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Roboto', sans-serif;
+        /* General Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #1a1a1a, #2c3e50);
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: all 0.3s ease;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
         }
 
+        /* Container Styling */
         .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
             width: 100%;
-            max-width: 900px;
-            padding: 30px;
-            background: linear-gradient(135deg, #3498db, #8e44ad);
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
             animation: fadeIn 1s ease-in-out;
-            text-align: center;
-            box-sizing: border-box;
         }
 
-        h1 {
-            font-size: 3.5em;
-            color: #fff;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        /* Container Hover Effect */
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9);
         }
 
-        .status {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #2ecc71; /* Green for operational status */
-            text-transform: uppercase;
-        }
-
-        .update-time {
-            font-size: 1.2em;
-            color: #ecf0f1;
-            margin-bottom: 30px;
-        }
-
-        .content {
-            font-size: 1.1em;
-            color: #fff;
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 1.6em;
-            color: #ecf0f1;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            color: #bdc3c7;
-            font-size: 1.1em;
-        }
-
-        ul li {
-            margin: 10px 0;
-        }
-
-        .highlight {
-            color: #16a085;
-            font-weight: bold;
-        }
-
-        .button {
-            padding: 15px 30px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            cursor: pointer;
-            opacity: 1;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            margin-top: 20px;
-            letter-spacing: 1px;
-        }
-
-        .button:hover {
-            background-color: #27ae60;
-        }
-
-        .footer {
-            font-size: 1em;
-            color: #ecf0f1;
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        .important {
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .timer {
-            font-size: 1.4em;
-            color: #2ecc71;
-            margin-top: 30px;
-            font-weight: bold;
-        }
-
-        .past-incidents {
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #34495e;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .incident-title {
-            font-size: 1.8em;
-            color: #ecf0f1;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        select {
-            padding: 12px;
-            font-size: 1.2em;
-            width: 250px;
-            border-radius: 5px;
-            background-color: #fff;
-            border: none;
-            color: #34495e;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        select:focus {
-            outline: none;
-            border: 2px solid #e74c3c;
-        }
-
-        /* Auto-Refresh Checkbox */
-        .auto-refresh-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .auto-refresh-wrapper label {
-            font-size: 1.2em;
-            color: #ecf0f1;
-            margin-right: 10px;
-        }
-
-        .auto-refresh-wrapper input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .auto-refresh-wrapper input[type="checkbox"]:checked {
-            background-color: #e74c3c;
-        }
-
-        .auto-refresh-wrapper input[type="checkbox"]:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
-        }
-
+        /* Fade-In Animation */
         @keyframes fadeIn {
-            0% {
+            from {
                 opacity: 0;
+                transform: translateY(-20px);
             }
-            100% {
+            to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* Animations */
-        .fadeInEffect {
-            animation: fadeIn 1s ease-in-out;
+        /* Heading Styling */
+        h2 {
+            color: #fff;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8);
+            animation: slideIn 1s ease-in-out;
+        }
+
+        /* Slide-In Animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Input Field Styling */
+        input {
+            padding: 18px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            font-size: 18px;
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        /* Input Focus Effect */
+        input:focus {
+            border-color: #ff6347;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 99, 71, 0.5);
+        }
+
+        /* Button Styling */
+        button {
+            padding: 18px 28px;
+            background-color: #ff6347;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #e55342;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 99, 71, 0.6);
+        }
+
+        /* Message Styling */
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #32CD32;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Error Message Styling */
+        #message.error {
+            color: #ff6347;
+        }
+
+        /* Guide Section Styling */
+        .guide {
+            margin-top: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+            font-size: 16px;
+            text-align: left;
+            color: #fff;
+        }
+
+        /* Guide Open State */
+        .guide.open {
+            max-height: 1000px; /* Adjust based on content */
+        }
+
+        /* Guide Heading */
+        .guide h3 {
+            color: #ff6347;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        /* Guide List */
+        .guide ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        /* Guide List Items */
+        .guide li {
+            margin-bottom: 8px;
+        }
+
+        /* Guide Links */
+        .guide a {
+            color: #ff6347;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        /* Guide Link Hover Effect */
+        .guide a:hover {
+            color: #fff;
+        }
+
+        /* Discord Button Styling */
+        .discord-btn {
+            display: inline-block;
+            background-color: #7289da;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+        }
+
+        /* Discord Button Hover Effect */
+        .discord-btn:hover {
+            background-color: #5d72a1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(114, 137, 218, 0.6);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ff6347;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Warning Message Styling */
+        .warning {
+            color: #ff6347;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Most Recent Section Styling */
+        .recent {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: left;
+        }
+
+        .recent h3 {
+            color: #ff6347;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .recent p {
+            margin: 0;
+        }
+
+        /* Create Hash Section Styling */
+        .create-hash {
+            margin-top: 20px;
+        }
+
+        .create-hash input {
+            padding: 12px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .create-hash input:focus {
+            border-color: #ff6347;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 99, 71, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="container fadeInEffect">
-        <h1>StoriesMadeByaa Status</h1>
-        <div class="status">🟢 **Current Status: OPERATIONAL**</div>
-        <div class="update-time">📅 Last Updated: February 12, 2025, at 10:34 PM EST</div>
+    <div class="container">
+        <h2>Cevor Posts</h2>
+        <div id="keySection">
+            <input type="text" id="key" placeholder="Enter key...">
+            <button onclick="validateKey()">Validate Key</button>
+            <p class="warning">⚠️ Do not share your key. It is your login credential.</p>
+        </div>
+        <div class="loader" id="loader"></div>
+        <p id="message"></p>
 
-        <div class="content">
-            <div class="section-title">✅ Everything is Working</div>
-            <p><strong>🔍 Summary:</strong> All systems are functioning normally. The partial outage earlier today has been resolved, and all features, including buttons, are now fully operational.</p>
-            <p><strong>📢 Detailed Update:</strong> Our team identified and fixed the issue causing the partial outage. The problem was related to a temporary routing error, which has now been corrected. We have also implemented additional monitoring to prevent similar issues in the future.</p>
+        <!-- Hash Input (Hidden by Default) -->
+        <div id="hashSection" style="display: none;">
+            <input type="text" id="hash" placeholder="Enter hash...">
+            <button onclick="performAction()">Submit</button>
+            <button onclick="signOut()" style="background-color: #555; margin-left: 10px;">Sign Out</button>
         </div>
 
-        <div class="content">
-            <div class="section-title">📢 Next Steps</div>
-            <p>We appreciate your patience and understanding during the outage. Here’s what you can expect:</p>
-            <ul>
-                <li>✅ Continued monitoring of system performance.</li>
-                <li>✅ Regular updates to improve platform stability.</li>
-                <li>✅ Immediate notifications for any future incidents.</li>
+        <!-- Most Recent Section -->
+        <div id="recentSection" class="recent" style="display: none;">
+            <h3>Most Recent:</h3>
+            <p id="mostRecent"></p>
+        </div>
+
+        <!-- Create Hash Section -->
+        <div id="createHashSection" class="create-hash" style="display: none;">
+            <input type="text" id="newHash" placeholder="Enter new hash...">
+            <input type="text" id="newHashUrl" placeholder="Enter URL for the hash...">
+            <button onclick="createHash()">Create Hash</button>
+        </div>
+
+        <!-- Guide Section -->
+        <div id="guide" class="guide">
+            <h3>Available Hashes:</h3>
+            <ul id="hashList">
+                <!-- Hashes will be dynamically added here -->
             </ul>
         </div>
 
-        <div class="footer">
-            <p>Thank you for your support and understanding!</p>
-            <p>– StoriesMadeByaa Tech Team</p>
-        </div>
-
-        <a href="#" class="button" onclick="window.location.reload();">Check for Updates</a>
-
-        <div class="auto-refresh-wrapper">
-            <label for="autoRefreshToggle">Enable Auto-Refresh</label>
-            <input type="checkbox" id="autoRefreshToggle" onchange="toggleAutoRefresh()">
-        </div>
-
-        <div class="timer" id="countdownTimer">Refreshing in: 30s</div>
-
-        <!-- Past Incidents Section -->
-        <div class="past-incidents">
-            <div class="incident-title">📉 Past Incidents</div>
-            <label for="incidentSelect">Select a Past Incident:</label>
-            <select id="incidentSelect" onchange="displayIncidentDetails()">
-                <option value="default">Select an incident...</option>
-                <option value="feb12_851pm">February 12, 2025, 8:51 PM EST</option>
-                <option value="feb12_327pm">February 12, 2025, 3:27 PM EST</option>
-                <option value="dec24jan29">December 24, 2024 - January 29, 2025</option>
-            </select>
-
-            <div id="incidentDetails" style="margin-top: 20px;">
-                <!-- Details of the selected incident will appear here -->
-            </div>
-        </div>
+        <!-- Discord Button -->
+        <a href="https://discord.gg/HCbg4VDE" class="discord-btn">Join Our Discord</a>
     </div>
 
     <script>
-        let countdown = 30;
-        let autoRefreshEnabled = localStorage.getItem('autoRefreshEnabled') === 'true';
-        const timerElement = document.getElementById('countdownTimer');
-        const autoRefreshCheckbox = document.getElementById('autoRefreshToggle');
+        let validKeys = []; // Array to store keys from Picadillo.txt
+        let hashMap = {
+            "Y7TiVy1EWRWeOgJBOForpEN5r": {
+                message: "✅ Valid hash! Redirecting to GitHub download...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua"
+            },
+            "dgr": {
+                message: "✅ Valid hash! Redirecting to External download...",
+                url: "https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14"
+            },
+            "crv": {
+                message: "✅ Valid hash! Redirecting to Roblox download...",
+                url: "https://www.roblox.com/download/client?os=win"
+            },
+            "xenoexec": {
+                message: "✅ Valid hash! Redirecting to XenoExec release...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec"
+            },
+            "UaOUqMM1Sth1PQL7jQNEd2zZz": {
+                message: "✅ Valid hash! Redirecting to Cloudy Bootstrap installer...",
+                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe"
+            },
+            "QEyO6ISIrbFfVoCVUP75ZvhTP": {
+                message: "✅ Valid hash! Redirecting to Pastebin script...",
+                url: "https://pastebin.com/raw/9eFMh4rK"
+            },
+            "v5211s": {
+                message: "✅ Valid hash! Redirecting to Jailbreak script...",
+                url: "https://www.rblxscripts.net/roblox-script-jailbreak-project-auto-auto-rob"
+            },
+            "cleverifiyme": {
+                message: "✅ Valid hash! Redirecting to Clever.com...",
+                url: "https://clever.com/"
+            },
+            "CB": {
+                message: "✅ Valid hash! Redirecting to CevorBootstrapper.bat download...",
+                url: "https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg"
+            }
+        };
 
-        // Set checkbox state based on saved value
-        autoRefreshCheckbox.checked = autoRefreshEnabled;
-
-        function updateTimer() {
-            if (autoRefreshEnabled && countdown > 0) {
-                countdown--;
-                timerElement.textContent = `Refreshing in: ${countdown}s`;
-            } else if (autoRefreshEnabled && countdown === 0) {
-                location.reload();
+        // Fetch keys from Picadillo.txt
+        async function loadKeys() {
+            try {
+                const response = await fetch('Picadillo.txt'); // Path to the file
+                const text = await response.text();
+                validKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
+            } catch (error) {
+                console.error('Error loading keys:', error);
             }
         }
 
-        function toggleAutoRefresh() {
-            autoRefreshEnabled = autoRefreshCheckbox.checked;
-            localStorage.setItem('autoRefreshEnabled', autoRefreshEnabled);
-            countdown = 30;  // Reset countdown when auto-refresh is enabled
+        // Function to Validate Key
+        async function validateKey() {
+            const key = document.getElementById("key").value;
+            const messageElement = document.getElementById("message");
+            const loader = document.getElementById("loader");
+            const keySection = document.getElementById("keySection");
+            const hashSection = document.getElementById("hashSection");
+            const recentSection = document.getElementById("recentSection");
+            const createHashSection = document.getElementById("createHashSection");
+
+            // Show loader
+            loader.style.display = "block";
+            messageElement.textContent = "";
+
+            // Ensure keys are loaded
+            if (validKeys.length === 0) {
+                await loadKeys();
+            }
+
+            // Simulate key validation
+            setTimeout(() => {
+                if (validKeys.includes(key)) {
+                    messageElement.textContent = "✅ Key validated!";
+                    messageElement.classList.remove("error");
+                    keySection.style.display = "none"; // Hide key input section
+                    hashSection.style.display = "block"; // Show hash input section
+                    recentSection.style.display = "block"; // Show most recent section
+                    createHashSection.style.display = "block"; // Show create hash section
+                    localStorage.setItem("cevorKey", key); // Store key in localStorage
+
+                    // Load key-specific data
+                    loadKeySpecificData(key);
+                } else {
+                    messageElement.textContent = "❌ Invalid key!";
+                    messageElement.classList.add("error");
+                }
+                loader.style.display = "none";
+            }, 1000); // Simulate 1-second delay
         }
 
-        function displayIncidentDetails() {
-            const incidentSelect = document.getElementById('incidentSelect');
-            const incidentDetails = document.getElementById('incidentDetails');
-            const selectedIncident = incidentSelect.value;
+        // Function to Load Key-Specific Data
+        function loadKeySpecificData(key) {
+            const mostRecentElement = document.getElementById("mostRecent");
+            const hashListElement = document.getElementById("hashList");
 
-            if (selectedIncident === 'feb12_851pm') {
-                incidentDetails.innerHTML = `
-                    <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 8:51 PM EST, a partial outage occurred due to a temporary routing error. Some features, including buttons, were not functioning properly.</p>
-                    <ul>
-                        <li><strong>🚀 Cause:</strong> A routing error caused by a recent system update.</li>
-                        <li><strong>🛠️ Resolution:</strong> The issue was resolved by rolling back the update and implementing a fix.</li>
-                        <li><strong>⏱️ Duration:</strong> 1 hour and 43 minutes.</li>
-                    </ul>
-                    <p><strong>🔧 Recovery Efforts:</strong></p>
-                    <ul>
-                        <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Rolled back the faulty update – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Implemented a permanent fix – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
-                    </ul>
-                `;
-            } else if (selectedIncident === 'feb12_327pm') {
-                incidentDetails.innerHTML = `
-                    <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 3:27 PM EST, the website failed to load due to a critical bug.</p>
-                    <ul>
-                        <li><strong>🚀 Excessive Traffic Load</strong> – The system experienced an overload of requests, exacerbating the issue.</li>
-                        <li><strong>💾 Code Error</strong> – A coding error caused the website to fail to load.</li>
-                        <li><strong>🛠️ System Failure</strong> – An internal system failure prevented the website from functioning.</li>
-                    </ul>
-                    <p><strong>🔧 Recovery Efforts:</strong></p>
-                    <ul>
-                        <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Corrected the routing logic – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Monitoring system performance – <span class="highlight">COMPLETED</span></li>
-                        <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
-                    </ul>
-                `;
-            } else if (selectedIncident === 'dec24jan29') {
-                incidentDetails.innerHTML = `
-                    <p><strong>🔍 Incident Summary:</strong> From December 24, 2024, to January 29, 2025, a massive traffic overload and a routing issue caused the platform to redirect all users to Roblox. This was resolved after a thorough investigation and correction of the underlying issues.</p>
-                    <ul>
-                        <li><strong>⚡ Issue Duration:</strong> 36 Days</li>
-                        <li><strong>🛠️ Recovery Status:</strong> Completed</li>
-                        <li><strong>🔧 Steps Taken:</strong> Traffic optimization and routing logic correction.</li>
-                    </ul>
-                `;
+            // Load most recent action for the key
+            const mostRecentAction = localStorage.getItem(`mostRecent_${key}`);
+            if (mostRecentAction) {
+                mostRecentElement.textContent = mostRecentAction;
+            }
+
+            // Load custom hashes for the key
+            const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+            updateGuideList(customHashes);
+        }
+
+        // Function to Perform Action Based on Hash
+        function performAction() {
+            const hash = document.getElementById("hash").value;
+            const messageElement = document.getElementById("message");
+            const guideElement = document.getElementById("guide");
+            const mostRecentElement = document.getElementById("mostRecent");
+            const key = localStorage.getItem("cevorKey");
+
+            if (hash.toLowerCase() === 'guide') {
+                messageElement.textContent = '';
+                guideElement.classList.toggle('open');
+            } else if (hashMap[hash]) {
+                messageElement.textContent = hashMap[hash].message;
+                mostRecentElement.textContent = `Last used: ${hash} - ${hashMap[hash].message}`;
+                localStorage.setItem(`mostRecent_${key}`, mostRecentElement.textContent); // Save most recent action for the key
+                window.location.href = hashMap[hash].url;
+                guideElement.classList.remove('open');
             } else {
-                incidentDetails.innerHTML = '';
+                // Check custom hashes for the key
+                const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+                if (customHashes[hash]) {
+                    messageElement.textContent = customHashes[hash].message;
+                    mostRecentElement.textContent = `Last used: ${hash} - ${customHashes[hash].message}`;
+                    localStorage.setItem(`mostRecent_${key}`, mostRecentElement.textContent); // Save most recent action for the key
+                    window.location.href = customHashes[hash].url;
+                    guideElement.classList.remove('open');
+                } else {
+                    messageElement.textContent = "❌ Invalid hash!";
+                    messageElement.classList.add("error");
+                    guideElement.classList.remove('open');
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                        messageElement.classList.remove("error");
+                    }, 3000); // Clear error message after 3 seconds
+                }
             }
         }
 
-        setInterval(updateTimer, 1000); // Update timer every second
+        // Function to Create Hash
+        function createHash() {
+            const newHash = document.getElementById("newHash").value;
+            const newHashUrl = document.getElementById("newHashUrl").value;
+            const messageElement = document.getElementById("message");
+            const key = localStorage.getItem("cevorKey");
+
+            if (newHash && newHashUrl) {
+                const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+                customHashes[newHash] = {
+                    message: `✅ Valid hash! Redirecting to ${newHashUrl}...`,
+                    url: newHashUrl
+                };
+                localStorage.setItem(`customHashes_${key}`, JSON.stringify(customHashes)); // Save custom hash for the key
+                updateGuideList(customHashes);
+                messageElement.textContent = "✅ Hash created successfully!";
+                messageElement.classList.remove("error");
+            } else {
+                messageElement.textContent = "❌ Please fill in both fields!";
+                messageElement.classList.add("error");
+            }
+        }
+
+        // Function to Update Guide List
+        function updateGuideList(customHashes = {}) {
+            const hashList = document.getElementById("hashList");
+            hashList.innerHTML = ''; // Clear existing list
+
+            // Add global hashes
+            for (const [hash, data] of Object.entries(hashMap)) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                hashList.appendChild(listItem);
+            }
+
+            // Add custom hashes
+            for (const [hash, data] of Object.entries(customHashes)) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                hashList.appendChild(listItem);
+            }
+        }
+
+        // Function to Sign Out
+        function signOut() {
+            const key = localStorage.getItem("cevorKey");
+            localStorage.removeItem("cevorKey"); // Remove stored key
+            localStorage.removeItem(`mostRecent_${key}`); // Remove most recent hash for the key
+            document.getElementById("keySection").style.display = "block"; // Show key input section
+            document.getElementById("hashSection").style.display = "none"; // Hide hash input section
+            document.getElementById("recentSection").style.display = "none"; // Hide most recent section
+            document.getElementById("createHashSection").style.display = "none"; // Hide create hash section
+            document.getElementById("message").textContent = ""; // Clear any messages
+        }
+
+        // Check if the user is already signed in
+        window.onload = function () {
+            const storedKey = localStorage.getItem("cevorKey");
+
+            if (storedKey) {
+                document.getElementById("keySection").style.display = "none"; // Hide key input section
+                document.getElementById("hashSection").style.display = "block"; // Show hash input section
+                document.getElementById("recentSection").style.display = "block"; // Show most recent section
+                document.getElementById("createHashSection").style.display = "block"; // Show create hash section
+                loadKeySpecificData(storedKey); // Load key-specific data
+            }
+
+            updateGuideList(); // Populate guide list on page load
+        };
     </script>
 </body>
 </html>
