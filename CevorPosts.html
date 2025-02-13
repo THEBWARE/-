@@ -220,6 +220,44 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Warning Message Styling */
+        .warning {
+            color: #ff6347;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Most Recent Section Styling */
+        .recent {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: left;
+        }
+
+        .recent h3 {
+            color: #ff6347;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .recent p {
+            margin: 0;
+        }
+
+        /* Save Preferences Section */
+        .save-preferences {
+            margin-top: 20px;
+        }
+
+        .save-preferences button {
+            background-color: #7289da;
+        }
+
+        .save-preferences button:hover {
+            background-color: #5d72a1;
+        }
     </style>
 </head>
 <body>
@@ -228,6 +266,7 @@
         <div id="keySection">
             <input type="text" id="key" placeholder="Enter key...">
             <button onclick="validateKey()">Validate Key</button>
+            <p class="warning">⚠️ Do not share your key. It is your login credential.</p>
         </div>
         <div class="loader" id="loader"></div>
         <p id="message"></p>
@@ -237,6 +276,17 @@
             <input type="text" id="hash" placeholder="Enter hash...">
             <button onclick="performAction()">Submit</button>
             <button onclick="signOut()" style="background-color: #555; margin-left: 10px;">Sign Out</button>
+        </div>
+
+        <!-- Most Recent Section -->
+        <div id="recentSection" class="recent" style="display: none;">
+            <h3>Most Recent:</h3>
+            <p id="mostRecent"></p>
+        </div>
+
+        <!-- Save Preferences Section -->
+        <div id="savePreferences" class="save-preferences" style="display: none;">
+            <button onclick="savePreferences()">Save Preferences</button>
         </div>
 
         <!-- Guide Section -->
@@ -280,6 +330,8 @@
             const loader = document.getElementById("loader");
             const keySection = document.getElementById("keySection");
             const hashSection = document.getElementById("hashSection");
+            const recentSection = document.getElementById("recentSection");
+            const savePreferences = document.getElementById("savePreferences");
 
             // Show loader
             loader.style.display = "block";
@@ -297,6 +349,8 @@
                     messageElement.classList.remove("error");
                     keySection.style.display = "none"; // Hide key input section
                     hashSection.style.display = "block"; // Show hash input section
+                    recentSection.style.display = "block"; // Show most recent section
+                    savePreferences.style.display = "block"; // Show save preferences section
                     localStorage.setItem("cevorKey", key); // Store key in localStorage
                 } else {
                     messageElement.textContent = "❌ Invalid key!";
@@ -311,12 +365,15 @@
             const hash = document.getElementById("hash").value;
             const messageElement = document.getElementById("message");
             const guideElement = document.getElementById("guide");
+            const mostRecentElement = document.getElementById("mostRecent");
 
             if (hash.toLowerCase() === 'guide') {
                 messageElement.textContent = '';
                 guideElement.classList.toggle('open');
             } else if (hashMap[hash]) {
                 messageElement.textContent = hashMap[hash].message;
+                mostRecentElement.textContent = `Last used: ${hash} - ${hashMap[hash].message}`;
+                localStorage.setItem("mostRecentHash", mostRecentElement.textContent); // Save most recent action
                 window.location.href = hashMap[hash].url;
                 guideElement.classList.remove('open');
             } else {
@@ -333,9 +390,23 @@
         // Function to Sign Out
         function signOut() {
             localStorage.removeItem("cevorKey"); // Remove stored key
+            localStorage.removeItem("mostRecentHash"); // Remove most recent hash
             document.getElementById("keySection").style.display = "block"; // Show key input section
             document.getElementById("hashSection").style.display = "none"; // Hide hash input section
+            document.getElementById("recentSection").style.display = "none"; // Hide most recent section
+            document.getElementById("savePreferences").style.display = "none"; // Hide save preferences section
             document.getElementById("message").textContent = ""; // Clear any messages
+        }
+
+        // Function to Save Preferences
+        function savePreferences() {
+            const mostRecentHash = localStorage.getItem("mostRecentHash");
+            if (mostRecentHash) {
+                localStorage.setItem("savedPreferences", mostRecentHash); // Save preferences
+                alert("Preferences saved successfully!");
+            } else {
+                alert("No recent actions to save.");
+            }
         }
 
         // Hash Map for Valid Hashes
@@ -381,9 +452,17 @@
         // Check if the user is already signed in
         window.onload = function () {
             const storedKey = localStorage.getItem("cevorKey");
+            const mostRecentHash = localStorage.getItem("mostRecentHash");
+
             if (storedKey) {
                 document.getElementById("keySection").style.display = "none"; // Hide key input section
                 document.getElementById("hashSection").style.display = "block"; // Show hash input section
+                document.getElementById("recentSection").style.display = "block"; // Show most recent section
+                document.getElementById("savePreferences").style.display = "block"; // Show save preferences section
+            }
+
+            if (mostRecentHash) {
+                document.getElementById("mostRecent").textContent = mostRecentHash; // Display most recent action
             }
         };
     </script>
