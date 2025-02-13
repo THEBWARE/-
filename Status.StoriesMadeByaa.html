@@ -44,7 +44,7 @@
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #2ecc71; /* Green for operational status */
+            color: #f1c40f; /* Yellow for partial outage */
             text-transform: uppercase;
         }
 
@@ -92,7 +92,8 @@
             border: none;
             border-radius: 5px;
             font-size: 1.2em;
-            cursor: pointer;
+            cursor: not-allowed; /* Indicate buttons are not working */
+            opacity: 0.5; /* Make buttons look disabled */
             transition: all 0.3s ease;
             text-transform: uppercase;
             margin-top: 20px;
@@ -203,17 +204,17 @@
 <body>
     <div class="container fadeInEffect">
         <h1>StoriesMadeByaa Status</h1>
-        <div class="status">🟢 **Current Status: OPERATIONAL**</div>
-        <div class="update-time">📅 Last Updated: February 12, 2025, at 4:51 PM EST</div>
+        <div class="status">🟡 **Current Status: PARTIAL OUTAGE**</div>
+        <div class="update-time">📅 Last Updated: February 12, 2025, at 8:51 PM EST</div>
 
         <div class="content">
-            <div class="section-title">✅ Service Restored</div>
-            <p><strong>🔍 Summary:</strong> The issue has been resolved, and the service is now fully operational.</p>
+            <div class="section-title">⚠️ Partial Outage</div>
+            <p><strong>🔍 Summary:</strong> Some features, including buttons, are currently not working. Our team is actively investigating the issue.</p>
         </div>
 
         <div class="content">
             <div class="section-title">📢 Next Steps</div>
-            <p>We sincerely apologize for the inconvenience caused. We're actively working to prevent such incidents in the future.</p>
+            <p>We apologize for the inconvenience. Our team is working to resolve the issue as quickly as possible.</p>
             <div class="important">What you can do:</div>
             <ul>
                 <li>✅ Refresh the page periodically for updates.</li>
