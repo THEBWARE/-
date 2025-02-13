@@ -44,7 +44,7 @@
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #e74c3c; /* Red for outage status */
+            color: #2ecc71; /* Green for operational status */
             text-transform: uppercase;
         }
 
@@ -204,27 +204,27 @@
 <body>
     <div class="container fadeInEffect">
         <h1>StoriesMadeByaa Status</h1>
-        <div class="status">🔴 **Current Status: FULL OUTAGE**</div>
-        <div class="update-time">📅 Last Updated: February 13, 2025, at 6:18 PM EST</div>
+        <div class="status">🟢 **Current Status: OPERATIONAL**</div>
+        <div class="update-time">📅 Last Updated: February 13, 2025, at 6:22 PM EST</div>
 
         <div class="content">
-            <div class="section-title">❌ Domain Not Found</div>
-            <p><strong>🔍 Summary:</strong> The domain is currently unavailable, resulting in a "Page not found" error. Our team is actively investigating the issue.</p>
-            <p><strong>📢 Detailed Update:</strong> We are experiencing a full outage due to a domain configuration issue. Users are unable to access the site, and our team is working with our domain provider to resolve the issue as quickly as possible.</p>
+            <div class="section-title">✅ Everything is Working</div>
+            <p><strong>🔍 Summary:</strong> All systems are functioning normally. The brief outage earlier today has been resolved, and all features are now fully operational.</p>
+            <p><strong>📢 Detailed Update:</strong> Our team identified and fixed the issue causing the brief outage. The problem was related to a temporary domain configuration error, which has now been corrected. We have also implemented additional monitoring to prevent similar issues in the future.</p>
         </div>
 
         <div class="content">
             <div class="section-title">📢 Next Steps</div>
-            <p>We apologize for the inconvenience. Here’s what we’re doing to resolve the issue:</p>
+            <p>We appreciate your patience and understanding during the outage. Here’s what you can expect:</p>
             <ul>
-                <li>✅ Investigating the domain configuration issue.</li>
-                <li>✅ Coordinating with our domain provider for a resolution.</li>
-                <li>✅ Providing updates as soon as more information is available.</li>
+                <li>✅ Continued monitoring of system performance.</li>
+                <li>✅ Regular updates to improve platform stability.</li>
+                <li>✅ Immediate notifications for any future incidents.</li>
             </ul>
         </div>
 
         <div class="footer">
-            <p>Thank you for your patience and understanding!</p>
+            <p>Thank you for your support and understanding!</p>
             <p>– StoriesMadeByaa Tech Team</p>
         </div>
 
@@ -243,6 +243,7 @@
             <label for="incidentSelect">Select a Past Incident:</label>
             <select id="incidentSelect" onchange="displayIncidentDetails()">
                 <option value="default">Select an incident...</option>
+                <option value="feb13_618pm">February 13, 2025, 6:18 PM EST</option>
                 <option value="feb12_851pm">February 12, 2025, 8:51 PM EST</option>
                 <option value="feb12_327pm">February 12, 2025, 3:27 PM EST</option>
                 <option value="dec24jan29">December 24, 2024 - January 29, 2025</option>
@@ -283,7 +284,22 @@
             const incidentDetails = document.getElementById('incidentDetails');
             const selectedIncident = incidentSelect.value;
 
-            if (selectedIncident === 'feb12_851pm') {
+            if (selectedIncident === 'feb13_618pm') {
+                incidentDetails.innerHTML = `
+                    <p><strong>🔍 Incident Summary:</strong> On February 13, 2025, at 6:18 PM EST, a brief outage occurred due to a temporary domain configuration error. Users experienced a "Page not found" error for approximately 4 minutes.</p>
+                    <ul>
+                        <li><strong>🚀 Cause:</strong> A temporary domain configuration issue.</li>
+                        <li><strong>🛠️ Resolution:</strong> The issue was resolved by correcting the domain configuration.</li>
+                        <li><strong>⏱️ Duration:</strong> 4 minutes.</li>
+                    </ul>
+                    <p><strong>🔧 Recovery Efforts:</strong></p>
+                    <ul>
+                        <li>✅ Identified root cause – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Corrected domain configuration – <span class="highlight">COMPLETED</span></li>
+                        <li>✅ Full recovery – <span class="highlight">COMPLETED</span></li>
+                    </ul>
+                `;
+            } else if (selectedIncident === 'feb12_851pm') {
                 incidentDetails.innerHTML = `
                     <p><strong>🔍 Incident Summary:</strong> On February 12, 2025, at 8:51 PM EST, a partial outage occurred due to a temporary routing error. Some features, including buttons, were not functioning properly.</p>
                     <ul>
