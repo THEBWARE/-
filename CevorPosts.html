@@ -246,17 +246,29 @@
             margin: 0;
         }
 
-        /* Save Preferences Section */
-        .save-preferences {
+        /* Create Hash Section Styling */
+        .create-hash {
             margin-top: 20px;
         }
 
-        .save-preferences button {
-            background-color: #7289da;
+        .create-hash input {
+            padding: 12px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: all 0.3s ease;
         }
 
-        .save-preferences button:hover {
-            background-color: #5d72a1;
+        .create-hash input:focus {
+            border-color: #ff6347;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 99, 71, 0.5);
         }
     </style>
 </head>
@@ -284,24 +296,18 @@
             <p id="mostRecent"></p>
         </div>
 
-        <!-- Save Preferences Section -->
-        <div id="savePreferences" class="save-preferences" style="display: none;">
-            <button onclick="savePreferences()">Save Preferences</button>
+        <!-- Create Hash Section -->
+        <div id="createHashSection" class="create-hash" style="display: none;">
+            <input type="text" id="newHash" placeholder="Enter new hash...">
+            <input type="text" id="newHashUrl" placeholder="Enter URL for the hash...">
+            <button onclick="createHash()">Create Hash</button>
         </div>
 
         <!-- Guide Section -->
         <div id="guide" class="guide">
             <h3>Available Hashes:</h3>
-            <ul>
-                <li><strong>Y7TiVy1EWRWeOgJBOForpEN5r</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua" target="_blank">GitHub Download</a></li>
-                <li><strong>dgr</strong>: <a href="https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14" target="_blank">External Download</a></li>
-                <li><strong>crv</strong>: <a href="https://www.roblox.com/download/client?os=win" target="_blank">Roblox Download</a></li>
-                <li><strong>xenoexec</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec" target="_blank">XenoExec Release</a></li>
-                <li><strong>UaOUqMM1Sth1PQL7jQNEd2zZz</strong>: <a href="https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe" target="_blank">Cloudy Bootstrap installer</a></li>
-                <li><strong>QEyO6ISIrbFfVoCVUP75ZvhTP</strong>: <a href="https://pastebin.com/raw/9eFMh4rK" target="_blank">Pastebin Script</a></li>
-                <li><strong>v5211s</strong>: <a href="https://www.rblxscripts.net/roblox-script-jailbreak-project-auto-auto-rob" target="_blank">Jailbreak Script</a></li>
-                <li><strong>cleverifiyme</strong>: <a href="https://clever.com/" target="_blank">Clever.com</a></li>
-                <li><strong>CB</strong>: <a href="https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg" target="_blank">CevorBootstrapper.bat Download</a></li>
+            <ul id="hashList">
+                <!-- Hashes will be dynamically added here -->
             </ul>
         </div>
 
@@ -311,106 +317,7 @@
 
     <script>
         let validKeys = []; // Array to store keys from Picadillo.txt
-
-        // Fetch keys from Picadillo.txt
-        async function loadKeys() {
-            try {
-                const response = await fetch('Picadillo.txt'); // Path to the file
-                const text = await response.text();
-                validKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
-            } catch (error) {
-                console.error('Error loading keys:', error);
-            }
-        }
-
-        // Function to Validate Key
-        async function validateKey() {
-            const key = document.getElementById("key").value;
-            const messageElement = document.getElementById("message");
-            const loader = document.getElementById("loader");
-            const keySection = document.getElementById("keySection");
-            const hashSection = document.getElementById("hashSection");
-            const recentSection = document.getElementById("recentSection");
-            const savePreferences = document.getElementById("savePreferences");
-
-            // Show loader
-            loader.style.display = "block";
-            messageElement.textContent = "";
-
-            // Ensure keys are loaded
-            if (validKeys.length === 0) {
-                await loadKeys();
-            }
-
-            // Simulate key validation
-            setTimeout(() => {
-                if (validKeys.includes(key)) {
-                    messageElement.textContent = "✅ Key validated!";
-                    messageElement.classList.remove("error");
-                    keySection.style.display = "none"; // Hide key input section
-                    hashSection.style.display = "block"; // Show hash input section
-                    recentSection.style.display = "block"; // Show most recent section
-                    savePreferences.style.display = "block"; // Show save preferences section
-                    localStorage.setItem("cevorKey", key); // Store key in localStorage
-                } else {
-                    messageElement.textContent = "❌ Invalid key!";
-                    messageElement.classList.add("error");
-                }
-                loader.style.display = "none";
-            }, 1000); // Simulate 1-second delay
-        }
-
-        // Function to Perform Action Based on Hash
-        function performAction() {
-            const hash = document.getElementById("hash").value;
-            const messageElement = document.getElementById("message");
-            const guideElement = document.getElementById("guide");
-            const mostRecentElement = document.getElementById("mostRecent");
-
-            if (hash.toLowerCase() === 'guide') {
-                messageElement.textContent = '';
-                guideElement.classList.toggle('open');
-            } else if (hashMap[hash]) {
-                messageElement.textContent = hashMap[hash].message;
-                mostRecentElement.textContent = `Last used: ${hash} - ${hashMap[hash].message}`;
-                localStorage.setItem("mostRecentHash", mostRecentElement.textContent); // Save most recent action
-                window.location.href = hashMap[hash].url;
-                guideElement.classList.remove('open');
-            } else {
-                messageElement.textContent = "❌ Invalid hash!";
-                messageElement.classList.add("error");
-                guideElement.classList.remove('open');
-                setTimeout(() => {
-                    messageElement.textContent = '';
-                    messageElement.classList.remove("error");
-                }, 3000); // Clear error message after 3 seconds
-            }
-        }
-
-        // Function to Sign Out
-        function signOut() {
-            localStorage.removeItem("cevorKey"); // Remove stored key
-            localStorage.removeItem("mostRecentHash"); // Remove most recent hash
-            document.getElementById("keySection").style.display = "block"; // Show key input section
-            document.getElementById("hashSection").style.display = "none"; // Hide hash input section
-            document.getElementById("recentSection").style.display = "none"; // Hide most recent section
-            document.getElementById("savePreferences").style.display = "none"; // Hide save preferences section
-            document.getElementById("message").textContent = ""; // Clear any messages
-        }
-
-        // Function to Save Preferences
-        function savePreferences() {
-            const mostRecentHash = localStorage.getItem("mostRecentHash");
-            if (mostRecentHash) {
-                localStorage.setItem("savedPreferences", mostRecentHash); // Save preferences
-                alert("Preferences saved successfully!");
-            } else {
-                alert("No recent actions to save.");
-            }
-        }
-
-        // Hash Map for Valid Hashes
-        const hashMap = {
+        let hashMap = {
             "Y7TiVy1EWRWeOgJBOForpEN5r": {
                 message: "✅ Valid hash! Redirecting to GitHub download...",
                 url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua"
@@ -449,6 +356,123 @@
             }
         };
 
+        // Fetch keys from Picadillo.txt
+        async function loadKeys() {
+            try {
+                const response = await fetch('Picadillo.txt'); // Path to the file
+                const text = await response.text();
+                validKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
+            } catch (error) {
+                console.error('Error loading keys:', error);
+            }
+        }
+
+        // Function to Validate Key
+        async function validateKey() {
+            const key = document.getElementById("key").value;
+            const messageElement = document.getElementById("message");
+            const loader = document.getElementById("loader");
+            const keySection = document.getElementById("keySection");
+            const hashSection = document.getElementById("hashSection");
+            const recentSection = document.getElementById("recentSection");
+            const createHashSection = document.getElementById("createHashSection");
+
+            // Show loader
+            loader.style.display = "block";
+            messageElement.textContent = "";
+
+            // Ensure keys are loaded
+            if (validKeys.length === 0) {
+                await loadKeys();
+            }
+
+            // Simulate key validation
+            setTimeout(() => {
+                if (validKeys.includes(key)) {
+                    messageElement.textContent = "✅ Key validated!";
+                    messageElement.classList.remove("error");
+                    keySection.style.display = "none"; // Hide key input section
+                    hashSection.style.display = "block"; // Show hash input section
+                    recentSection.style.display = "block"; // Show most recent section
+                    createHashSection.style.display = "block"; // Show create hash section
+                    localStorage.setItem("cevorKey", key); // Store key in localStorage
+                } else {
+                    messageElement.textContent = "❌ Invalid key!";
+                    messageElement.classList.add("error");
+                }
+                loader.style.display = "none";
+            }, 1000); // Simulate 1-second delay
+        }
+
+        // Function to Perform Action Based on Hash
+        function performAction() {
+            const hash = document.getElementById("hash").value;
+            const messageElement = document.getElementById("message");
+            const guideElement = document.getElementById("guide");
+            const mostRecentElement = document.getElementById("mostRecent");
+
+            if (hash.toLowerCase() === 'guide') {
+                messageElement.textContent = '';
+                guideElement.classList.toggle('open');
+            } else if (hashMap[hash]) {
+                messageElement.textContent = hashMap[hash].message;
+                mostRecentElement.textContent = `Last used: ${hash} - ${hashMap[hash].message}`;
+                localStorage.setItem("mostRecentHash", mostRecentElement.textContent); // Save most recent action
+                window.location.href = hashMap[hash].url;
+                guideElement.classList.remove('open');
+            } else {
+                messageElement.textContent = "❌ Invalid hash!";
+                messageElement.classList.add("error");
+                guideElement.classList.remove('open');
+                setTimeout(() => {
+                    messageElement.textContent = '';
+                    messageElement.classList.remove("error");
+                }, 3000); // Clear error message after 3 seconds
+            }
+        }
+
+        // Function to Create Hash
+        function createHash() {
+            const newHash = document.getElementById("newHash").value;
+            const newHashUrl = document.getElementById("newHashUrl").value;
+            const messageElement = document.getElementById("message");
+
+            if (newHash && newHashUrl) {
+                hashMap[newHash] = {
+                    message: `✅ Valid hash! Redirecting to ${newHashUrl}...`,
+                    url: newHashUrl
+                };
+                updateGuideList();
+                messageElement.textContent = "✅ Hash created successfully!";
+                messageElement.classList.remove("error");
+            } else {
+                messageElement.textContent = "❌ Please fill in both fields!";
+                messageElement.classList.add("error");
+            }
+        }
+
+        // Function to Update Guide List
+        function updateGuideList() {
+            const hashList = document.getElementById("hashList");
+            hashList.innerHTML = ''; // Clear existing list
+            for (const [hash, data] of Object.entries(hashMap)) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                hashList.appendChild(listItem);
+            }
+        }
+
+        // Function to Sign Out
+        function signOut() {
+            localStorage.removeItem("cevorKey"); // Remove stored key
+            localStorage.removeItem("mostRecentHash"); // Remove most recent hash
+            document.getElementById("keySection").style.display = "block"; // Show key input section
+            document.getElementById("hashSection").style.display = "none"; // Hide hash input section
+            document.getElementById("recentSection").style.display = "none"; // Hide most recent section
+            document.getElementById("createHashSection").style.display = "none"; // Hide create hash section
+            document.getElementById("message").textContent = ""; // Clear any messages
+        }
+
         // Check if the user is already signed in
         window.onload = function () {
             const storedKey = localStorage.getItem("cevorKey");
@@ -458,12 +482,14 @@
                 document.getElementById("keySection").style.display = "none"; // Hide key input section
                 document.getElementById("hashSection").style.display = "block"; // Show hash input section
                 document.getElementById("recentSection").style.display = "block"; // Show most recent section
-                document.getElementById("savePreferences").style.display = "block"; // Show save preferences section
+                document.getElementById("createHashSection").style.display = "block"; // Show create hash section
             }
 
             if (mostRecentHash) {
                 document.getElementById("mostRecent").textContent = mostRecentHash; // Display most recent action
             }
+
+            updateGuideList(); // Populate guide list on page load
         };
     </script>
 </body>
