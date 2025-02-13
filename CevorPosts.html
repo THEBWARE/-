@@ -396,6 +396,9 @@
                     recentSection.style.display = "block"; // Show most recent section
                     createHashSection.style.display = "block"; // Show create hash section
                     localStorage.setItem("cevorKey", key); // Store key in localStorage
+
+                    // Load key-specific data
+                    loadKeySpecificData(key);
                 } else {
                     messageElement.textContent = "❌ Invalid key!";
                     messageElement.classList.add("error");
@@ -404,12 +407,29 @@
             }, 1000); // Simulate 1-second delay
         }
 
+        // Function to Load Key-Specific Data
+        function loadKeySpecificData(key) {
+            const mostRecentElement = document.getElementById("mostRecent");
+            const hashListElement = document.getElementById("hashList");
+
+            // Load most recent action for the key
+            const mostRecentAction = localStorage.getItem(`mostRecent_${key}`);
+            if (mostRecentAction) {
+                mostRecentElement.textContent = mostRecentAction;
+            }
+
+            // Load custom hashes for the key
+            const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+            updateGuideList(customHashes);
+        }
+
         // Function to Perform Action Based on Hash
         function performAction() {
             const hash = document.getElementById("hash").value;
             const messageElement = document.getElementById("message");
             const guideElement = document.getElementById("guide");
             const mostRecentElement = document.getElementById("mostRecent");
+            const key = localStorage.getItem("cevorKey");
 
             if (hash.toLowerCase() === 'guide') {
                 messageElement.textContent = '';
@@ -417,17 +437,27 @@
             } else if (hashMap[hash]) {
                 messageElement.textContent = hashMap[hash].message;
                 mostRecentElement.textContent = `Last used: ${hash} - ${hashMap[hash].message}`;
-                localStorage.setItem("mostRecentHash", mostRecentElement.textContent); // Save most recent action
+                localStorage.setItem(`mostRecent_${key}`, mostRecentElement.textContent); // Save most recent action for the key
                 window.location.href = hashMap[hash].url;
                 guideElement.classList.remove('open');
             } else {
-                messageElement.textContent = "❌ Invalid hash!";
-                messageElement.classList.add("error");
-                guideElement.classList.remove('open');
-                setTimeout(() => {
-                    messageElement.textContent = '';
-                    messageElement.classList.remove("error");
-                }, 3000); // Clear error message after 3 seconds
+                // Check custom hashes for the key
+                const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+                if (customHashes[hash]) {
+                    messageElement.textContent = customHashes[hash].message;
+                    mostRecentElement.textContent = `Last used: ${hash} - ${customHashes[hash].message}`;
+                    localStorage.setItem(`mostRecent_${key}`, mostRecentElement.textContent); // Save most recent action for the key
+                    window.location.href = customHashes[hash].url;
+                    guideElement.classList.remove('open');
+                } else {
+                    messageElement.textContent = "❌ Invalid hash!";
+                    messageElement.classList.add("error");
+                    guideElement.classList.remove('open');
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                        messageElement.classList.remove("error");
+                    }, 3000); // Clear error message after 3 seconds
+                }
             }
         }
 
@@ -436,13 +466,16 @@
             const newHash = document.getElementById("newHash").value;
             const newHashUrl = document.getElementById("newHashUrl").value;
             const messageElement = document.getElementById("message");
+            const key = localStorage.getItem("cevorKey");
 
             if (newHash && newHashUrl) {
-                hashMap[newHash] = {
+                const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
+                customHashes[newHash] = {
                     message: `✅ Valid hash! Redirecting to ${newHashUrl}...`,
                     url: newHashUrl
                 };
-                updateGuideList();
+                localStorage.setItem(`customHashes_${key}`, JSON.stringify(customHashes)); // Save custom hash for the key
+                updateGuideList(customHashes);
                 messageElement.textContent = "✅ Hash created successfully!";
                 messageElement.classList.remove("error");
             } else {
@@ -452,10 +485,19 @@
         }
 
         // Function to Update Guide List
-        function updateGuideList() {
+        function updateGuideList(customHashes = {}) {
             const hashList = document.getElementById("hashList");
             hashList.innerHTML = ''; // Clear existing list
+
+            // Add global hashes
             for (const [hash, data] of Object.entries(hashMap)) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                hashList.appendChild(listItem);
+            }
+
+            // Add custom hashes
+            for (const [hash, data] of Object.entries(customHashes)) {
                 const listItem = document.createElement("li");
                 listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
                 hashList.appendChild(listItem);
@@ -464,8 +506,9 @@
 
         // Function to Sign Out
         function signOut() {
+            const key = localStorage.getItem("cevorKey");
             localStorage.removeItem("cevorKey"); // Remove stored key
-            localStorage.removeItem("mostRecentHash"); // Remove most recent hash
+            localStorage.removeItem(`mostRecent_${key}`); // Remove most recent hash for the key
             document.getElementById("keySection").style.display = "block"; // Show key input section
             document.getElementById("hashSection").style.display = "none"; // Hide hash input section
             document.getElementById("recentSection").style.display = "none"; // Hide most recent section
@@ -476,17 +519,13 @@
         // Check if the user is already signed in
         window.onload = function () {
             const storedKey = localStorage.getItem("cevorKey");
-            const mostRecentHash = localStorage.getItem("mostRecentHash");
 
             if (storedKey) {
                 document.getElementById("keySection").style.display = "none"; // Hide key input section
                 document.getElementById("hashSection").style.display = "block"; // Show hash input section
                 document.getElementById("recentSection").style.display = "block"; // Show most recent section
                 document.getElementById("createHashSection").style.display = "block"; // Show create hash section
-            }
-
-            if (mostRecentHash) {
-                document.getElementById("mostRecent").textContent = mostRecentHash; // Display most recent action
+                loadKeySpecificData(storedKey); // Load key-specific data
             }
 
             updateGuideList(); // Populate guide list on page load
