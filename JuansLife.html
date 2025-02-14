@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Endless Quest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #ff6f61, #d5a6bd);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        .story-container {
+            max-width: 1200px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 60px;
+            border-radius: 25px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+            text-align: left;
+            animation: fadeIn 3s ease-in-out;
+            position: relative;
+            overflow-y: scroll;
+            max-height: 85vh;
+            color: #444;
+            font-size: 22px;
+            line-height: 1.8;
+            scroll-behavior: smooth;
+            display: none;
+        }
+        .story-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .story-container::-webkit-scrollbar-thumb {
+            background-color: #ff6600;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 72px;
+            font-weight: 700;
+            color: #ff6600;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        p {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            text-align: justify;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        p:hover {
+            transform: scale(1.03);
+            color: #ff6600;
+        }
+        .button {
+            margin-top: 30px;
+            padding: 20px 40px;
+            font-size: 26px;
+            color: white;
+            background: #ff6600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.4s ease, transform 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .button:hover {
+            background: #e65c00;
+            transform: scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .divider {
+            border-bottom: 2px solid #ff6600;
+            margin: 40px 0;
+        }
+        .input-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 60px;
+            border-radius: 25px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+        .input-container input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 2px solid #ff6600;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="input-container" class="input-container">
+        <h1>Welcome to Your Endless Quest</h1>
+        <p>Please enter your first name:</p>
+        <input type="text" id="first-name" placeholder="First Name" />
+        <p>Please enter your last name:</p>
+        <input type="text" id="last-name" placeholder="Last Name" />
+        <button class="button" onclick="startStory()">Start Story</button>
+    </div>
+
+    <div class="story-container" id="story-container">
+        <h1>Endless Quest</h1>
+        <p id="story-text"></p>
+        <div class="divider"></div>
+        <p>To verify your authorship, please enter the verification code:</p>
+        <input type="text" id="verification-code" placeholder="Enter Verification Code" />
+        <button class="button" onclick="verifyCode()">Verify</button>
+        <p id="verification-status"></p>
+        <button class="button" onclick="alert('Thanks for reading!')">Enjoyed the Story?</button>
+    </div>
+
+    <script>
+        let firstName;  // Declare a global variable to store first name
+
+        function startStory() {
+            firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+
+            // Personalize the story
+            const storyText = `
+                ${firstName} was born on a sunny day when it was also blazing hot. His mother, a delicate lovely lady, was embracing ${firstName} in her arms, looking at the sun that cast golden rays wherever it went.
+                <br><br>
+                ${firstName} was brought up in fun, laughter, and joy. He would play outdoors, pursuing butterflies around with his puppy, Pino.
+                <br><br>
+                His father, a hardworking nice gentleman, instilled in him a work ethic, honesty, and kindness. They lived a life that was brimming to the brim with joy.
+                <br><br>
+                Their home was cozy, with freshly baked bread in the air, and music softly wafting in the air. ${firstName}'s mother would sing when she was preparing food in their home.
+                <br><br>
+                ${firstName} would sit on their verandah every night, looking up towards the night sky, hearing tales of olden days.
+                <br><br>
+                ${firstName} was a high achiever in school. His schoolmates would remark on his capability of easily getting hard work done. His schoolmates envied his work ethic and his kindness.
+                <br><br>
+                He daydreamed of one day going to the rest of the world, looking at wonders he had read of in books. For now, though, he was content in his quiet, plain existence.
+                <br><br>
+                One day, ${firstName} was wandering in the woods when he stumbled over a worn-out old map. The ink was faded, it was old, yet it was promising in a manner of a friendly person.
+                <br><br>
+                The map was to treasure that was hidden in mountains deep. The more ${firstName} looked at it, the more a fire raged in his heart to take up the quest.
+                <br><br>
+                With a heart of curiosity and a soul of bravery, ${firstName} slung his pack, said goodbye to his family fondly, and set out on the open road.
+                <br><br>
+                Weeks merged to weeks again and to days again as ${firstName} rode over forests, forded rivers, and climbed mountains. He encountered many a soul of every kind.
+                <br><br>
+                Each of these he encountered on his way had a story or two to tell to tell and to give to ${firstName} in terms of advice.
+                <br><br>
+                There was challenge that came his way—storms that tried his mettle, ferocious creatures that put his life in peril, and discouragement that shook his nerve.
+                <br><br>
+                And in all of these, he never once lost heart. Every challenge just toughened his heart, and his heart was set on treasure that was his quest.
+                <br><br>
+                Months of wandering eventually brought ${firstName} to the mountain on which his treasure was said to be housed. He felt the weight of the past in the air, and the hush that was around him was heavy.
+                <br><br>
+                He set to work to dig with great patience, his trembling hand clawing at the ground in expectation. Hours passed, yet he would not be deterred. He was set in his course.
+                <br><br>
+                And then, just when the sun dipped below the horizon line, his spade hit something hard. His heart pounding in his chest, he dug aside soil to expose a stone chest.
+                <br><br>
+                All his force was employed in opening up the chest. He never even fantasized treasure in it in terms of gold but instead treasured something greater—the fulfillment of his lifelong dream.
+            `;
+
+            // Show the story and hide input container
+            document.getElementById('input-container').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+            document.getElementById('story-text').innerHTML = storyText;
+        }
+
+        function verifyCode() {
+            const enteredCode = document.getElementById('verification-code').value;
+            const verificationMessage = document.getElementById('verification-status');
+            const nameLower = firstName.toLowerCase();
+
+            // Check the verification code
+            if (enteredCode === '2014') {
+                verificationMessage.innerHTML = 'Verification successful!';
+            } else {
+                verificationMessage.innerHTML = 'Invalid code. Please try again.';
+            }
+        }
+    </script>
+</body>
+</html>
