@@ -10,25 +10,40 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757, #ff6b6b); /* Romantic gradient */
             color: #ecf0f1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            transition: all 0.3s ease;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            animation: bgGradient 10s infinite alternate;
+        }
+
+        @keyframes bgGradient {
+            0% {
+                background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            }
+            50% {
+                background: linear-gradient(135deg, #ff4757, #ff6b6b);
+            }
+            100% {
+                background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            }
         }
 
         .container {
             width: 100%;
             max-width: 900px;
             padding: 30px;
-            background: linear-gradient(135deg, #3498db, #8e44ad);
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
             border-radius: 15px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             animation: fadeIn 1s ease-in-out;
             text-align: center;
             box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+            margin: 50px auto;
+            backdrop-filter: blur(10px); /* Frosted glass effect */
         }
 
         h1 {
@@ -87,7 +102,7 @@
 
         .button {
             padding: 15px 30px;
-            background-color: #2ecc71;
+            background-color: #e74c3c;
             color: white;
             border: none;
             border-radius: 5px;
@@ -101,7 +116,7 @@
         }
 
         .button:hover {
-            background-color: #27ae60;
+            background-color: #c0392b;
         }
 
         .footer {
@@ -126,7 +141,7 @@
         .past-incidents {
             margin-top: 50px;
             padding: 20px;
-            background-color: #34495e;
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
@@ -195,22 +210,289 @@
             }
         }
 
-        /* Animations */
-        .fadeInEffect {
-            animation: fadeIn 1s ease-in-out;
+        /* Valentine's Day Decorations */
+        .heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 2em;
+            animation: float 5s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.2);
+            }
+        }
+
+        .heart:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .heart:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+
+        .heart:nth-child(3) {
+            bottom: 15%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        .heart:nth-child(4) {
+            bottom: 5%;
+            right: 5%;
+            animation-delay: 3s;
+        }
+
+        /* Giant Heart with Text */
+        .giant-heart {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10em;
+            color: #ff6b6b;
+            animation: pulse 2s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        .giant-heart::after {
+            content: "Happy Valentine's Day";
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.2em;
+            color: #fff;
+            white-space: nowrap;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff6b6b;
+            animation: confetti-fall 5s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10%) rotate(0deg);
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Glowing Hearts */
+        .glow-heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 3em;
+            animation: glow 2s infinite alternate ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 5px #ff6b6b);
+            }
+            100% {
+                filter: drop-shadow(0 0 20px #ff4757);
+            }
+        }
+
+        .glow-heart:nth-child(5) {
+            top: 30%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .glow-heart:nth-child(6) {
+            top: 40%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+
+        .glow-heart:nth-child(7) {
+            bottom: 30%;
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .glow-heart:nth-child(8) {
+            bottom: 20%;
+            right: 20%;
+            animation-delay: 3s;
+        }
+
+        /* Floating Balloons */
+        .balloon {
+            position: absolute;
+            font-size: 3em;
+            color: #ff6b6b;
+            animation: floatBalloon 8s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes floatBalloon {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(10deg);
+            }
+        }
+
+        .balloon:nth-child(9) {
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .balloon:nth-child(10) {
+            top: 20%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        /* Sparkling Stars */
+        .star {
+            position: absolute;
+            font-size: 1.5em;
+            color: #fff;
+            animation: twinkle 2s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .star:nth-child(11) {
+            top: 15%;
+            left: 25%;
+            animation-delay: 0s;
+        }
+
+        .star:nth-child(12) {
+            top: 25%;
+            right: 30%;
+            animation-delay: 1s;
+        }
+
+        /* Flying Cupids */
+        .cupid {
+            position: absolute;
+            font-size: 2em;
+            color: #fff;
+            animation: fly 10s infinite linear;
+            z-index: 1;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .cupid:nth-child(13) {
+            top: 40%;
+            animation-delay: 0s;
+        }
+
+        .cupid:nth-child(14) {
+            top: 60%;
+            animation-delay: 5s;
         }
     </style>
 </head>
 <body>
+    <!-- Valentine's Day Decorations -->
+    <div class="heart">❤️</div>
+    <div class="heart">💖</div>
+    <div class="heart">💕</div>
+    <div class="heart">💘</div>
+    <div class="giant-heart">❤️</div>
+
+    <!-- Glowing Hearts -->
+    <div class="glow-heart">❤️</div>
+    <div class="glow-heart">💖</div>
+    <div class="glow-heart">💕</div>
+    <div class="glow-heart">💘</div>
+
+    <!-- Floating Balloons -->
+    <div class="balloon">🎈</div>
+    <div class="balloon">🎈</div>
+
+    <!-- Sparkling Stars -->
+    <div class="star">⭐</div>
+    <div class="star">⭐</div>
+
+    <!-- Flying Cupids -->
+    <div class="cupid">👼</div>
+    <div class="cupid">👼</div>
+
+    <!-- Confetti -->
+    <div class="confetti">
+        <div class="confetti-piece" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="confetti-piece" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="confetti-piece" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="confetti-piece" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="confetti-piece" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="confetti-piece" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="confetti-piece" style="left: 70%; animation-delay: 6s;"></div>
+        <div class="confetti-piece" style="left: 80%; animation-delay: 7s;"></div>
+        <div class="confetti-piece" style="left: 90%; animation-delay: 8s;"></div>
+    </div>
+
     <div class="container fadeInEffect">
         <h1>StoriesMadeByaa Status</h1>
         <div class="status">🟢 **Current Status: OPERATIONAL**</div>
-        <div class="update-time">📅 Last Updated: February 13, 2025, at 6:22 PM EST</div>
+        <div class="update-time">📅 Last Updated: February 14, 2025, at 8:53 PM EST</div>
 
         <div class="content">
             <div class="section-title">✅ Everything is Working</div>
-            <p><strong>🔍 Summary:</strong> All systems are functioning normally. The brief outage earlier today has been resolved, and all features are now fully operational.</p>
-            <p><strong>📢 Detailed Update:</strong> Our team identified and fixed the issue causing the brief outage. The problem was related to a temporary domain configuration error, which has now been corrected. We have also implemented additional monitoring to prevent similar issues in the future.</p>
+            <p><strong>🔍 Summary:</strong> All systems are functioning normally. The brief outage yesterday has been resolved, and all features are now fully operational.</p>
+            <p><strong>📢 Detailed Update:</strong> On February 13, 2025, at 6:18 PM EST, a brief outage occurred due to a temporary domain configuration error. Users experienced a "Page not found" error for approximately 4 minutes. Our team quickly identified and resolved the issue, and additional monitoring has been implemented to prevent similar issues in the future.</p>
+            <p><strong>💌 Happy Valentine's Day!</strong> Wishing you a day filled with love and joy. Thank you for being a part of our community!</p>
         </div>
 
         <div class="content">
@@ -221,11 +503,13 @@
                 <li>✅ Regular updates to improve platform stability.</li>
                 <li>✅ Immediate notifications for any future incidents.</li>
             </ul>
+            <p><strong>💝 Valentine's Day Special:</strong> Celebrate love and connection with us today!</p>
         </div>
 
         <div class="footer">
             <p>Thank you for your support and understanding!</p>
             <p>– StoriesMadeByaa Tech Team</p>
+            <p>💖 Happy Valentine's Day! 💖</p>
         </div>
 
         <a href="#" class="button" onclick="window.location.reload();">Check for Updates</a>
