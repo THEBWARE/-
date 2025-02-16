@@ -1,201 +1,478 @@
---Used rayfield link is https://docs.sirius.menu/rayfield
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+-- Create Window
 local Window = Rayfield:CreateWindow({
-   Name = "Cevor MM2 V2",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Cevor MM2 V2",
+   Name = "Cevor MM2 V4",
+   Icon = 0,
+   LoadingTitle = "Cevor MM2 V4",
    LoadingSubtitle = "by ScripterBob",
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-
+   Theme = "Default",
    DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-
+   DisableBuildWarnings = false,
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "Cevor MM2 Hub"
+      FolderName = "CevorMM2Config",
+      FileName = "CevorMM2Config"
    },
-
    Discord = {
-      Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+      Enabled = true,
+      Invite = "noinvitelink",
+      RememberJoins = true
    },
-
-   KeySystem = true, -- Set this to true to use our key system
+   KeySystem = true,
    KeySettings = {
-      Title = "Cevor MM2 V2",
+      Title = "Cevor MM2 V4",
       Subtitle = "Key System",
-      Note = "Key Link is https://cevormm2key.carrd.co/", -- Use this to tell the user how to get a key
-      FileName = "true", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"https://pastebin.com/raw/06jeUSnL", "https://pastebin.com/raw/UEuXVrir"} -- List of keys that will be accepted by the system
+      Note = "Key Link is https://cevormm2key.carrd.co/",
+      FileName = "true",
+      SaveKey = true,
+      GrabKeyFromSite = true,
+      Key = {"https://pastebin.com/raw/06jeUSnL", "https://pastebin.com/raw/UEuXVrir"}
    }
 })
 
-local MainTab = Window:CreateTab("🏠 Main", nil) -- Create a main tab
-local Section = MainTab:CreateSection("Main") -- Create a section under the main tab
+-- Main Tab
+local MainTab = Window:CreateTab("🏠 Main", nil)
+local Section = MainTab:CreateSection("Main Features")
 
+-- Notify User
 Rayfield:Notify({
-   Title = "Loading Cevor MM2",
-   Content = "Loaded Succefully",
+   Title = "Loading Cevor MM2 V4",
+   Content = "Loaded Successfully",
    Duration = 6.5,
    Image = nil,
 })
 
--- Create the button in the main tab
+-- Config Management Dropdown
+local ConfigDropdown = MainTab:CreateDropdown({
+   Name = "Config Management",
+   Options = {"Default"},
+   CurrentOption = {"Default"},
+   MultipleOptions = false,
+   Flag = "ConfigDropdown",
+   Callback = function(Options)
+      Rayfield:LoadConfiguration(Options[1])
+   end,
+})
 
+-- Create New Config Button
+local CreateConfigButton = MainTab:CreateButton({
+   Name = "Create New Config",
+   Callback = function()
+      local configName = tostring(math.random(1, 10000))
+      table.insert(ConfigDropdown.Options, configName)
+      ConfigDropdown:Refresh(ConfigDropdown.Options)
+      Rayfield:SaveConfiguration(configName)
+      Rayfield:Notify({
+         Title = "Config Created",
+         Content = "New config created: " .. configName,
+         Duration = 6.5,
+         Image = nil,
+      })
+   end,
+})
+
+-- Delete Config Button
+local DeleteConfigButton = MainTab:CreateButton({
+   Name = "Delete Config",
+   Callback = function()
+      local selectedConfig = ConfigDropdown.CurrentOption[1]
+      if selectedConfig == "Default" then
+         Rayfield:Notify({
+            Title = "Error",
+            Content = "Cannot delete the default config.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
+      table.remove(ConfigDropdown.Options, table.find(ConfigDropdown.Options, selectedConfig))
+      ConfigDropdown:Refresh(ConfigDropdown.Options)
+      Rayfield:DeleteConfiguration(selectedConfig)
+      Rayfield:Notify({
+         Title = "Config Deleted",
+         Content = "Config deleted: " .. selectedConfig,
+         Duration = 6.5,
+         Image = nil,
+      })
+   end,
+})
+
+-- AutoLoad Config Toggle
+local AutoLoadConfigToggle = MainTab:CreateToggle({
+   Name = "AutoLoad Config",
+   CurrentValue = false,
+   Flag = "AutoLoadConfig",
+   Callback = function(Value)
+      if Value then
+         local selectedConfig = ConfigDropdown.CurrentOption[1]
+         Rayfield:SaveConfiguration("AutoLoadConfig", selectedConfig)
+         Rayfield:Notify({
+            Title = "AutoLoad Config",
+            Content = "Config set to auto-load: " .. selectedConfig,
+            Duration = 6.5,
+            Image = nil,
+         })
+      else
+         Rayfield:DeleteConfiguration("AutoLoadConfig")
+         Rayfield:Notify({
+            Title = "AutoLoad Config",
+            Content = "Auto-load config disabled.",
+            Duration = 6.5,
+            Image = nil,
+         })
+      end
+   end,
+})
+
+-- Load AutoLoad Config on Script Start
+local function loadAutoLoadConfig()
+   local autoLoadConfig = Rayfield:LoadConfiguration("AutoLoadConfig")
+   if autoLoadConfig then
+      Rayfield:LoadConfiguration(autoLoadConfig)
+      Rayfield:Notify({
+         Title = "AutoLoad Config",
+         Content = "Loaded auto-load config: " .. autoLoadConfig,
+         Duration = 6.5,
+         Image = nil,
+      })
+   end
+end
+
+loadAutoLoadConfig()
+
+-- Main Account Mode Toggle
+local MainAccountModeToggle = MainTab:CreateToggle({
+   Name = "Main Account Mode",
+   CurrentValue = false,
+   Flag = "MainAccountMode",
+   Callback = function(Value)
+      if Value then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "Risky features have been disabled to protect your account.",
+            Duration = 6.5,
+            Image = nil,
+         })
+      else
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "Risky features have been enabled.",
+            Duration = 6.5,
+            Image = nil,
+         })
+      end
+   end,
+})
+
+-- Unload Button
+local UnloadButton = MainTab:CreateButton({
+   Name = "Unload Script",
+   Callback = function()
+      Rayfield:Destroy()
+      for _, v in pairs(game.CoreGui:GetChildren()) do
+         if v.Name == "ScreenGui" then
+            v:Destroy()
+         end
+      end
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+      for _, connection in pairs(getconnections(game:GetService("RunService").Stepped)) do
+         connection:Disconnect()
+      end
+   end,
+})
+
+-- Kill All Button (Disabled in Main Account Mode)
 local KillAllButton = MainTab:CreateButton({
    Name = "Kill All",
    Callback = function()
-      -- Kill All script
-      local teleportedPlayers = {} -- Store players that have already been teleported to
-
+      if MainAccountModeToggle.CurrentValue then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
+      local teleportedPlayers = {}
       local function killAll()
          while true do
-            wait(2)  -- Wait for 2 seconds before teleporting
-
-            -- Get a list of all players
+            wait(2)
             local players = {}
             for _, player in pairs(game.Players:GetPlayers()) do
-                -- Make sure the player is not the local player and hasn't been teleported yet
                 if player ~= game.Players.LocalPlayer and not table.find(teleportedPlayers, player) then
                     table.insert(players, player)
                 end
             end
-
-            -- If there are players to teleport to, select a random one
             if #players > 0 then
-                -- Get a random player
                 local randomPlayer = players[math.random(1, #players)]
                 local character = randomPlayer.Character
                 if character and character:FindFirstChild("HumanoidRootPart") then
-                    -- Teleport to the random player
                     game.Players.LocalPlayer.Character:MoveTo(character.HumanoidRootPart.Position)
-
-                    -- Mark this player as teleported
                     table.insert(teleportedPlayers, randomPlayer)
                 end
             else
-                -- Stop the loop when all players have been teleported to
                 break
             end
          end
       end
-
-      -- Start the kill all functionality
       killAll()
    end,
 })
 
-local Button = MainTab:CreateButton({
+-- ESP Button (Enabled in Main Account Mode)
+local ESPButton = MainTab:CreateButton({
    Name = "ESP",
    Callback = function()
-   local function createESP(player)
-    -- Create ESP part
-    local espPart = Instance.new("BillboardGui")
-    espPart.Adornee = player.Character:WaitForChild("Head")
-    espPart.Parent = player.Character
-    espPart.Size = UDim2.new(0, 200, 0, 50)
-    espPart.StudsOffset = Vector3.new(0, 2, 0) -- Adjust the offset above the player's head
+      local Players = game:GetService("Players")
+      local function createHighlight(player)
+         local character = player.Character
+         if not character then return end
+         local highlight = Instance.new("Highlight")
+         highlight.Adornee = character
+         highlight.FillColor = Color3.new(1, 0, 0)
+         highlight.FillTransparency = 0.5
+         highlight.OutlineTransparency = 0
+         highlight.Parent = character
+      end
+      local function onCharacterAdded(character)
+         local player = Players:GetPlayerFromCharacter(character)
+         if player then
+            createHighlight(player)
+         end
+      end
+      local function refreshHighlights()
+         for _, player in pairs(Players:GetPlayers()) do
+            if player.Character then
+               for _, child in pairs(player.Character:GetChildren()) do
+                  if child:IsA("Highlight") then
+                     child:Destroy()
+                  end
+               end
+               createHighlight(player)
+            end
+         end
+      end
+      Players.PlayerAdded:Connect(function(player)
+         player.CharacterAdded:Connect(onCharacterAdded)
+         if player.Character then
+            createHighlight(player)
+         end
+      end)
+      for _, player in pairs(Players:GetPlayers()) do
+         if player.Character then
+            createHighlight(player)
+         end
+         player.CharacterAdded:Connect(onCharacterAdded)
+      end
+      while true do
+         refreshHighlights()
+         print("Refreshed Cevor ESP")
+         wait(1)
+      end
+   end,
+})
 
-    local label = Instance.new("TextLabel")
-    label.Parent = espPart
-    label.Size = UDim2.new(1, 0, 1, 0)
-    label.BackgroundTransparency = 1
-    label.TextStrokeTransparency = 0
-    label.TextScaled = true
+-- Player Tab
+local PlayerTab = Window:CreateTab("👤 Player", nil)
+local PlayerSection = PlayerTab:CreateSection("Player Modifications")
 
-    -- Check the player's team and set the ESP color
-    if player.Team then
-        if player.Team.Name == "Red" then
-            label.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Red team
-        elseif player.Team.Name == "Blue" then
-            label.TextColor3 = Color3.fromRGB(0, 0, 255)  -- Blue team
-        else
-            label.TextColor3 = Color3.fromRGB(255, 255, 0)  -- Default color (Yellow for non-team players)
-        end
-    else
-        label.TextColor3 = Color3.fromRGB(255, 255, 0)  -- Default color for players without a team
-    end
+-- Walk Speed Slider
+local WalkSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Walk Speed",
+   Range = {16, 100},
+   Increment = 1,
+   Suffix = "Speed",
+   CurrentValue = 16,
+   Flag = "WalkSpeed",
+   Callback = function(Value)
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+   end,
+})
 
-    -- Display player name
-    label.Text = player.Name
+-- Jump Power Slider
+local JumpPowerSlider = PlayerTab:CreateSlider({
+   Name = "Jump Power",
+   Range = {50, 200},
+   Increment = 1,
+   Suffix = "Power",
+   CurrentValue = 50,
+   Flag = "JumpPower",
+   Callback = function(Value)
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+   end,
+})
 
-    -- Update ESP if the player moves
-    player.Character:WaitForChild("HumanoidRootPart").Changed:Connect(function()
-        espPart.Adornee = player.Character:WaitForChild("Head") -- Reattach if necessary
-    end)
+-- Infinite Jump Toggle
+local InfiniteJumpToggle = PlayerTab:CreateToggle({
+   Name = "Infinite Jump",
+   CurrentValue = false,
+   Flag = "InfiniteJump",
+   Callback = function(Value)
+      if Value then
+         game:GetService("UserInputService").JumpRequest:Connect(function()
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+         end)
+      end
+   end,
+})
+
+-- No Clip Toggle (Disabled in Main Account Mode)
+local NoClipToggle = PlayerTab:CreateToggle({
+   Name = "No Clip",
+   CurrentValue = false,
+   Flag = "NoClip",
+   Callback = function(Value)
+      if MainAccountModeToggle.CurrentValue then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
+      if Value then
+         local noclipLoop
+         noclipLoop = game:GetService("RunService").Stepped:Connect(function()
+            if NoClipToggle.CurrentValue then
+               for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                  if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                     part.CanCollide = false
+                  end
+               end
+            else
+               noclipLoop:Disconnect()
+            end
+         end)
+      end
+   end,
+})
+
+-- Anti-AFK
+local AntiAFKButton = PlayerTab:CreateButton({
+   Name = "Anti-AFK",
+   Callback = function()
+      local VirtualUser = game:GetService("VirtualUser")
+      game.Players.LocalPlayer.Idled:Connect(function()
+         VirtualUser:CaptureController()
+         VirtualUser:ClickButton2(Vector2.new())
+      end)
+   end,
+})
+
+-- Teleport to Player Dropdown (Fixed)
+local TeleportDropdown = PlayerTab:CreateDropdown({
+   Name = "Teleport to Player",
+   Options = {},
+   CurrentOption = "Select Player",
+   Flag = "TeleportDropdown",
+   Callback = function(Option)
+      local targetPlayer = game.Players:FindFirstChild(Option)
+      if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+         game.Players.LocalPlayer.Character:MoveTo(targetPlayer.Character.HumanoidRootPart.Position)
+      end
+   end,
+})
+
+-- Update Teleport Dropdown
+local function updateTeleportDropdown()
+   TeleportDropdown.Options = {}
+   for _, player in pairs(game.Players:GetPlayers()) do
+      if player ~= game.Players.LocalPlayer then
+         table.insert(TeleportDropdown.Options, player.Name)
+      end
+   end
 end
 
--- Add ESP to all players
-for _, player in pairs(game.Players:GetPlayers()) do
-    if player.Character and player.Character:FindFirstChild("Head") then
-        createESP(player)
-    end
-end
+updateTeleportDropdown()
+game.Players.PlayerAdded:Connect(updateTeleportDropdown)
+game.Players.PlayerRemoving:Connect(updateTeleportDropdown)
 
--- Add ESP to players who join
-game.Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function(character)
-        if character:FindFirstChild("Head") then
-            createESP(player)
-        end
-    end)
-end)
-
-   end,
-})
-
-local Tab = Window:CreateTab("Random Stuff", Nil) -- Title, Image
-
-local Button = Tab:CreateButton({
-   Name = "Infinite Yield",
+-- Fly GUI (Mobile Support, Disabled in Main Account Mode)
+local FlyButton = PlayerTab:CreateButton({
+   Name = "Fly GUI",
    Callback = function()
-   loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-   end,
-})
+      if MainAccountModeToggle.CurrentValue then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
+      -- Fly Script
+      local player = game.Players.LocalPlayer
+      local flying = false
+      local speed = 50 -- Default fly speed
+      local torso = player.Character:FindFirstChild("HumanoidRootPart")
+      local bg, bp
 
-local Button = Tab:CreateButton({
-   Name = "Yarhm",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", true))()
-   end,
-})
+      -- Function to start flying
+      local function startFlying()
+         flying = true
+         bg = Instance.new("BodyGyro", torso)
+         bg.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+         bg.P = 10000
+         bg.cframe = torso.CFrame
 
-local Button = Tab:CreateButton({
-   Name = "XhubMM2",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/Au0yX/Community/main/XhubMM2"))()
-   end,
-})
+         bp = Instance.new("BodyPosition", torso)
+         bp.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+         bp.position = torso.Position
 
-local Button = Tab:CreateButton({
-   Name = "Invisibility",
-   Callback = function()
-   loadstring(game:HttpGet('https://pastebin.com/raw/3Rnd9rHf'))()
-   end,
-})
+         -- Fly movement
+         local function fly()
+            while flying and torso and bg and bp do
+               wait()
+               local direction = Vector3.new()
+               if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) then
+                  direction = direction + workspace.CurrentCamera.CFrame.lookVector
+               end
+               if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) then
+                  direction = direction - workspace.CurrentCamera.CFrame.lookVector
+               end
+               if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) then
+                  direction = direction - workspace.CurrentCamera.CFrame.rightVector
+               end
+               if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) then
+                  direction = direction + workspace.CurrentCamera.CFrame.rightVector
+               end
+               bp.position = bp.position + direction * speed
+               bg.cframe = workspace.CurrentCamera.CFrame
+            end
+         end
+         fly()
+      end
 
-local MainTab = Window:CreateTab("Local player", Nil) -- Title, Image
+      -- Function to stop flying
+      local function stopFlying()
+         flying = false
+         if bg then bg:Destroy() end
+         if bp then bp:Destroy() end
+         player.Character.Humanoid.PlatformStand = false
+      end
 
-local Button = MainTab:CreateButton({
-   Name = "Fly Gui",
-   Callback = function()
-      -- OP Fly Script
+      -- Toggle fly on/off
+      game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+         if input.KeyCode == Enum.KeyCode.X and not gameProcessed then
+            if flying then
+               stopFlying()
+            else
+               startFlying()
+            end
+         end
+      end)
 
-      -- Keybinds : X To Fly Or press the button
-
-      -- Instances:
+      -- Fly GUI
       local ScreenGui = Instance.new("ScreenGui")
       local Frame = Instance.new("Frame")
       local TextLabel = Instance.new("TextLabel")
       local TextLabel_2 = Instance.new("TextLabel")
       local TextButton = Instance.new("TextButton")
 
-      --Properties:
       ScreenGui.Parent = game.CoreGui
       Frame.Parent = ScreenGui
       Frame.BackgroundColor3 = Color3.fromRGB(24, 255, 51)
@@ -228,7 +505,7 @@ local Button = MainTab:CreateButton({
       TextLabel_2.Position = UDim2.new(0, 0, 0.342105269, 0)
       TextLabel_2.Size = UDim2.new(0, 295, 0, 18)
       TextLabel_2.Font = Enum.Font.SciFi
-      TextLabel_2.Text = "(May Not Work On All Games)"
+      TextLabel_2.Text = "(Press X to Fly)"
       TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
       TextLabel_2.TextScaled = true
       TextLabel_2.TextSize = 14.000
@@ -247,146 +524,309 @@ local Button = MainTab:CreateButton({
       TextButton.TextStrokeTransparency = 0.000
       TextButton.TextWrapped = true
 
-      -- Fly script
-      TextButton.MouseButton1Down:connect(function()
-         local plr = game.Players.LocalPlayer
-         local mouse = plr:GetMouse()
-
-         local player = plr
-
-         if workspace:FindFirstChild("Core") then
-            workspace.Core:Destroy()
+      -- Toggle fly on button click
+      TextButton.MouseButton1Click:Connect(function()
+         if flying then
+            stopFlying()
+         else
+            startFlying()
          end
-
-         local Core = Instance.new("Part")
-         Core.Name = "Core"
-         Core.Size = Vector3.new(0.05, 0.05, 0.05)
-
-         spawn(function()
-            Core.Parent = workspace
-            local Weld = Instance.new("Weld", Core)
-            Weld.Part0 = Core
-            Weld.Part1 = player.Character.LowerTorso
-            Weld.C0 = CFrame.new(0, 0, 0)
-         end)
-
-         workspace:WaitForChild("Core")
-
-         local torso = workspace.Core
-         local flying = true
-         local speed = 10
-         local keys = {a = false, d = false, w = false, s = false}
-         local e1, e2
-
-         local function start()
-            local pos = Instance.new("BodyPosition", torso)
-            local gyro = Instance.new("BodyGyro", torso)
-            pos.Name = "EPIXPOS"
-            pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
-            pos.position = torso.Position
-            gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-            gyro.cframe = torso.CFrame
-
-            repeat
-               wait()
-               player.Character.Humanoid.PlatformStand = true
-               local new = gyro.cframe - gyro.cframe.p + pos.position
-               if not keys.w and not keys.s and not keys.a and not keys.d then
-                  speed = 5
-               end
-               if keys.w then
-                  new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-                  speed = speed + 0
-               end
-               if keys.s then
-                  new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-                  speed = speed + 0
-               end
-               if keys.d then
-                  new = new * CFrame.new(speed, 0, 0)
-                  speed = speed + 0
-               end
-               if keys.a then
-                  new = new * CFrame.new(-speed, 0, 0)
-                  speed = speed + 0
-               end
-               if speed > 10 then
-                  speed = 5
-               end
-               pos.position = new.p
-               if keys.w then
-                  gyro.cframe = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad(speed * 0), 0, 0)
-               elseif keys.s then
-                  gyro.cframe = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(math.rad(speed * 0), 0, 0)
-               else
-                  gyro.cframe = workspace.CurrentCamera.CoordinateFrame
-               end
-            until flying == false
-            if gyro then gyro:Destroy() end
-            if pos then pos:Destroy() end
-            flying = false
-            player.Character.Humanoid.PlatformStand = false
-            speed = 10
-         end
-
-         e1 = mouse.KeyDown:connect(function(key)
-            if not torso or not torso.Parent then
-               flying = false
-               e1:disconnect()
-               e2:disconnect()
-               return
-            end
-            if key == "w" then
-               keys.w = true
-            elseif key == "s" then
-               keys.s = true
-            elseif key == "a" then
-               keys.a = true
-            elseif key == "d" then
-               keys.d = true
-            elseif key == "x" then
-               if flying == true then
-                  flying = false
-               else
-                  flying = true
-                  start()
-               end
-            end
-         end)
-
-         e2 = mouse.KeyUp:connect(function(key)
-            if key == "w" then
-               keys.w = false
-            elseif key == "s" then
-               keys.s = false
-            elseif key == "a" then
-               keys.a = false
-            elseif key == "d" then
-               keys.d = false
-            end
-         end)
-
-         start()
       end)
    end,
 })
 
-local Button = MainTab:CreateButton({
-   Name = "Kill character",
+-- Fly Speed Slider
+local FlySpeedSlider = PlayerTab:CreateSlider({
+   Name = "Fly Speed",
+   Range = {10, 200},
+   Increment = 1,
+   Suffix = "Speed",
+   CurrentValue = 50,
+   Flag = "FlySpeed",
+   Callback = function(Value)
+      speed = Value -- Update fly speed
+   end,
+})
+
+-- Server Hop Tab
+local ServerHopTab = Window:CreateTab("🌐 Server Hop", nil)
+local ServerHopSection = ServerHopTab:CreateSection("Server Hop Features")
+
+-- Auto Server Hop Toggle
+local AutoServerHopToggle = ServerHopTab:CreateToggle({
+   Name = "Auto Server Hop (30 mins)",
+   CurrentValue = false,
+   Flag = "AutoServerHop",
+   Callback = function(Value)
+      if Value then
+         local function serverHop()
+            while AutoServerHopToggle.CurrentValue do
+               wait(1800) -- 30 minutes
+               local Http = game:GetService("HttpService")
+               local TPS = game:GetService("TeleportService")
+               local Servers = Http:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+               for i, v in pairs(Servers.data) do
+                  if v.playing ~= v.maxPlayers then
+                     TPS:TeleportToPlaceInstance(game.PlaceId, v.id)
+                  end
+               end
+            end
+         end
+         serverHop()
+      end
+   end,
+})
+
+-- Manual Server Hop Button
+local ServerHopButton = ServerHopTab:CreateButton({
+   Name = "Server Hop",
    Callback = function()
-   -- Kill Player Script
-local player = game.Players.LocalPlayer  -- Get the local player
+      local Http = game:GetService("HttpService")
+      local TPS = game:GetService("TeleportService")
+      local Servers = Http:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+      for i, v in pairs(Servers.data) do
+         if v.playing ~= v.maxPlayers then
+            TPS:TeleportToPlaceInstance(game.PlaceId, v.id)
+         end
+      end
+   end,
+})
 
--- Function to kill the player
-local function killPlayer()
-    local character = player.Character
-    if character and character:FindFirstChild("Humanoid") then
-        character.Humanoid.Health = 0  -- Set health to 0, killing the player
-    end
-end
+-- Random Stuff Tab
+local RandomTab = Window:CreateTab("🎲 Random Stuff", nil)
+local RandomSection = RandomTab:CreateSection("Fun Features")
 
--- Call the killPlayer function
-killPlayer()
+-- Infinite Yield
+local InfiniteYieldButton = RandomTab:CreateButton({
+   Name = "Infinite Yield",
+   Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+   end,
+})
 
+-- Yarhm
+local YarhmButton = RandomTab:CreateButton({
+   Name = "Yarhm",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", true))()
+   end,
+})
+
+-- XhubMM2
+local XhubMM2Button = RandomTab:CreateButton({
+   Name = "XhubMM2",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/Au0yX/Community/main/XhubMM2"))()
+   end,
+})
+
+-- Invisibility
+local InvisibilityButton = RandomTab:CreateButton({
+   Name = "Invisibility",
+   Callback = function()
+      loadstring(game:HttpGet('https://pastebin.com/raw/3Rnd9rHf'))()
+   end,
+})
+
+-- Aimbot (Placeholder)
+local AimbotToggle = MainTab:CreateToggle({
+   Name = "Aimbot",
+   CurrentValue = false,
+   Flag = "Aimbot",
+   Callback = function(Value)
+      if Value then
+         -- Add your aimbot logic here
+      else
+         -- Stop aimbot logic here
+      end
+   end,
+})
+
+-- Avatar Adjustment Tab
+local AvatarTab = Window:CreateTab("👤 Avatar Adjustment", nil)
+local AvatarSection = AvatarTab:CreateSection("FilteringEnabled-Compatible Avatar Features")
+
+-- Resize Character
+local ResizeSlider = AvatarTab:CreateSlider({
+   Name = "Resize Character",
+   Range = {0.5, 5},
+   Increment = 0.1,
+   Suffix = "Scale",
+   CurrentValue = 1,
+   Flag = "ResizeCharacter",
+   Callback = function(Value)
+      local character = game.Players.LocalPlayer.Character
+      for _, part in pairs(character:GetDescendants()) do
+         if part:IsA("BasePart") then
+            part.Size = part.Size * Value
+         end
+      end
+   end,
+})
+
+-- Rainbow Character
+local RainbowToggle = AvatarTab:CreateToggle({
+   Name = "Rainbow Character",
+   CurrentValue = false,
+   Flag = "RainbowCharacter",
+   Callback = function(Value)
+      if Value then
+         local function rainbowEffect()
+            while RainbowToggle.CurrentValue do
+               for i = 0, 1, 0.01 do
+                  for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                     if part:IsA("BasePart") then
+                        part.Color = Color3.fromHSV(i, 1, 1)
+                     end
+                  end
+                  wait(0.1)
+               end
+            end
+         end
+         rainbowEffect()
+      else
+         -- Reset colors
+         for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+               part.Color = Color3.new(1, 1, 1)
+            end
+         end
+      end
+   end,
+})
+
+-- Invisible Head
+local InvisibleHeadToggle = AvatarTab:CreateToggle({
+   Name = "Invisible Head",
+   CurrentValue = false,
+   Flag = "InvisibleHead",
+   Callback = function(Value)
+      local head = game.Players.LocalPlayer.Character:FindFirstChild("Head")
+      if head then
+         head.Transparency = Value and 1 or 0
+      end
+   end,
+})
+
+-- Fake Korblox
+local FakeKorbloxButton = AvatarTab:CreateButton({
+   Name = "Fake Korblox",
+   Callback = function()
+      local character = game.Players.LocalPlayer.Character
+      local leftLeg = character:FindFirstChild("Left Leg")
+      if leftLeg then
+         leftLeg:Destroy()
+      end
+   end,
+})
+
+-- Giant Arms
+local GiantArmsButton = AvatarTab:CreateButton({
+   Name = "Giant Arms",
+   Callback = function()
+      local character = game.Players.LocalPlayer.Character
+      local leftArm = character:FindFirstChild("Left Arm")
+      local rightArm = character:FindFirstChild("Right Arm")
+      if leftArm then leftArm.Size = leftArm.Size * 2 end
+      if rightArm then rightArm.Size = rightArm.Size * 2 end
+   end,
+})
+
+-- Tiny Legs
+local TinyLegsButton = AvatarTab:CreateButton({
+   Name = "Tiny Legs",
+   Callback = function()
+      local character = game.Players.LocalPlayer.Character
+      local leftLeg = character:FindFirstChild("Left Leg")
+      local rightLeg = character:FindFirstChild("Right Leg")
+      if leftLeg then leftLeg.Size = leftLeg.Size / 2 end
+      if rightLeg then rightLeg.Size = rightLeg.Size / 2 end
+   end,
+})
+
+-- Spin Character
+local SpinToggle = AvatarTab:CreateToggle({
+   Name = "Spin Character",
+   CurrentValue = false,
+   Flag = "SpinCharacter",
+   Callback = function(Value)
+      if Value then
+         local bodyGyro = Instance.new("BodyGyro", game.Players.LocalPlayer.Character.HumanoidRootPart)
+         bodyGyro.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+         bodyGyro.P = 10000
+         while SpinToggle.CurrentValue do
+            bodyGyro.CFrame = bodyGyro.CFrame * CFrame.Angles(0, math.rad(10), 0)
+            wait()
+         end
+         bodyGyro:Destroy()
+      end
+   end,
+})
+
+-- Additional Tabs and Features
+local Tab1 = Window:CreateTab("🔧 Tools", nil)
+local Tab2 = Window:CreateTab("🎮 Game", nil)
+local Tab3 = Window:CreateTab("⚙️ Settings", nil)
+local Tab4 = Window:CreateTab("📜 Scripts", nil)
+local Tab5 = Window:CreateTab("🔒 Security", nil)
+
+-- Add features to the new tabs as needed
+-- Tab 1: Tools
+local ToolSection = Tab1:CreateSection("Utility Tools")
+local NoclipToggle = Tab1:CreateToggle({
+   Name = "Noclip",
+   CurrentValue = false,
+   Flag = "Noclip",
+   Callback = function(Value)
+      if Value then
+         -- Noclip logic here
+      end
+   end,
+})
+
+-- Tab 2: Game
+local GameSection = Tab2:CreateSection("Game Features")
+local SpeedHackToggle = Tab2:CreateToggle({
+   Name = "Speed Hack",
+   CurrentValue = false,
+   Flag = "SpeedHack",
+   Callback = function(Value)
+      if Value then
+         -- Speed hack logic here
+      end
+   end,
+})
+
+-- Tab 3: Settings
+local SettingsSection = Tab3:CreateSection("UI Settings")
+local ThemeDropdown = Tab3:CreateDropdown({
+   Name = "Theme",
+   Options = {"Default", "Dark", "Light"},
+   CurrentOption = "Default",
+   Flag = "Theme",
+   Callback = function(Option)
+      -- Theme change logic here
+   end,
+})
+
+-- Tab 4: Scripts
+local ScriptSection = Tab4:CreateSection("Scripts")
+local ScriptLoaderButton = Tab4:CreateButton({
+   Name = "Load Script",
+   Callback = function()
+      -- Script loader logic here
+   end,
+})
+
+-- Tab 5: Security
+local SecuritySection = Tab5:CreateSection("Security Features")
+local AntiKickToggle = Tab5:CreateToggle({
+   Name = "Anti-Kick",
+   CurrentValue = false,
+   Flag = "AntiKick",
+   Callback = function(Value)
+      if Value then
+         -- Anti-kick logic here
+      end
    end,
 })
