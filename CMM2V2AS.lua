@@ -165,6 +165,11 @@ local MainAccountModeToggle = MainTab:CreateToggle({
    end,
 })
 
+-- Function to check if Main Account Mode is enabled
+local function isMainAccountMode()
+   return MainAccountModeToggle.CurrentValue
+end
+
 -- Unload Button
 local UnloadButton = MainTab:CreateButton({
    Name = "Unload Script",
@@ -187,7 +192,7 @@ local UnloadButton = MainTab:CreateButton({
 local KillAllButton = MainTab:CreateButton({
    Name = "Kill All",
    Callback = function()
-      if MainAccountModeToggle.CurrentValue then
+      if isMainAccountMode() then
          Rayfield:Notify({
             Title = "Main Account Mode",
             Content = "This feature is disabled in Main Account Mode.",
@@ -275,11 +280,22 @@ local ESPButton = MainTab:CreateButton({
    end,
 })
 
--- Player Tab
+-- Player Tab (Blocked in Main Account Mode)
 local PlayerTab = Window:CreateTab("👤 Player", nil)
 local PlayerSection = PlayerTab:CreateSection("Player Modifications")
 
--- Walk Speed Slider
+-- Disable Players Tab if Main Account Mode is enabled
+if isMainAccountMode() then
+   PlayerTab:SetEnabled(false)
+   Rayfield:Notify({
+      Title = "Main Account Mode",
+      Content = "Player modifications are disabled in Main Account Mode.",
+      Duration = 6.5,
+      Image = nil,
+   })
+end
+
+-- Walk Speed Slider (Blocked in Main Account Mode)
 local WalkSpeedSlider = PlayerTab:CreateSlider({
    Name = "Walk Speed",
    Range = {16, 100},
@@ -288,11 +304,20 @@ local WalkSpeedSlider = PlayerTab:CreateSlider({
    CurrentValue = 16,
    Flag = "WalkSpeed",
    Callback = function(Value)
+      if isMainAccountMode() then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
    end,
 })
 
--- Jump Power Slider
+-- Jump Power Slider (Blocked in Main Account Mode)
 local JumpPowerSlider = PlayerTab:CreateSlider({
    Name = "Jump Power",
    Range = {50, 200},
@@ -301,16 +326,34 @@ local JumpPowerSlider = PlayerTab:CreateSlider({
    CurrentValue = 50,
    Flag = "JumpPower",
    Callback = function(Value)
+      if isMainAccountMode() then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
       game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
    end,
 })
 
--- Infinite Jump Toggle
+-- Infinite Jump Toggle (Blocked in Main Account Mode)
 local InfiniteJumpToggle = PlayerTab:CreateToggle({
    Name = "Infinite Jump",
    CurrentValue = false,
    Flag = "InfiniteJump",
    Callback = function(Value)
+      if isMainAccountMode() then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
       if Value then
          game:GetService("UserInputService").JumpRequest:Connect(function()
             game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
@@ -319,13 +362,13 @@ local InfiniteJumpToggle = PlayerTab:CreateToggle({
    end,
 })
 
--- No Clip Toggle (Disabled in Main Account Mode)
+-- No Clip Toggle (Blocked in Main Account Mode)
 local NoClipToggle = PlayerTab:CreateToggle({
    Name = "No Clip",
    CurrentValue = false,
    Flag = "NoClip",
    Callback = function(Value)
-      if MainAccountModeToggle.CurrentValue then
+      if isMainAccountMode() then
          Rayfield:Notify({
             Title = "Main Account Mode",
             Content = "This feature is disabled in Main Account Mode.",
@@ -395,7 +438,7 @@ game.Players.PlayerRemoving:Connect(updateTeleportDropdown)
 local FlyButton = PlayerTab:CreateButton({
    Name = "Fly GUI",
    Callback = function()
-      if MainAccountModeToggle.CurrentValue then
+      if isMainAccountMode() then
          Rayfield:Notify({
             Title = "Main Account Mode",
             Content = "This feature is disabled in Main Account Mode.",
@@ -642,13 +685,22 @@ local AimbotToggle = MainTab:CreateToggle({
    end,
 })
 
--- Avatar Adjustment Tab
--- Avatar Adjustment Tab
--- Avatar Adjustment Tab
+-- Avatar Adjustment Tab (Blocked in Main Account Mode)
 local AvatarTab = Window:CreateTab("👤 Avatar Adjustment", nil)
 local AvatarSection = AvatarTab:CreateSection("FilteringEnabled-Compatible Avatar Features")
 
--- Resize Character
+-- Disable Avatar Tab if Main Account Mode is enabled
+if isMainAccountMode() then
+   AvatarTab:SetEnabled(false)
+   Rayfield:Notify({
+      Title = "Main Account Mode",
+      Content = "Avatar adjustments are disabled in Main Account Mode.",
+      Duration = 6.5,
+      Image = nil,
+   })
+end
+
+-- Resize Character Slider (Blocked in Main Account Mode)
 local ResizeSlider = AvatarTab:CreateSlider({
    Name = "Resize Character",
    Range = {0.5, 5},
@@ -657,6 +709,15 @@ local ResizeSlider = AvatarTab:CreateSlider({
    CurrentValue = 1,
    Flag = "ResizeCharacter",
    Callback = function(Value)
+      if isMainAccountMode() then
+         Rayfield:Notify({
+            Title = "Main Account Mode",
+            Content = "This feature is disabled in Main Account Mode.",
+            Duration = 6.5,
+            Image = nil,
+         })
+         return
+      end
       local character = game.Players.LocalPlayer.Character
       for _, part in pairs(character:GetDescendants()) do
          if part:IsA("BasePart") then
@@ -833,70 +894,77 @@ local ResetAvatarButton = AvatarTab:CreateButton({
    end,
 })
 
--- Additional Tabs and Features
-local Tab1 = Window:CreateTab("🔧 Tools", nil)
-local Tab2 = Window:CreateTab("🎮 Game", nil)
-local Tab3 = Window:CreateTab("⚙️ Settings", nil)
-local Tab4 = Window:CreateTab("📜 Scripts", nil)
-local Tab5 = Window:CreateTab("🔒 Security", nil)
+-- Main Account Mode Tab (Safe Features)
+local MainAccountModeTab = Window:CreateTab("🔒 Main Account Mode", nil)
+local MainAccountModeSection = MainAccountModeTab:CreateSection("Safe Features for Main Account Mode")
 
--- Add features to the new tabs as needed
--- Tab 1: Tools
-local ToolSection = Tab1:CreateSection("Utility Tools")
-local NoclipToggle = Tab1:CreateToggle({
-   Name = "Noclip",
-   CurrentValue = false,
-   Flag = "Noclip",
-   Callback = function(Value)
-      if Value then
-         -- Noclip logic here
-      end
-   end,
-})
-
--- Tab 2: Game
-local GameSection = Tab2:CreateSection("Game Features")
-local SpeedHackToggle = Tab2:CreateToggle({
-   Name = "Speed Hack",
-   CurrentValue = false,
-   Flag = "SpeedHack",
-   Callback = function(Value)
-      if Value then
-         -- Speed hack logic here
-      end
-   end,
-})
-
--- Tab 3: Settings
-local SettingsSection = Tab3:CreateSection("UI Settings")
-local ThemeDropdown = Tab3:CreateDropdown({
-   Name = "Theme",
-   Options = {"Default", "Dark", "Light"},
-   CurrentOption = "Default",
-   Flag = "Theme",
-   Callback = function(Option)
-      -- Theme change logic here
-   end,
-})
-
--- Tab 4: Scripts
-local ScriptSection = Tab4:CreateSection("Scripts")
-local ScriptLoaderButton = Tab4:CreateButton({
-   Name = "Load Script",
+-- Anti-AFK
+local AntiAFKButton = MainAccountModeTab:CreateButton({
+   Name = "Anti-AFK",
    Callback = function()
-      -- Script loader logic here
+      local VirtualUser = game:GetService("VirtualUser")
+      game.Players.LocalPlayer.Idled:Connect(function()
+         VirtualUser:CaptureController()
+         VirtualUser:ClickButton2(Vector2.new())
+      end)
    end,
 })
 
--- Tab 5: Security
-local SecuritySection = Tab5:CreateSection("Security Features")
-local AntiKickToggle = Tab5:CreateToggle({
-   Name = "Anti-Kick",
-   CurrentValue = false,
-   Flag = "AntiKick",
-   Callback = function(Value)
-      if Value then
-         -- Anti-kick logic here
+-- Server Hop Button
+local ServerHopButton = MainAccountModeTab:CreateButton({
+   Name = "Server Hop",
+   Callback = function()
+      local Http = game:GetService("HttpService")
+      local TPS = game:GetService("TeleportService")
+      local Servers = Http:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+      for i, v in pairs(Servers.data) do
+         if v.playing ~= v.maxPlayers then
+            TPS:TeleportToPlaceInstance(game.PlaceId, v.id)
+         end
       end
    end,
+})
+
+-- ESP Button (Safe Version)
+local ESPButton = MainAccountModeTab:CreateButton({
+   Name = "ESP",
+   Callback = function()
+      local Players = game:GetService("Players")
+      local function createHighlight(player)
+         local character = player.Character
+         if not character then return end
+         local highlight = Instance.new("Highlight")
+         highlight.Adornee = character
+         highlight.FillColor = Color3.new(1, 0, 0)
+         highlight.FillTransparency = 0.5
+         highlight.OutlineTransparency = 0
+         highlight.Parent = character
+      end
+      local function onCharacterAdded(character)
+         local player = Players:GetPlayerFromCharacter(character)
+         if player then
+            createHighlight(player)
+         end
+      end
+      Players.PlayerAdded:Connect(function(player)
+         player.CharacterAdded:Connect(onCharacterAdded)
+         if player.Character then
+            createHighlight(player)
+         end
+      end)
+      for _, player in pairs(Players:GetPlayers()) do
+         if player.Character then
+            createHighlight(player)
+         end
+         player.CharacterAdded:Connect(onCharacterAdded)
+      end
+   end,
+})
+
+-- Notify User
+Rayfield:Notify({
+   Title = "Cevor MM2 V4",
+   Content = "Script loaded successfully!",
+   Duration = 6.5,
+   Image = nil,
 })
