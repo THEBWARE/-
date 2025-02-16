@@ -643,6 +643,8 @@ local AimbotToggle = MainTab:CreateToggle({
 })
 
 -- Avatar Adjustment Tab
+-- Avatar Adjustment Tab
+-- Avatar Adjustment Tab
 local AvatarTab = Window:CreateTab("👤 Avatar Adjustment", nil)
 local AvatarSection = AvatarTab:CreateSection("FilteringEnabled-Compatible Avatar Features")
 
@@ -708,14 +710,30 @@ local InvisibleHeadToggle = AvatarTab:CreateToggle({
    end,
 })
 
--- Fake Korblox
-local FakeKorbloxButton = AvatarTab:CreateButton({
-   Name = "Fake Korblox",
+-- Legless (Replaces Fake Korblox)
+local LeglessButton = AvatarTab:CreateButton({
+   Name = "Legless",
    Callback = function()
       local character = game.Players.LocalPlayer.Character
       local leftLeg = character:FindFirstChild("Left Leg")
+      local rightLeg = character:FindFirstChild("Right Leg")
       if leftLeg then
-         leftLeg:Destroy()
+         leftLeg.Size = Vector3.new(0.000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000001)
+      end
+      if rightLeg then
+         rightLeg.Size = Vector3.new(0.000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000001, 0.000000000000000000000000000000000000000001)
+      end
+   end,
+})
+
+-- Fake Headless
+local FakeHeadlessButton = AvatarTab:CreateButton({
+   Name = "Fake Headless",
+   Callback = function()
+      local character = game.Players.LocalPlayer.Character
+      local head = character:FindFirstChild("Head")
+      if head then
+         head.Size = Vector3.new(0.0000000000000000000001, 0.000000000000000000000000000000000001, 0.000000000000000000000000000000001) -- Super small head
       end
    end,
 })
@@ -760,6 +778,58 @@ local SpinToggle = AvatarTab:CreateToggle({
          end
          bodyGyro:Destroy()
       end
+   end,
+})
+
+-- Invisible Body
+local InvisibleBodyToggle = AvatarTab:CreateToggle({
+   Name = "Invisible Body",
+   CurrentValue = false,
+   Flag = "InvisibleBody",
+   Callback = function(Value)
+      local character = game.Players.LocalPlayer.Character
+      for _, part in pairs(character:GetDescendants()) do
+         if part:IsA("BasePart") then
+            part.Transparency = Value and 1 or 0
+         end
+      end
+   end,
+})
+
+-- Floating Head
+local FloatingHeadButton = AvatarTab:CreateButton({
+   Name = "Floating Head",
+   Callback = function()
+      local character = game.Players.LocalPlayer.Character
+      local head = character:FindFirstChild("Head")
+      if head then
+         for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") and part ~= head then
+               part.Transparency = 1
+            end
+         end
+      end
+   end,
+})
+
+-- Custom Color
+local CustomColorButton = AvatarTab:CreateButton({
+   Name = "Custom Color",
+   Callback = function()
+      local color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+      for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+         if part:IsA("BasePart") then
+            part.Color = color
+         end
+      end
+   end,
+})
+
+-- Reset Avatar
+local ResetAvatarButton = AvatarTab:CreateButton({
+   Name = "Reset Avatar",
+   Callback = function()
+      game.Players.LocalPlayer.Character:BreakJoints()
    end,
 })
 
