@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cevor Posts</title>
-    <style>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Cevor Posts&lt;/title&gt;
+    &lt;style&gt;
         /* General Reset */
         * {
             margin: 0;
@@ -270,64 +270,64 @@
             background-color: rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 15px rgba(255, 99, 71, 0.5);
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Cevor Posts</h2>
-        <div id="keySection">
-            <input type="text" id="key" placeholder="Enter key...">
-            <button onclick="validateKey()">Validate Key</button>
-            <p class="warning">⚠️ Do not share your key. It is your login credential.</p>
-        </div>
-        <div class="loader" id="loader"></div>
-        <p id="message"></p>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2&gt;Cevor Posts&lt;/h2&gt;
+        &lt;div id=&quot;keySection&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;key&quot; placeholder=&quot;Enter key...&quot;&gt;
+            &lt;button onclick=&quot;validateKey()&quot;&gt;Validate Key&lt;/button&gt;
+            &lt;p class=&quot;warning&quot;&gt;&#9888;&#65039; Do not share your key. It is your login credential.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;loader&quot; id=&quot;loader&quot;&gt;&lt;/div&gt;
+        &lt;p id=&quot;message&quot;&gt;&lt;/p&gt;
 
-        <!-- Hash Input (Hidden by Default) -->
-        <div id="hashSection" style="display: none;">
-            <input type="text" id="hash" placeholder="Enter hash...">
-            <button onclick="performAction()">Submit</button>
-            <button onclick="signOut()" style="background-color: #555; margin-left: 10px;">Sign Out</button>
-        </div>
+        &lt;!-- Hash Input (Hidden by Default) --&gt;
+        &lt;div id=&quot;hashSection&quot; style=&quot;display: none;&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;hash&quot; placeholder=&quot;Enter hash...&quot;&gt;
+            &lt;button onclick=&quot;performAction()&quot;&gt;Submit&lt;/button&gt;
+            &lt;button onclick=&quot;signOut()&quot; style=&quot;background-color: #555; margin-left: 10px;&quot;&gt;Sign Out&lt;/button&gt;
+        &lt;/div&gt;
 
-        <!-- Most Recent Section -->
-        <div id="recentSection" class="recent" style="display: none;">
-            <h3>Most Recent:</h3>
-            <p id="mostRecent"></p>
-        </div>
+        &lt;!-- Most Recent Section --&gt;
+        &lt;div id=&quot;recentSection&quot; class=&quot;recent&quot; style=&quot;display: none;&quot;&gt;
+            &lt;h3&gt;Most Recent:&lt;/h3&gt;
+            &lt;p id=&quot;mostRecent&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
 
-        <!-- Create Hash Section -->
-        <div id="createHashSection" class="create-hash" style="display: none;">
-            <input type="text" id="newHash" placeholder="Enter new hash...">
-            <input type="text" id="newHashUrl" placeholder="Enter URL for the hash...">
-            <button onclick="createHash()">Create Hash</button>
-        </div>
+        &lt;!-- Create Hash Section --&gt;
+        &lt;div id=&quot;createHashSection&quot; class=&quot;create-hash&quot; style=&quot;display: none;&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;newHash&quot; placeholder=&quot;Enter new hash...&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;newHashUrl&quot; placeholder=&quot;Enter URL for the hash...&quot;&gt;
+            &lt;button onclick=&quot;createHash()&quot;&gt;Create Hash&lt;/button&gt;
+        &lt;/div&gt;
 
-        <!-- Guide Section -->
-        <div id="guide" class="guide">
-            <h3>Available Hashes:</h3>
-            <ul id="hashList">
-                <!-- Hashes will be dynamically added here -->
-            </ul>
-        </div>
+        &lt;!-- Guide Section --&gt;
+        &lt;div id=&quot;guide&quot; class=&quot;guide&quot;&gt;
+            &lt;h3&gt;Available Hashes:&lt;/h3&gt;
+            &lt;ul id=&quot;hashList&quot;&gt;
+                &lt;!-- Hashes will be dynamically added here --&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
 
-        <!-- Discord Button -->
-        <a href="https://discord.gg/HCbg4VDE" class="discord-btn">Join Our Discord</a>
-    </div>
+        &lt;!-- Discord Button --&gt;
+        &lt;a href=&quot;https://discord.gg/HCbg4VDE&quot; class=&quot;discord-btn&quot;&gt;Join Our Discord&lt;/a&gt;
+    &lt;/div&gt;
 
-    <script>
+    &lt;script&gt;
         // Console Warning Message
         console.log(`
             _______      _________      _____       ______     _
-           / _____ \\    |____ ____|    / ___ \\     | ____ \\   | |
-          / /     \\_\\       | |       / /   \\ \\    | |   \\ \\  | |
-          | |               | |      / /     \\ \\   | |   | |  | |
-          \\ \\______         | |      | |     | |   | |___/ /  | |
-           \\______ \\        | |      | |     | |   |  ____/   | |
-                  \\ \\       | |      | |     | |   | |        | |
-           _      | |       | |      \\ \\     / /   | |        |_|
-          \\ \\_____/ /       | |       \\ \\___/ /    | |         _
-           \\_______/        |_|        \\_____/     |_|        |_|
+           / _____ \    |____ ____|    / ___ \     | ____ \   | |
+          / /     \_\       | |       / /   \ \    | |   \ \  | |
+          | |               | |      / /     \ \   | |   | |  | |
+          \ \______         | |      | |     | |   | |___/ /  | |
+           \______ \        | |      | |     | |   |  ____/   | |
+                  \ \       | |      | |     | |   | |        | |
+           _      | |       | |      \ \     / /   | |        |_|
+          \ \_____/ /       | |       \ \___/ /    | |         _
+           \_______/        |_|        \_____/     |_|        |_|
 
           Keep your account safe! Do not send any information from
           here to anyone or paste any text here.
@@ -338,41 +338,41 @@
 
         let validKeys = []; // Array to store keys from Picadillo.txt
         let hashMap = {
-            "Y7TiVy1EWRWeOgJBOForpEN5r": {
-                message: "✅ Valid hash! Redirecting to GitHub download...",
-                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua"
+            &quot;Y7TiVy1EWRWeOgJBOForpEN5r&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to GitHub download...&quot;,
+                url: &quot;https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Y7TiVy1EWRWeOgJBOForpEN5r/Cevor.MM2.V2.lua&quot;
             },
-            "dgr": {
-                message: "✅ Valid hash! Redirecting to External download...",
-                url: "https://rdd.latte.to/?channel=LIVE&binaryType=WindowsPlayer&version=version-ecc9c250281b4c14"
+            &quot;dgr&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to External download...&quot;,
+                url: &quot;https://rdd.latte.to/?channel=LIVE&amp;binaryType=WindowsPlayer&amp;version=version-ecc9c250281b4c14&quot;
             },
-            "crv": {
-                message: "✅ Valid hash! Redirecting to Roblox download...",
-                url: "https://www.roblox.com/download/client?os=win"
+            &quot;crv&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to Roblox download...&quot;,
+                url: &quot;https://www.roblox.com/download/client?os=win&quot;
             },
-            "xenoexec": {
-                message: "✅ Valid hash! Redirecting to XenoExec release...",
-                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec"
+            &quot;xenoexec&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to XenoExec release...&quot;,
+                url: &quot;https://github.com/Alveroalexandro56/Version-Hash-Download/releases/tag/XenoExec&quot;
             },
-            "UaOUqMM1Sth1PQL7jQNEd2zZz": {
-                message: "✅ Valid hash! Redirecting to Cloudy Bootstrap installer...",
-                url: "https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe"
+            &quot;UaOUqMM1Sth1PQL7jQNEd2zZz&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to Cloudy Bootstrap installer...&quot;,
+                url: &quot;https://github.com/Alveroalexandro56/Version-Hash-Download/releases/download/Cloudy/CloudyBootstrapInstaller.exe&quot;
             },
-            "QEyO6ISIrbFfVoCVUP75ZvhTP": {
-                message: "✅ Valid hash! Redirecting to Pastebin script...",
-                url: "https://pastebin.com/raw/9eFMh4rK"
+            &quot;QEyO6ISIrbFfVoCVUP75ZvhTP&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to Pastebin script...&quot;,
+                url: &quot;https://pastebin.com/raw/9eFMh4rK&quot;
             },
-            "v5211s": {
-                message: "✅ Valid hash! Redirecting to Jailbreak script...",
-                url: "https://www.rblxscripts.net/roblox-script-jailbreak-project-auto-auto-rob"
+            &quot;v5211s&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to Jailbreak script...&quot;,
+                url: &quot;https://www.rblxscripts.net/roblox-script-jailbreak-project-auto-auto-rob&quot;
             },
-            "cleverifiyme": {
-                message: "✅ Valid hash! Redirecting to Clever.com...",
-                url: "https://clever.com/"
+            &quot;cleverifiyme&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to Clever.com...&quot;,
+                url: &quot;https://clever.com/&quot;
             },
-            "CB": {
-                message: "✅ Valid hash! Redirecting to CevorBootstrapper.bat download...",
-                url: "https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg"
+            &quot;CB&quot;: {
+                message: &quot;&#9989; Valid hash! Redirecting to CevorBootstrapper.bat download...&quot;,
+                url: &quot;https://github.com/Alveroalexandro56/-/releases/tag/dsfgdfg&quot;
             }
         };
 
@@ -381,7 +381,7 @@
             try {
                 const response = await fetch('Picadillo.txt'); // Path to the file
                 const text = await response.text();
-                validKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
+                validKeys = text.split('n').map(key =&gt; key.trim()); // Split by newline and trim whitespace
             } catch (error) {
                 console.error('Error loading keys:', error);
             }
@@ -389,17 +389,17 @@
 
         // Function to Validate Key
         async function validateKey() {
-            const key = document.getElementById("key").value;
-            const messageElement = document.getElementById("message");
-            const loader = document.getElementById("loader");
-            const keySection = document.getElementById("keySection");
-            const hashSection = document.getElementById("hashSection");
-            const recentSection = document.getElementById("recentSection");
-            const createHashSection = document.getElementById("createHashSection");
+            const key = document.getElementById(&quot;key&quot;).value;
+            const messageElement = document.getElementById(&quot;message&quot;);
+            const loader = document.getElementById(&quot;loader&quot;);
+            const keySection = document.getElementById(&quot;keySection&quot;);
+            const hashSection = document.getElementById(&quot;hashSection&quot;);
+            const recentSection = document.getElementById(&quot;recentSection&quot;);
+            const createHashSection = document.getElementById(&quot;createHashSection&quot;);
 
             // Show loader
-            loader.style.display = "block";
-            messageElement.textContent = "";
+            loader.style.display = &quot;block&quot;;
+            messageElement.textContent = &quot;&quot;;
 
             // Ensure keys are loaded
             if (validKeys.length === 0) {
@@ -407,30 +407,30 @@
             }
 
             // Simulate key validation
-            setTimeout(() => {
+            setTimeout(() =&gt; {
                 if (validKeys.includes(key)) {
-                    messageElement.textContent = "✅ Key validated!";
-                    messageElement.classList.remove("error");
-                    keySection.style.display = "none"; // Hide key input section
-                    hashSection.style.display = "block"; // Show hash input section
-                    recentSection.style.display = "block"; // Show most recent section
-                    createHashSection.style.display = "block"; // Show create hash section
-                    localStorage.setItem("cevorKey", key); // Store key in localStorage
+                    messageElement.textContent = &quot;&#9989; Key validated!&quot;;
+                    messageElement.classList.remove(&quot;error&quot;);
+                    keySection.style.display = &quot;none&quot;; // Hide key input section
+                    hashSection.style.display = &quot;block&quot;; // Show hash input section
+                    recentSection.style.display = &quot;block&quot;; // Show most recent section
+                    createHashSection.style.display = &quot;block&quot;; // Show create hash section
+                    localStorage.setItem(&quot;cevorKey&quot;, key); // Store key in localStorage
 
                     // Load key-specific data
                     loadKeySpecificData(key);
                 } else {
-                    messageElement.textContent = "❌ Invalid key!";
-                    messageElement.classList.add("error");
+                    messageElement.textContent = &quot;&#10060; Invalid key!&quot;;
+                    messageElement.classList.add(&quot;error&quot;);
                 }
-                loader.style.display = "none";
+                loader.style.display = &quot;none&quot;;
             }, 1000); // Simulate 1-second delay
         }
 
         // Function to Load Key-Specific Data
         function loadKeySpecificData(key) {
-            const mostRecentElement = document.getElementById("mostRecent");
-            const hashListElement = document.getElementById("hashList");
+            const mostRecentElement = document.getElementById(&quot;mostRecent&quot;);
+            const hashListElement = document.getElementById(&quot;hashList&quot;);
 
             // Load most recent action for the key
             const mostRecentAction = localStorage.getItem(`mostRecent_${key}`);
@@ -445,11 +445,11 @@
 
         // Function to Perform Action Based on Hash
         function performAction() {
-            const hash = document.getElementById("hash").value;
-            const messageElement = document.getElementById("message");
-            const guideElement = document.getElementById("guide");
-            const mostRecentElement = document.getElementById("mostRecent");
-            const key = localStorage.getItem("cevorKey");
+            const hash = document.getElementById(&quot;hash&quot;).value;
+            const messageElement = document.getElementById(&quot;message&quot;);
+            const guideElement = document.getElementById(&quot;guide&quot;);
+            const mostRecentElement = document.getElementById(&quot;mostRecent&quot;);
+            const key = localStorage.getItem(&quot;cevorKey&quot;);
 
             if (hash.toLowerCase() === 'guide') {
                 messageElement.textContent = '';
@@ -470,12 +470,12 @@
                     window.location.href = customHashes[hash].url;
                     guideElement.classList.remove('open');
                 } else {
-                    messageElement.textContent = "❌ Invalid hash!";
-                    messageElement.classList.add("error");
+                    messageElement.textContent = &quot;&#10060; Invalid hash!&quot;;
+                    messageElement.classList.add(&quot;error&quot;);
                     guideElement.classList.remove('open');
-                    setTimeout(() => {
+                    setTimeout(() =&gt; {
                         messageElement.textContent = '';
-                        messageElement.classList.remove("error");
+                        messageElement.classList.remove(&quot;error&quot;);
                     }, 3000); // Clear error message after 3 seconds
                 }
             }
@@ -483,73 +483,73 @@
 
         // Function to Create Hash
         function createHash() {
-            const newHash = document.getElementById("newHash").value;
-            const newHashUrl = document.getElementById("newHashUrl").value;
-            const messageElement = document.getElementById("message");
-            const key = localStorage.getItem("cevorKey");
+            const newHash = document.getElementById(&quot;newHash&quot;).value;
+            const newHashUrl = document.getElementById(&quot;newHashUrl&quot;).value;
+            const messageElement = document.getElementById(&quot;message&quot;);
+            const key = localStorage.getItem(&quot;cevorKey&quot;);
 
-            if (newHash && newHashUrl) {
+            if (newHash &amp;&amp; newHashUrl) {
                 const customHashes = JSON.parse(localStorage.getItem(`customHashes_${key}`)) || {};
                 customHashes[newHash] = {
-                    message: `✅ Valid hash! Redirecting to ${newHashUrl}...`,
+                    message: `&#9989; Valid hash! Redirecting to ${newHashUrl}...`,
                     url: newHashUrl
                 };
                 localStorage.setItem(`customHashes_${key}`, JSON.stringify(customHashes)); // Save custom hash for the key
                 updateGuideList(customHashes);
-                messageElement.textContent = "✅ Hash created successfully!";
-                messageElement.classList.remove("error");
+                messageElement.textContent = &quot;&#9989; Hash created successfully!&quot;;
+                messageElement.classList.remove(&quot;error&quot;);
             } else {
-                messageElement.textContent = "❌ Please fill in both fields!";
-                messageElement.classList.add("error");
+                messageElement.textContent = &quot;&#10060; Please fill in both fields!&quot;;
+                messageElement.classList.add(&quot;error&quot;);
             }
         }
 
         // Function to Update Guide List
         function updateGuideList(customHashes = {}) {
-            const hashList = document.getElementById("hashList");
+            const hashList = document.getElementById(&quot;hashList&quot;);
             hashList.innerHTML = ''; // Clear existing list
 
             // Add global hashes
             for (const [hash, data] of Object.entries(hashMap)) {
-                const listItem = document.createElement("li");
-                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                const listItem = document.createElement(&quot;li&quot;);
+                listItem.innerHTML = `&lt;strong&gt;${hash}&lt;/strong&gt;: &lt;a href=&quot;${data.url}&quot; target=&quot;_blank&quot;&gt;${data.url}&lt;/a&gt;`;
                 hashList.appendChild(listItem);
             }
 
             // Add custom hashes
             for (const [hash, data] of Object.entries(customHashes)) {
-                const listItem = document.createElement("li");
-                listItem.innerHTML = `<strong>${hash}</strong>: <a href="${data.url}" target="_blank">${data.url}</a>`;
+                const listItem = document.createElement(&quot;li&quot;);
+                listItem.innerHTML = `&lt;strong&gt;${hash}&lt;/strong&gt;: &lt;a href=&quot;${data.url}&quot; target=&quot;_blank&quot;&gt;${data.url}&lt;/a&gt;`;
                 hashList.appendChild(listItem);
             }
         }
 
         // Function to Sign Out
         function signOut() {
-            const key = localStorage.getItem("cevorKey");
-            localStorage.removeItem("cevorKey"); // Remove stored key
+            const key = localStorage.getItem(&quot;cevorKey&quot;);
+            localStorage.removeItem(&quot;cevorKey&quot;); // Remove stored key
             localStorage.removeItem(`mostRecent_${key}`); // Remove most recent hash for the key
-            document.getElementById("keySection").style.display = "block"; // Show key input section
-            document.getElementById("hashSection").style.display = "none"; // Hide hash input section
-            document.getElementById("recentSection").style.display = "none"; // Hide most recent section
-            document.getElementById("createHashSection").style.display = "none"; // Hide create hash section
-            document.getElementById("message").textContent = ""; // Clear any messages
+            document.getElementById(&quot;keySection&quot;).style.display = &quot;block&quot;; // Show key input section
+            document.getElementById(&quot;hashSection&quot;).style.display = &quot;none&quot;; // Hide hash input section
+            document.getElementById(&quot;recentSection&quot;).style.display = &quot;none&quot;; // Hide most recent section
+            document.getElementById(&quot;createHashSection&quot;).style.display = &quot;none&quot;; // Hide create hash section
+            document.getElementById(&quot;message&quot;).textContent = &quot;&quot;; // Clear any messages
         }
 
         // Check if the user is already signed in
         window.onload = function () {
-            const storedKey = localStorage.getItem("cevorKey");
+            const storedKey = localStorage.getItem(&quot;cevorKey&quot;);
 
             if (storedKey) {
-                document.getElementById("keySection").style.display = "none"; // Hide key input section
-                document.getElementById("hashSection").style.display = "block"; // Show hash input section
-                document.getElementById("recentSection").style.display = "block"; // Show most recent section
-                document.getElementById("createHashSection").style.display = "block"; // Show create hash section
+                document.getElementById(&quot;keySection&quot;).style.display = &quot;none&quot;; // Hide key input section
+                document.getElementById(&quot;hashSection&quot;).style.display = &quot;block&quot;; // Show hash input section
+                document.getElementById(&quot;recentSection&quot;).style.display = &quot;block&quot;; // Show most recent section
+                document.getElementById(&quot;createHashSection&quot;).style.display = &quot;block&quot;; // Show create hash section
                 loadKeySpecificData(storedKey); // Load key-specific data
             }
 
             updateGuideList(); // Populate guide list on page load
         };
-    </script>
-</body>
-</html>
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
