@@ -1,1 +1,312 @@
-I just woke up from a dream
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cevedi Studio - Posts</title>
+    <style>
+        :root {
+            --stardust: rgba(255, 255, 255, 0.1);
+            --supernova: #ff00ff;
+            --quantum-blue: #00f7ff;
+            --event-horizon: #0a0a15;
+        }
+
+        body {
+            font-family: 'Oxanium', sans-serif;
+            background: radial-gradient(circle at center, var(--event-horizon), #000);
+            color: var(--quantum-blue);
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Full-screen post selection panel */
+        .post-quantum-list {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+        }
+
+        .post-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 247, 255, 0.1),
+                transparent
+            );
+            transition: 0.6s;
+        }
+
+        .post-card:hover {
+            transform: translateX(20px);
+            background: rgba(0, 247, 255, 0.05);
+        }
+
+        .post-card:hover::before {
+            left: 100%;
+        }
+
+        .post-card h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .post-card p {
+            margin: 0.5rem 0 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .post-card-buttons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .post-card-buttons button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+        }
+
+        .post-card-buttons button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        }
+
+        /* Theater view */
+        .holo-theater {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 4rem;
+            display: none;
+            z-index: 101;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .holo-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .singularity-video {
+            width: 100%;
+            height: calc(100vh - 200px);
+            border: 2px solid var(--quantum-blue);
+            border-radius: 20px;
+            box-shadow: 0 0 80px rgba(0, 247, 255, 0.3);
+            background: #000;
+            margin-top: 2rem;
+        }
+
+        .button-container {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            display: flex;
+            justify-content: space-between;
+            z-index: 102;
+        }
+
+        .back-button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.4);
+        }
+
+        .download-singularity {
+            padding: 1.5rem 3rem;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 15px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .post-card {
+                padding: 1.5rem;
+            }
+
+            .holo-theater {
+                padding: 1rem;
+            }
+
+            .singularity-video {
+                height: calc(100vh - 160px);
+            }
+
+            .download-singularity {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Quantum Alert Responsive Fixes */
+        .quantum-alert {
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-screen post selection panel -->
+    <div class="post-quantum-list" id="postList">
+        <div class="post-card" onclick="showHolotheater('deltaTheater')">
+            <h2>Delta Executor</h2>
+            <p>Quantum Execution Interface</p>
+        </div>
+    </div>
+
+    <!-- Theater view -->
+    <div class="holo-theater" id="deltaTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">← Back</button>
+            <button class="download-singularity" onclick="showQuantumAlert()">
+                ⚛️ Download
+            </button>
+            <button class="download-singularity" onclick="showLdPlayerAlert()">
+                Download LDPlayer
+            </button>
+        </div>
+        <div class="holo-content">
+            <iframe 
+                class="singularity-video"
+                src="https://drive.google.com/file/d/1_otCaScFKWUqTS0EA5bzX1K28zctRLUd/preview" 
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Quantum Warning Popup -->
+    <div class="quantum-overlay" id="quantumOverlay"></div>
+    <div class="quantum-alert" id="quantumAlert">
+        <h2>⚠️ QUANTUM WARNING</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Disclaimer:</strong></p>
+            <p>We are not affiliated with Delta Executor. This third-party software might contain malicious code. Use at your own risk.</p>
+            <ul>
+                <li>Potential system instability</li>
+                <li>Security vulnerabilities</li>
+                <li>Unauthorized data access</li>
+            </ul>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://rekonise.com/delta-bootstrapper-d4sc9', '_blank')">
+                Proceed
+            </button>
+            <button class="abort" onclick="hideQuantumAlert()">
+                Abort
+            </button>
+        </div>
+    </div>
+
+    <!-- LDPlayer Popup -->
+    <div class="quantum-overlay" id="ldPlayerOverlay"></div>
+    <div class="quantum-alert" id="ldPlayerAlert">
+        <h2>✅ LDPlayer</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Verification:</strong></p>
+            <p>LDPlayer is a secure and trusted Android emulator. It is safe to download and use.</p>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://www.ldplayer.net/', '_blank')">
+                Download LDPlayer
+            </button>
+            <button class="abort" onclick="hideLdPlayerAlert()">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showHolotheater(theaterId) {
+            document.getElementById('postList').style.display = 'none';
+            document.getElementById(theaterId).style.display = 'block';
+        }
+
+        function goBackToPosts() {
+            document.querySelectorAll('.holo-theater').forEach(theater => {
+                theater.style.display = 'none';
+            });
+            document.getElementById('postList').style.display = 'flex';
+        }
+
+        function showQuantumAlert() {
+            document.getElementById('quantumOverlay').style.display = 'block';
+            document.getElementById('quantumAlert').style.display = 'block';
+        }
+
+        function hideQuantumAlert() {
+            document.getElementById('quantumOverlay').style.display = 'none';
+            document.getElementById('quantumAlert').style.display = 'none';
+        }
+
+        function showLdPlayerAlert() {
+            document.getElementById('ldPlayerOverlay').style.display = 'block';
+            document.getElementById('ldPlayerAlert').style.display = 'block';
+        }
+
+        function hideLdPlayerAlert() {
+            document.getElementById('ldPlayerOverlay').style.display = 'none';
+            document.getElementById('ldPlayerAlert').style.display = 'none';
+        }
+
+        document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
+        document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
+    </script>
+</body>
+</html>
