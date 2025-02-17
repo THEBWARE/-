@@ -162,18 +162,37 @@
             margin-top: 2rem;
         }
 
+        /* Updated Button Container */
         .button-container {
             position: fixed;
-            top: 2rem;
-            left: 2rem;
-            right: 2rem;
+            top: 1rem; /* Adjusted to avoid blocking content */
+            left: 1rem; /* Adjusted to avoid blocking content */
+            right: 1rem; /* Adjusted to avoid blocking content */
             display: flex;
             justify-content: space-between;
             z-index: 102;
+            gap: 1rem; /* Add gap between buttons */
         }
 
-        /* Updated Button Styles */
-        .download-singularity, .back-button {
+        /* Updated Back Button Styles */
+        .back-button {
+            padding: 0.8rem 1.5rem; /* Smaller padding */
+            font-size: 1rem; /* Smaller font size */
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        }
+
+        .download-singularity {
             padding: 1rem 2rem;
             font-size: 1.2rem;
             background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
@@ -187,7 +206,7 @@
             overflow: hidden;
         }
 
-        .download-singularity::before, .back-button::before {
+        .download-singularity::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -201,16 +220,16 @@
             z-index: 0;
         }
 
-        .download-singularity:hover, .back-button:hover {
+        .download-singularity:hover {
             transform: scale(1.1);
             box-shadow: 0 0 60px rgba(255, 0, 255, 0.8);
         }
 
-        .download-singularity:hover::before, .back-button:hover::before {
+        .download-singularity:hover::before {
             transform: translate(-50%, -50%) scale(1);
         }
 
-        .download-singularity span, .back-button span {
+        .download-singularity span {
             position: relative;
             z-index: 1;
         }
@@ -313,6 +332,11 @@
             <h2>Xeno Executor</h2>
             <p>Advanced Execution Environment</p>
         </div>
+        <!-- New Roblox Download Post -->
+        <div class="post-card" onclick="showHolotheater('robloxTheater')">
+            <h2>Download Roblox</h2>
+            <p>Guide for iOS, Android, and Windows</p>
+        </div>
     </div>
 
     <!-- Theater view for Delta Executor -->
@@ -355,6 +379,43 @@
                 allow="autoplay; fullscreen"
                 allowfullscreen>
             </iframe>
+        </div>
+    </div>
+
+    <!-- Theater view for Roblox Download -->
+    <div class="holo-theater" id="robloxTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+            <button class="download-singularity" onclick="window.open('https://www.roblox.com/download/client?os=win', '_blank')">
+                <span>Download Roblox (Windows)</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <div class="roblox-guide">
+                <h2>How to Download Roblox</h2>
+                <h3>For iOS:</h3>
+                <ol>
+                    <li>Open the App Store on your iOS device.</li>
+                    <li>Search for "Roblox" in the search bar.</li>
+                    <li>Tap "Get" to download and install the app.</li>
+                    <li>Launch Roblox and sign in or create an account.</li>
+                </ol>
+                <h3>For Android:</h3>
+                <ol>
+                    <li>Open the Google Play Store on your Android device.</li>
+                    <li>Search for "Roblox" in the search bar.</li>
+                    <li>Tap "Install" to download and install the app.</li>
+                    <li>Launch Roblox and sign in or create an account.</li>
+                </ol>
+                <h3>For Windows:</h3>
+                <ol>
+                    <li>Click the "Download Roblox (Windows)" button above.</li>
+                    <li>Run the installer and follow the on-screen instructions.</li>
+                    <li>Launch Roblox and sign in or create an account.</li>
+                </ol>
+            </div>
         </div>
     </div>
 
@@ -432,7 +493,6 @@
                 const title = post.querySelector('h2').textContent.toLowerCase();
                 const description = post.querySelector('p').textContent.toLowerCase();
 
-                // Show the post if it matches the search query, otherwise hide it
                 if (title.includes(searchQuery) || description.includes(searchQuery)) {
                     post.style.display = 'block';
                 } else {
@@ -447,7 +507,7 @@
         // Function to show theater view
         function showHolotheater(theaterId) {
             document.getElementById('postList').style.display = 'none';
-            document.getElementById('searchBar').style.display = 'none'; // Hide search bar
+            document.getElementById('searchBar').style.display = 'none';
             document.getElementById(theaterId).style.display = 'block';
         }
 
@@ -457,7 +517,7 @@
                 theater.style.display = 'none';
             });
             document.getElementById('postList').style.display = 'flex';
-            document.getElementById('searchBar').style.display = 'flex'; // Show search bar
+            document.getElementById('searchBar').style.display = 'flex';
         }
 
         // Functions for Quantum Alert
