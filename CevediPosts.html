@@ -150,7 +150,8 @@
             z-index: 102;
         }
 
-        .back-button {
+        /* Updated Button Styles */
+        .download-singularity, .back-button {
             padding: 1rem 2rem;
             font-size: 1.2rem;
             background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
@@ -160,18 +161,45 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 0 40px rgba(0, 247, 255, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        .download-singularity {
-            padding: 1.5rem 3rem;
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 15px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 40px rgba(0, 247, 255, 0.4);
+        .download-singularity::before, .back-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .download-singularity:hover, .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 60px rgba(255, 0, 255, 0.8);
+        }
+
+        .download-singularity:hover::before, .back-button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .download-singularity span, .back-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Specific styles for the Download LDPlayer button */
+        .download-singularity.ldplayer {
+            background: linear-gradient(135deg, var(--supernova), var(--quantum-blue));
+        }
+
+        .download-singularity.ldplayer:hover {
+            box-shadow: 0 0 60px rgba(0, 247, 255, 0.8);
         }
 
         @media (max-width: 768px) {
@@ -213,12 +241,14 @@
     <!-- Theater view -->
     <div class="holo-theater" id="deltaTheater">
         <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">← Back</button>
-            <button class="download-singularity" onclick="showQuantumAlert()">
-                ⚛️ Download
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
             </button>
-            <button class="download-singularity" onclick="showLdPlayerAlert()">
-                Download LDPlayer
+            <button class="download-singularity" onclick="showQuantumAlert()">
+                <span>⚛️ Download</span>
+            </button>
+            <button class="download-singularity ldplayer" onclick="showLdPlayerAlert()">
+                <span>Download LDPlayer</span>
             </button>
         </div>
         <div class="holo-content">
