@@ -21,6 +21,49 @@
             overflow-x: hidden;
         }
 
+        /* Search Bar */
+        .search-bar {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 103;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-bar input {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--quantum-blue);
+            border-radius: 8px;
+            color: var(--quantum-blue);
+            outline: none;
+            width: 300px;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-bar button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+        }
+
+        .search-bar button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        }
+
         /* Full-screen post selection panel */
         .post-quantum-list {
             position: fixed;
@@ -29,11 +72,13 @@
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(15px);
             background: rgba(0, 0, 0, 0.95);
             z-index: 100;
+            padding-top: 5rem; /* Space for search bar */
         }
 
         .post-card {
@@ -47,6 +92,7 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
+            margin: 1rem 0;
         }
 
         .post-card::before {
@@ -219,6 +265,14 @@
                 padding: 1rem 2rem;
                 font-size: 1.2rem;
             }
+
+            .search-bar {
+                width: 90%;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
         }
 
         /* Quantum Alert Responsive Fixes */
@@ -230,24 +284,34 @@
     </style>
 </head>
 <body>
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <input type="text" placeholder="Search posts..." />
+        <button>Search</button>
+    </div>
+
     <!-- Full-screen post selection panel -->
     <div class="post-quantum-list" id="postList">
         <div class="post-card" onclick="showHolotheater('deltaTheater')">
             <h2>Delta Executor</h2>
             <p>Quantum Execution Interface</p>
         </div>
+        <div class="post-card" onclick="showHolotheater('xenoTheater')">
+            <h2>Xeno Executor</h2>
+            <p>Advanced Execution Environment</p>
+        </div>
     </div>
 
-    <!-- Theater view -->
+    <!-- Theater view for Delta Executor -->
     <div class="holo-theater" id="deltaTheater">
         <div class="button-container">
             <button class="back-button" onclick="goBackToPosts()">
                 <span>← Back</span>
             </button>
-            <button class="download-singularity" onclick="showQuantumAlert()">
+            <button class="download-singularity" onclick="window.open('https://rekonise.com/delta-bootstrapper-d4sc9', '_blank')">
                 <span>⚛️ Download</span>
             </button>
-            <button class="download-singularity ldplayer" onclick="showLdPlayerAlert()">
+            <button class="download-singularity ldplayer" onclick="window.open('https://www.ldplayer.net/', '_blank')">
                 <span>Download LDPlayer</span>
             </button>
         </div>
@@ -255,6 +319,26 @@
             <iframe 
                 class="singularity-video"
                 src="https://drive.google.com/file/d/1_otCaScFKWUqTS0EA5bzX1K28zctRLUd/preview" 
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Theater view for Xeno Executor -->
+    <div class="holo-theater" id="xenoTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+            <button class="download-singularity" onclick="window.open('https://rekonise.com/xeno-executor-shkwg', '_blank')">
+                <span>⚛️ Download Xeno</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <iframe 
+                class="singularity-video"
+                src="https://drive.google.com/file/d/16o4daTrbuk93e5AIdwS44vSMeQJeEQsw/preview" 
                 allow="autoplay; fullscreen"
                 allowfullscreen>
             </iframe>
@@ -284,6 +368,29 @@
         </div>
     </div>
 
+    <!-- Xeno Warning Popup -->
+    <div class="quantum-overlay" id="xenoOverlay"></div>
+    <div class="quantum-alert" id="xenoAlert">
+        <h2>⚠️ QUANTUM WARNING</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Disclaimer:</strong></p>
+            <p>We are not affiliated with Xeno Executor. This third-party software might contain malicious code. Use at your own risk.</p>
+            <ul>
+                <li>Potential system instability</li>
+                <li>Security vulnerabilities</li>
+                <li>Unauthorized data access</li>
+            </ul>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://rekonise.com/xeno-executor-shkwg', '_blank')">
+                Proceed
+            </button>
+            <button class="abort" onclick="hideXenoAlert()">
+                Abort
+            </button>
+        </div>
+    </div>
+
     <!-- LDPlayer Popup -->
     <div class="quantum-overlay" id="ldPlayerOverlay"></div>
     <div class="quantum-alert" id="ldPlayerAlert">
@@ -305,6 +412,7 @@
     <script>
         function showHolotheater(theaterId) {
             document.getElementById('postList').style.display = 'none';
+            document.getElementById('searchBar').style.display = 'none'; // Hide search bar
             document.getElementById(theaterId).style.display = 'block';
         }
 
@@ -313,6 +421,7 @@
                 theater.style.display = 'none';
             });
             document.getElementById('postList').style.display = 'flex';
+            document.getElementById('searchBar').style.display = 'flex'; // Show search bar
         }
 
         function showQuantumAlert() {
@@ -323,6 +432,16 @@
         function hideQuantumAlert() {
             document.getElementById('quantumOverlay').style.display = 'none';
             document.getElementById('quantumAlert').style.display = 'none';
+        }
+
+        function showXenoAlert() {
+            document.getElementById('xenoOverlay').style.display = 'block';
+            document.getElementById('xenoAlert').style.display = 'block';
+        }
+
+        function hideXenoAlert() {
+            document.getElementById('xenoOverlay').style.display = 'none';
+            document.getElementById('xenoAlert').style.display = 'none';
         }
 
         function showLdPlayerAlert() {
@@ -336,6 +455,7 @@
         }
 
         document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
+        document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
         document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
     </script>
 </body>
