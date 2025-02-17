@@ -292,6 +292,43 @@
             display: none;
         }
 
+        /* New Styles for Speed Hub X */
+        .script-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--quantum-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .script-container pre {
+            color: var(--quantum-blue);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .copy-button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+            margin-top: 1rem;
+        }
+
+        .copy-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        }
+
         @media (max-width: 768px) {
             .post-card {
                 padding: 1.5rem;
@@ -332,10 +369,14 @@
             <h2>Xeno Executor</h2>
             <p>Advanced Execution Environment</p>
         </div>
-        <!-- New Roblox Download Post -->
         <div class="post-card" onclick="showHolotheater('robloxTheater')">
             <h2>Download Roblox</h2>
             <p>Guide for iOS, Android, and Windows</p>
+        </div>
+        <!-- New Speed Hub X Post -->
+        <div class="post-card" onclick="showHolotheater('speedHubTheater')">
+            <h2>Speed Hub X</h2>
+            <p>The best script for Blox Fruits, Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends</p>
         </div>
     </div>
 
@@ -348,7 +389,6 @@
             <button class="download-singularity" onclick="showQuantumAlert()">
                 <span>⚛️ Download</span>
             </button>
-            <!-- New Delta Website Button -->
             <button class="download-singularity" onclick="window.open('https://rekonise.com/delta-website-leic3', '_blank')">
                 <span>Delta Website</span>
             </button>
@@ -419,6 +459,25 @@
                     <li>Run the installer and follow the on-screen instructions.</li>
                     <li>Launch Roblox and sign in or create an account.</li>
                 </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theater view for Speed Hub X -->
+    <div class="holo-theater" id="speedHubTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <h2>Speed Hub X</h2>
+            <p>Speed Hub X is the best script for Fisch Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends.</p>
+            <div class="script-container">
+                <pre id="scriptCode">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+                </pre>
+                <button class="copy-button" onclick="copyScript()">Copy to Clipboard</button>
             </div>
         </div>
     </div>
@@ -561,6 +620,18 @@
         document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
         document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
         document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
+
+        // Function to copy the script to clipboard
+        function copyScript() {
+            const scriptCode = document.getElementById('scriptCode').textContent;
+            navigator.clipboard.writeText(scriptCode)
+                .then(() => {
+                    alert('Script copied to clipboard!');
+                })
+                .catch(() => {
+                    alert('Failed to copy script. Please manually copy the text.');
+                });
+        }
     </script>
 </body>
 </html>
