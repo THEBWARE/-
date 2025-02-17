@@ -130,30 +130,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        .post-card-buttons {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .post-card-buttons button {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
-        }
-
-        .post-card-buttons button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
-        }
-
         /* Theater view */
         .holo-theater {
             position: fixed;
@@ -239,13 +215,62 @@
             z-index: 1;
         }
 
-        /* Specific styles for the Download LDPlayer button */
-        .download-singularity.ldplayer {
-            background: linear-gradient(135deg, var(--supernova), var(--quantum-blue));
+        /* Quantum Alert Responsive Fixes */
+        .quantum-alert {
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--event-horizon);
+            padding: 2rem;
+            border-radius: 12px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 104;
+            display: none;
         }
 
-        .download-singularity.ldplayer:hover {
-            box-shadow: 0 0 60px rgba(0, 247, 255, 0.8);
+        .quantum-alert h2 {
+            color: var(--supernova);
+            margin-top: 0;
+        }
+
+        .quantum-alert p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .quantum-alert-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .quantum-alert-buttons button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-alert-buttons button:hover {
+            transform: scale(1.05);
+        }
+
+        .quantum-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 103;
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -261,11 +286,6 @@
                 height: calc(100vh - 160px);
             }
 
-            .download-singularity {
-                padding: 1rem 2rem;
-                font-size: 1.2rem;
-            }
-
             .search-bar {
                 width: 90%;
             }
@@ -274,20 +294,13 @@
                 width: 100%;
             }
         }
-
-        /* Quantum Alert Responsive Fixes */
-        .quantum-alert {
-            max-width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
     </style>
 </head>
 <body>
     <!-- Search Bar -->
     <div class="search-bar" id="searchBar">
-        <input type="text" placeholder="Search posts..." />
-        <button>Search</button>
+        <input type="text" id="searchInput" placeholder="Search posts..." />
+        <button onclick="searchPosts()">Search</button>
     </div>
 
     <!-- Full-screen post selection panel -->
@@ -308,10 +321,10 @@
             <button class="back-button" onclick="goBackToPosts()">
                 <span>← Back</span>
             </button>
-            <button class="download-singularity" onclick="window.open('https://rekonise.com/delta-bootstrapper-d4sc9', '_blank')">
+            <button class="download-singularity" onclick="showQuantumAlert()">
                 <span>⚛️ Download</span>
             </button>
-            <button class="download-singularity ldplayer" onclick="window.open('https://www.ldplayer.net/', '_blank')">
+            <button class="download-singularity ldplayer" onclick="showLdPlayerAlert()">
                 <span>Download LDPlayer</span>
             </button>
         </div>
@@ -331,7 +344,7 @@
             <button class="back-button" onclick="goBackToPosts()">
                 <span>← Back</span>
             </button>
-            <button class="download-singularity" onclick="window.open('https://rekonise.com/xeno-executor-shkwg', '_blank')">
+            <button class="download-singularity" onclick="showXenoAlert()">
                 <span>⚛️ Download Xeno</span>
             </button>
         </div>
@@ -410,12 +423,35 @@
     </div>
 
     <script>
+        // Function to filter posts based on search input
+        function searchPosts() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const posts = document.querySelectorAll('.post-card');
+
+            posts.forEach(post => {
+                const title = post.querySelector('h2').textContent.toLowerCase();
+                const description = post.querySelector('p').textContent.toLowerCase();
+
+                // Show the post if it matches the search query, otherwise hide it
+                if (title.includes(searchQuery) || description.includes(searchQuery)) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Add event listener to the search input for real-time filtering
+        document.getElementById('searchInput').addEventListener('input', searchPosts);
+
+        // Function to show theater view
         function showHolotheater(theaterId) {
             document.getElementById('postList').style.display = 'none';
             document.getElementById('searchBar').style.display = 'none'; // Hide search bar
             document.getElementById(theaterId).style.display = 'block';
         }
 
+        // Function to go back to posts
         function goBackToPosts() {
             document.querySelectorAll('.holo-theater').forEach(theater => {
                 theater.style.display = 'none';
@@ -424,6 +460,7 @@
             document.getElementById('searchBar').style.display = 'flex'; // Show search bar
         }
 
+        // Functions for Quantum Alert
         function showQuantumAlert() {
             document.getElementById('quantumOverlay').style.display = 'block';
             document.getElementById('quantumAlert').style.display = 'block';
@@ -434,6 +471,7 @@
             document.getElementById('quantumAlert').style.display = 'none';
         }
 
+        // Functions for Xeno Alert
         function showXenoAlert() {
             document.getElementById('xenoOverlay').style.display = 'block';
             document.getElementById('xenoAlert').style.display = 'block';
@@ -444,6 +482,7 @@
             document.getElementById('xenoAlert').style.display = 'none';
         }
 
+        // Functions for LDPlayer Alert
         function showLdPlayerAlert() {
             document.getElementById('ldPlayerOverlay').style.display = 'block';
             document.getElementById('ldPlayerAlert').style.display = 'block';
@@ -454,6 +493,7 @@
             document.getElementById('ldPlayerAlert').style.display = 'none';
         }
 
+        // Event listeners for overlays
         document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
         document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
         document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
