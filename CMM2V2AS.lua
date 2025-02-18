@@ -2,7 +2,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 -- Create Window
 local Window = Rayfield:CreateWindow({
-   Name = "Cevor MM2 V4",
+   Name = "Cevor MM2 V5",
    Icon = 0,
    LoadingTitle = "Cevor MM2 V4",
    LoadingSubtitle = "by ScripterBob",
@@ -23,7 +23,7 @@ local Window = Rayfield:CreateWindow({
    KeySettings = {
       Title = "Cevor MM2 V4",
       Subtitle = "Key System",
-      Note = "Key Link is https://cevormm2key.carrd.co/",
+      Note = "Key Link is https://loot-link.com/s?wKWYoOPZ",
       FileName = "true",
       SaveKey = true,
       GrabKeyFromSite = true,
