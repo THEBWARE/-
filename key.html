@@ -1,1 +1,76 @@
-key.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cevor MM2 V5 Key System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #00ff88;
+        }
+        .key {
+            font-size: 1.5em;
+            color: #00ff88;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .error {
+            color: #ff4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cevor MM2 V5 Key System</h1>
+        <div id="content">
+            <!-- Content will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Check the referrer
+        const referrer = document.referrer;
+
+        // The allowed referrer
+        const allowedReferrer = "https://loot-link.com/s?wKWYoOPZ";
+
+        // The key
+        const key = "lJOas719wzpK2rt5qZJXlBiGI";
+
+        // Get the content div
+        const contentDiv = document.getElementById("content");
+
+        // Check if the user was redirected from the allowed referrer
+        if (referrer === allowedReferrer) {
+            // Show the key
+            contentDiv.innerHTML = `
+                <p>Here is your key:</p>
+                <div class="key">${key}</div>
+                <p>Copy and paste it into the script.</p>
+            `;
+        } else {
+            // Show bypass detected message
+            contentDiv.innerHTML = `
+                <p class="error">Bypass Detected</p>
+                <p>You must access this page through the correct link.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
