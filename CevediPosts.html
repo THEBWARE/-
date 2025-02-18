@@ -74,11 +74,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Changed to flex-start for scrollable content */
             backdrop-filter: blur(15px);
             background: rgba(0, 0, 0, 0.95);
             z-index: 100;
             padding-top: 5rem; /* Space for search bar */
+            overflow-y: auto; /* Make the post section scrollable */
         }
 
         .post-card {
@@ -378,6 +379,11 @@
             <h2>Speed Hub X</h2>
             <p>The best script for Blox Fruits, Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends</p>
         </div>
+        <!-- New Thao Hub Post -->
+        <div class="post-card" onclick="showHolotheater('thaoHubTheater')">
+            <h2>Thao Hub</h2>
+            <p>Mainly for Arsenal but features a universal aimbot</p>
+        </div>
     </div>
 
     <!-- Theater view for Delta Executor -->
@@ -478,6 +484,25 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
                 </pre>
                 <button class="copy-button" onclick="copyScript()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theater view for Thao Hub -->
+    <div class="holo-theater" id="thaoHubTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <h2>Thao Hub</h2>
+            <p>Thao Hub is mainly for Arsenal but features a universal aimbot.</p>
+            <div class="script-container">
+                <pre id="thaoHubScriptCode">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenal"))()
+                </pre>
+                <button class="copy-button" onclick="copyThaoHubScript()">Copy to Clipboard</button>
             </div>
         </div>
     </div>
@@ -627,6 +652,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/
             navigator.clipboard.writeText(scriptCode)
                 .then(() => {
                     alert('Script copied to clipboard!');
+                })
+                .catch(() => {
+                    alert('Failed to copy script. Please manually copy the text.');
+                });
+        }
+
+        // Function to copy the Thao Hub script to clipboard
+        function copyThaoHubScript() {
+            const scriptCode = document.getElementById('thaoHubScriptCode').textContent;
+            navigator.clipboard.writeText(scriptCode)
+                .then(() => {
+                    alert('Thao Hub script copied to clipboard!');
                 })
                 .catch(() => {
                     alert('Failed to copy script. Please manually copy the text.');
