@@ -67,19 +67,18 @@
         /* Full-screen post selection panel */
         .post-quantum-list {
             position: fixed;
-            top: 0;
+            top: 5rem; /* Adjusted to make space for the search bar */
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 5rem); /* Adjusted height to account for the search bar */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Changed to flex-start for scrollable content */
             backdrop-filter: blur(15px);
             background: rgba(0, 0, 0, 0.95);
             z-index: 100;
-            padding-top: 5rem; /* Space for search bar */
             overflow-y: auto; /* Make the post section scrollable */
+            padding: 1rem 0; /* Add some padding at the top and bottom */
         }
 
         .post-card {
@@ -384,6 +383,11 @@
             <h2>Thao Hub</h2>
             <p>Mainly for Arsenal but features a universal aimbot</p>
         </div>
+        <!-- New Cevor MM2V5 Post -->
+        <div class="post-card" onclick="showHolotheater('cevorMM2Theater')">
+            <h2>Cevor MM2V5</h2>
+            <p>Murder Mystery 2 Script</p>
+        </div>
     </div>
 
     <!-- Theater view for Delta Executor -->
@@ -503,6 +507,25 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenal"))()
                 </pre>
                 <button class="copy-button" onclick="copyThaoHubScript()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theater view for Cevor MM2V5 -->
+    <div class="holo-theater" id="cevorMM2Theater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <h2>Cevor MM2V5</h2>
+            <p>Murder Mystery 2 Script</p>
+            <div class="script-container">
+                <pre id="cevorMM2ScriptCode">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Alveroalexandro56/-/refs/heads/main/CevorMM2V5.lua", true))()
+                </pre>
+                <button class="copy-button" onclick="copyCevorMM2Script()">Copy to Clipboard</button>
             </div>
         </div>
     </div>
@@ -664,6 +687,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/
             navigator.clipboard.writeText(scriptCode)
                 .then(() => {
                     alert('Thao Hub script copied to clipboard!');
+                })
+                .catch(() => {
+                    alert('Failed to copy script. Please manually copy the text.');
+                });
+        }
+
+        // Function to copy the Cevor MM2V5 script to clipboard
+        function copyCevorMM2Script() {
+            const scriptCode = document.getElementById('cevorMM2ScriptCode').textContent;
+            navigator.clipboard.writeText(scriptCode)
+                .then(() => {
+                    alert('Cevor MM2V5 script copied to clipboard!');
                 })
                 .catch(() => {
                     alert('Failed to copy script. Please manually copy the text.');
