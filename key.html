@@ -205,6 +205,7 @@
     </style>
 </head>
 <body>
+
     <!-- Quantum Holographic Background -->
     <div class="quantum-holographic-bg"></div>
 
@@ -228,27 +229,37 @@
         // Get the content div
         const contentDiv = document.getElementById("content");
 
-        // Display the key inside a box, along with the copy button and warning
+        // Initially show the 'Discover Interesting Articles' button
         contentDiv.innerHTML = `
-            <p>Here is your key:</p>
-            <div class="key-box" title="Hover to reveal">
-                <div class="key">${key}</div>
-            </div>
-            <button class="copy-button">Copy to Clipboard</button>
+            <button id="discoverButton" class="copy-button">Discover Interesting Articles</button>
             <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
         `;
 
-        // Add copy to clipboard functionality
-        const copyButton = document.querySelector(".copy-button");
+        // Get the discover button
+        const discoverButton = document.getElementById("discoverButton");
         const toast = document.getElementById("toast");
 
-        copyButton.addEventListener("click", () => {
-            copyToClipboard(key);
+        // Add event listener to discover button
+        discoverButton.addEventListener("click", () => {
+            // Open the URL in a new tab
+            window.open("https://www.snoqap.com/", "_blank");
+
+            // Delay for 30 seconds to show the key
+            setTimeout(() => {
+                // Display the key
+                contentDiv.innerHTML = `
+                    <p>Here is your key:</p>
+                    <div class="key-box" title="Hover to reveal">
+                        <div class="key">${key}</div>
+                    </div>
+                    <button class="copy-button" onclick="copyToClipboard('${key}')">Copy to Clipboard</button>
+                    <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
+                `;
+            }, 30000); // 30-second delay
         });
 
-        // Copy to clipboard function with fallback
+        // Copy to clipboard function
         function copyToClipboard(text) {
-            // Try using the Clipboard API
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
                     showToast("Key copied to clipboard!");
@@ -260,7 +271,7 @@
             }
         }
 
-        // Fallback method for copying text
+        // Fallback for copying text
         function fallbackCopy(text) {
             const textarea = document.createElement("textarea");
             textarea.value = text;
@@ -284,5 +295,6 @@
             }, 3000);
         }
     </script>
+
 </body>
 </html>
