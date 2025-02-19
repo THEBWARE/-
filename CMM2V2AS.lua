@@ -19,19 +19,17 @@ local Window = Rayfield:CreateWindow({
       Invite = "noinvitelink",
       RememberJoins = true
    },
-KeySystem = true,
-KeySettings = {
-   Title = "Cevor MM2 V4",
-   Subtitle = "Key System",
-   Note = "Key Link is https://loot-link.com/s?wKWYoOPZ",
-   FileName = "true",
-   SaveKey = true,
-   GrabKeyFromSite = true,
-   Key = {
-      "https://raw.githubusercontent.com/Alveroalexandro56/-/refs/heads/main/sdadsa.txt", -- GitHub raw link with multiple keys (1 key per line)
-      "https://pastebin.com/raw/UEuXVrir"  -- Another Pastebin link with multiple keys
+   KeySystem = true,
+   KeySettings = {
+      Title = "Cevor MM2 V4",
+      Subtitle = "Key System",
+      Note = "Key Link is https://loot-link.com/s?wKWYoOPZ",
+      FileName = "true",
+      SaveKey = true,
+      GrabKeyFromSite = true,
+      Key = {"https://pastebin.com/raw/06jeUSnL", "https://pastebin.com/raw/UEuXVrir"}
    }
-}
+})
 
 -- Main Tab
 local MainTab = Window:CreateTab("🏠 Main", nil)
