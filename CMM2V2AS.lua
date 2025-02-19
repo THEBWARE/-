@@ -45,14 +45,14 @@ local Window = Rayfield:CreateWindow({
     },
     Discord = {
         Enabled = true,
-        Invite = "noinvitelink",
+        Invite = "https://discord.gg/PpYn4v5vR2",
         RememberJoins = true
     },
     KeySystem = true,
     KeySettings = {
-        Title = "Cevor MM2 V4",
+        Title = "Cevor MM2 V5",
         Subtitle = "Key System",
-        Note = "Enter your key to access the script.",
+        Note = "Key Link is https://loot-link.com/s?wKWYoOPZ which can also be accesed by joining our discord https://discord.gg/PpYn4v5vR2",
         FileName = "CevorMM2Key",
         SaveKey = true,
         GrabKeyFromSite = false, -- Disable grabbing key from site (we handle it manually)
