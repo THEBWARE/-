@@ -1,34 +1,71 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Create Window
+-- Function to fetch keys from a URL
+local function fetchKeys(url)
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    if not success then
+        warn("Failed to fetch keys from: " .. url)
+        return {}
+    end
+    local keys = {}
+    for key in response:gmatch("[^\r\n]+") do
+        table.insert(keys, key)
+    end
+    return keys
+end
+
+-- Fetch keys from both sources
+local validKeys = {}
+local githubKeys = fetchKeys("https://raw.githubusercontent.com/Alveroalexandro56/-/refs/heads/main/sdadsa.txt")
+local pastebinKeys = fetchKeys("https://pastebin.com/raw/UEuXVrir")
+
+-- Combine keys from both sources
+for _, key in ipairs(githubKeys) do
+    table.insert(validKeys, key)
+end
+for _, key in ipairs(pastebinKeys) do
+    table.insert(validKeys, key)
+end
+
+-- Create Window with Key System
 local Window = Rayfield:CreateWindow({
-   Name = "Cevor MM2 V5",
-   Icon = 0,
-   LoadingTitle = "Cevor MM2 V4",
-   LoadingSubtitle = "by ScripterBob",
-   Theme = "Default",
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false,
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "CevorMM2Config",
-      FileName = "CevorMM2Config"
-   },
-   Discord = {
-      Enabled = true,
-      Invite = "noinvitelink",
-      RememberJoins = true
-   },
-   KeySystem = true,
-   KeySettings = {
-      Title = "Cevor MM2 V4",
-      Subtitle = "Key System",
-      Note = "Key Link is https://loot-link.com/s?wKWYoOPZ",
-      FileName = "true",
-      SaveKey = true,
-      GrabKeyFromSite = true,
-      Key = {"https://pastebin.com/raw/06jeUSnL", "https://pastebin.com/raw/UEuXVrir"}
-   }
+    Name = "Cevor MM2 V5",
+    Icon = 0,
+    LoadingTitle = "Cevor MM2 V4",
+    LoadingSubtitle = "by ScripterBob",
+    Theme = "Default",
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "CevorMM2Config",
+        FileName = "CevorMM2Config"
+    },
+    Discord = {
+        Enabled = true,
+        Invite = "noinvitelink",
+        RememberJoins = true
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Cevor MM2 V4",
+        Subtitle = "Key System",
+        Note = "Enter your key to access the script.",
+        FileName = "CevorMM2Key",
+        SaveKey = true,
+        GrabKeyFromSite = false, -- Disable grabbing key from site (we handle it manually)
+        Key = validKeys -- Use the combined keys
+    }
+})
+
+-- Notify User
+Rayfield:Notify({
+    Title = "Cevor MM2 V4",
+    Content = "Script loaded successfully!",
+    Duration = 6.5,
+    Image = nil,
 })
 
 -- Main Tab
