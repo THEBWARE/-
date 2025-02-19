@@ -223,8 +223,24 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // The key
-        const key = "lJOas719wzpK2rt5qZJXlBiGI";
+        // Function to fetch and process the keys from sdadsa.txt
+        async function fetchKeys() {
+            try {
+                const response = await fetch('sdadsa.txt'); // Fetch the file
+                const text = await response.text(); // Read the file as text
+                const keys = text.split('\n').filter(key => key.trim() !== ''); // Split into array and remove empty lines
+                return keys;
+            } catch (error) {
+                console.error('Error fetching keys:', error);
+                return [];
+            }
+        }
+
+        // Function to get a random key from the array
+        function getRandomKey(keys) {
+            const randomIndex = Math.floor(Math.random() * keys.length);
+            return keys[randomIndex];
+        }
 
         // Get the content div
         const contentDiv = document.getElementById("content");
@@ -240,19 +256,27 @@
         const toast = document.getElementById("toast");
 
         // Add event listener to discover button
-        discoverButton.addEventListener("click", () => {
+        discoverButton.addEventListener("click", async () => {
             // Open the URL in a new tab
             window.open("https://www.snoqap.com/", "_blank");
 
+            // Fetch keys and get a random one
+            const keys = await fetchKeys();
+            if (keys.length === 0) {
+                showToast("Failed to load keys. Please try again later.");
+                return;
+            }
+
             // Delay for 30 seconds to show the key
             setTimeout(() => {
+                const randomKey = getRandomKey(keys);
                 // Display the key
                 contentDiv.innerHTML = `
                     <p>Here is your key:</p>
                     <div class="key-box" title="Hover to reveal">
-                        <div class="key">${key}</div>
+                        <div class="key">${randomKey}</div>
                     </div>
-                    <button class="copy-button" onclick="copyToClipboard('${key}')">Copy to Clipboard</button>
+                    <button class="copy-button" onclick="copyToClipboard('${randomKey}')">Copy to Clipboard</button>
                     <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
                 `;
             }, 30000); // 30-second delay
