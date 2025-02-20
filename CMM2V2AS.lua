@@ -54,7 +54,7 @@ local Window = Rayfield:CreateWindow({
         Subtitle = "Key System",
         Note = "Key Link is https://loot-link.com/s?wKWYoOPZ which can also be accesed by joining our discord https://discord.gg/PpYn4v5vR2",
         FileName = "CevorMM2Key",
-        SaveKey = true,
+        SaveKey = false,
         GrabKeyFromSite = false, -- Disable grabbing key from site (we handle it manually)
         Key = validKeys -- Use the combined keys
     }
