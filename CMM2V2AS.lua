@@ -48,7 +48,7 @@ local Window = Rayfield:CreateWindow({
         Invite = "https://discord.gg/PpYn4v5vR2",
         RememberJoins = true
     },
-    KeySystem = false,
+    KeySystem = true,
     KeySettings = {
         Title = "Cevor MM2 V5",
         Subtitle = "Key System",
