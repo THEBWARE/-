@@ -226,7 +226,7 @@
         // Function to fetch and process the keys from sdadsa.txt
         async function fetchKeys() {
             try {
-                const response = await fetch('sdadsa.txt'); // Fetch the file
+                const response = await fetch('sdadsas.txt'); // Fetch the file
                 const text = await response.text(); // Read the file as text
                 const keys = text.split('\n').filter(key => key.trim() !== ''); // Split into array and remove empty lines
                 return keys;
