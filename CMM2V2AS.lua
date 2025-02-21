@@ -18,7 +18,7 @@ end
 
 -- Fetch keys from both sources
 local validKeys = {}
-local githubKeys = fetchKeys("https://raw.githubusercontent.com/Alveroalexandro56/-/refs/heads/main/sdadsa.txt")
+local githubKeys = fetchKeys("https://raw.githubusercontent.com/THEBWARE/-/refs/heads/main/johncenaop.txt")
 local pastebinKeys = fetchKeys("https://pastebin.com/raw/UEuXVrir")
 
 -- Combine keys from both sources
