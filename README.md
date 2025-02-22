@@ -45,6 +45,11 @@
             margin-bottom: 30px;
         }
 
+        .welcome-content .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
         .welcome-content button {
             background: #ff6f61;
             border: none;
@@ -80,6 +85,11 @@
             .welcome-image img {
                 max-width: 80%;
             }
+
+            .welcome-content .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -89,7 +99,10 @@
         <div class="welcome-content">
             <h1>Welcome to Our Platform</h1>
             <p>Your journey starts here. Explore, learn, and grow with us.</p>
-            <button id="getStartedBtn">Get Started</button>
+            <div class="buttons">
+                <button id="cevediPostsBtn">Go to Cevedi Posts</button>
+                <button id="keyPageBtn">Go to Key Page</button>
+            </div>
         </div>
         <div class="welcome-image">
             <img src="https://via.placeholder.com/400" alt="Welcome Image">
@@ -98,11 +111,13 @@
 
     <!-- JavaScript -->
     <script>
-        // JavaScript for interactivity
-        document.getElementById('getStartedBtn').addEventListener('click', function() {
-            alert('Let’s get started! Redirecting you...');
-            // You can replace this with actual redirection logic
-            window.location.href = 'https://example.com';
+        // JavaScript to open links in a new tab
+        document.getElementById('cevediPostsBtn').addEventListener('click', function() {
+            window.open('https://thebware.github.io/-/CevediPosts.html', '_blank');
+        });
+
+        document.getElementById('keyPageBtn').addEventListener('click', function() {
+            window.open('https://thebware.github.io/-/key.html', '_blank');
         });
     </script>
 </body>
