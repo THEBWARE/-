@@ -14,6 +14,7 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
+            color: white;
         }
         canvas {
             border: 1px solid white;
@@ -33,6 +34,7 @@
             font-size: 20px;
             border-radius: 10px;
             user-select: none;
+            cursor: pointer;
         }
         #gameOverScreen {
             display: none;
@@ -45,6 +47,11 @@
         }
         #gameOverScreen h1 {
             font-size: 40px;
+            margin: 0;
+        }
+        #gameOverScreen p {
+            font-size: 24px;
+            margin: 10px 0;
         }
         #gameOverScreen button {
             background-color: white;
@@ -52,6 +59,27 @@
             padding: 10px 20px;
             font-size: 20px;
             cursor: pointer;
+            border-radius: 5px;
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+        }
+        #bossHealthBar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 20px;
+            background-color: red;
+            display: none;
+        }
+        #bossHealth {
+            height: 100%;
+            background-color: green;
         }
     </style>
 </head>
@@ -59,7 +87,9 @@
     <canvas id="gameCanvas" width="480" height="640"></canvas>
     <div id="mobileControls">
         <div class="mobileButton" id="leftButton">←</div>
+        <div class="mobileButton" id="upButton">↑</div>
         <div class="mobileButton" id="shootButton">🔫</div>
+        <div class="mobileButton" id="downButton">↓</div>
         <div class="mobileButton" id="rightButton">→</div>
     </div>
     <div id="gameOverScreen">
@@ -67,12 +97,25 @@
         <p>Score: <span id="finalScore">0</span></p>
         <button onclick="restartGame()">Restart</button>
     </div>
+    <div id="ui">
+        <div>Lives: <span id="lives">2</span></div>
+        <div>Score: <span id="score">0</span></div>
+        <div>Wave: <span id="wave">1</span></div>
+    </div>
+    <div id="bossHealthBar">
+        <div id="bossHealth"></div>
+    </div>
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         const mobileControls = document.getElementById("mobileControls");
         const gameOverScreen = document.getElementById("gameOverScreen");
         const finalScore = document.getElementById("finalScore");
+        const livesElement = document.getElementById("lives");
+        const scoreElement = document.getElementById("score");
+        const waveElement = document.getElementById("wave");
+        const bossHealthBar = document.getElementById("bossHealthBar");
+        const bossHealth = document.getElementById("bossHealth");
 
         // Detect mobile or PC
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -84,8 +127,7 @@
         const FPS = 60;
         const playerWidth = 40;
         const playerHeight = 40;
-        const bulletWidth = 5;
-        const bulletHeight = 15;
+        const bulletRadius = 5;
         const enemyWidth = 40;
         const enemyHeight = 40;
         const powerUpWidth = 20;
@@ -93,15 +135,18 @@
 
         // Player
         let playerX = (canvas.width - playerWidth) / 2;
+        let playerY = canvas.height - playerHeight - 10;
         const playerSpeed = 5;
-        let playerLives = 3;
+        let playerLives = 2;
         let playerScore = 0;
         let isGameOver = false;
 
         // Bullets
-        let bullets = [];
+        let playerBullets = [];
+        let enemyBullets = [];
         const bulletSpeed = 7;
         let bulletCooldown = 0;
+        let bulletSpread = 0; // Added bullet spread for power-up
 
         // Enemies
         let enemies = [];
@@ -115,7 +160,8 @@
         const bossWidth = 80;
         const bossHeight = 80;
         const bossSpeed = 1;
-        let bossHealth = 10;
+        let bossHealthMax = 10;
+        let bossHealthCurrent = 10;
 
         // Power-ups
         let powerUps = [];
@@ -129,58 +175,75 @@
         // Initialize game
         function init() {
             playerX = (canvas.width - playerWidth) / 2;
-            playerLives = 3;
+            playerY = canvas.height - playerHeight - 10;
+            playerLives = 2;
             playerScore = 0;
             isGameOver = false;
-            bullets = [];
+            playerBullets = [];
+            enemyBullets = [];
             enemies = [];
             powerUps = [];
             boss = null;
             wave = 1;
+            bossHealthCurrent = bossHealthMax;
+            bossHealthBar.style.display = "none";
             gameOverScreen.style.display = "none";
+            bulletSpread = 0; // Reset bullet spread
+            updateUI();
         }
 
-        // Draw player
+        // Update UI
+        function updateUI() {
+            livesElement.textContent = playerLives;
+            scoreElement.textContent = playerScore;
+            waveElement.textContent = wave;
+        }
+
+        // Draw player (emoji)
         function drawPlayer() {
-            ctx.fillStyle = "blue";
-            ctx.fillRect(playerX, canvas.height - playerHeight - 10, playerWidth, playerHeight);
+            ctx.font = "40px Arial";
+            ctx.fillText("🚀", playerX, playerY);
         }
 
-        // Draw bullets
-        function drawBullets() {
-            ctx.fillStyle = "yellow";
+        // Draw bullets (circles)
+        function drawBullets(bullets, color) {
+            ctx.fillStyle = color;
             bullets.forEach((bullet, index) => {
-                ctx.fillRect(bullet.x, bullet.y, bulletWidth, bulletHeight);
-                bullet.y -= bulletSpeed;
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, bulletRadius, 0, Math.PI * 2);
+                ctx.fill();
+                bullet.y += bullet.speed;
 
                 // Remove bullet if it goes off screen
-                if (bullet.y < 0) {
+                if (bullet.y < 0 || bullet.y > canvas.height) {
                     bullets.splice(index, 1);
                 }
             });
         }
 
-        // Draw enemies
+        // Draw enemies (emoji)
         function drawEnemies() {
-            ctx.fillStyle = "red";
+            ctx.font = "40px Arial";
             enemies.forEach((enemy, index) => {
                 if (enemy.alive) {
-                    ctx.fillRect(enemy.x, enemy.y, enemyWidth, enemyHeight);
+                    ctx.fillText("👾", enemy.x, enemy.y);
+
                     enemy.x += enemySpeed * enemyDirection;
 
-                    // Check for collision with bullets
-                    bullets.forEach((bullet, bulletIndex) => {
+                    // Check for collision with player bullets
+                    playerBullets.forEach((bullet, bulletIndex) => {
                         if (
                             bullet.x < enemy.x + enemyWidth &&
-                            bullet.x + bulletWidth > enemy.x &&
+                            bullet.x > enemy.x &&
                             bullet.y < enemy.y + enemyHeight &&
-                            bullet.y + bulletHeight > enemy.y
+                            bullet.y > enemy.y
                         ) {
                             enemy.alive = false;
-                            bullets.splice(bulletIndex, 1);
+                            playerBullets.splice(bulletIndex, 1);
                             playerScore += 10;
                             spawnPowerUp(enemy.x, enemy.y);
                             explosionSound.play();
+                            updateUI();
                         }
                     });
 
@@ -188,14 +251,24 @@
                     if (
                         playerX < enemy.x + enemyWidth &&
                         playerX + playerWidth > enemy.x &&
-                        canvas.height - playerHeight - 10 < enemy.y + enemyHeight &&
-                        canvas.height - playerHeight - 10 + playerHeight > enemy.y
+                        playerY < enemy.y + enemyHeight &&
+                        playerY + playerHeight > enemy.y
                     ) {
                         playerLives--;
                         enemy.alive = false;
                         if (playerLives <= 0) {
                             isGameOver = true;
                         }
+                        updateUI();
+                    }
+
+                    // Enemy shooting (slower)
+                    if (Math.random() < 0.005) { // Reduced shooting frequency
+                        enemyBullets.push({
+                            x: enemy.x + enemyWidth / 2,
+                            y: enemy.y + enemyHeight,
+                            speed: bulletSpeed
+                        });
                     }
                 }
             });
@@ -215,6 +288,7 @@
             if (enemies.length === 0) {
                 wave++;
                 spawnWave();
+                updateUI();
             }
         }
 
@@ -229,29 +303,32 @@
             }
         }
 
-        // Draw boss
+        // Draw boss (emoji)
         function drawBoss() {
             if (boss) {
-                ctx.fillStyle = "orange";
-                ctx.fillRect(boss.x, boss.y, bossWidth, bossHeight);
+                ctx.font = "60px Arial";
+                ctx.fillText("👹", boss.x, boss.y);
 
                 // Move boss
                 boss.x += bossSpeed * enemyDirection;
 
-                // Check for collision with bullets
-                bullets.forEach((bullet, bulletIndex) => {
+                // Check for collision with player bullets
+                playerBullets.forEach((bullet, bulletIndex) => {
                     if (
                         bullet.x < boss.x + bossWidth &&
-                        bullet.x + bulletWidth > boss.x &&
+                        bullet.x > boss.x &&
                         bullet.y < boss.y + bossHeight &&
-                        bullet.y + bulletHeight > boss.y
+                        bullet.y > boss.y
                     ) {
-                        bossHealth--;
-                        bullets.splice(bulletIndex, 1);
-                        if (bossHealth <= 0) {
+                        bossHealthCurrent--;
+                        playerBullets.splice(bulletIndex, 1);
+                        updateBossHealthBar();
+                        if (bossHealthCurrent <= 0) {
                             boss = null;
                             playerScore += 100;
                             explosionSound.play();
+                            bossHealthBar.style.display = "none";
+                            updateUI();
                         }
                     }
                 });
@@ -260,16 +337,32 @@
                 if (
                     playerX < boss.x + bossWidth &&
                     playerX + playerWidth > boss.x &&
-                    canvas.height - playerHeight - 10 < boss.y + bossHeight &&
-                    canvas.height - playerHeight - 10 + playerHeight > boss.y
+                    playerY < boss.y + bossHeight &&
+                    playerY + playerHeight > boss.y
                 ) {
                     playerLives--;
                     boss = null;
                     if (playerLives <= 0) {
                         isGameOver = true;
                     }
+                    updateUI();
+                }
+
+                // Boss shooting (slower)
+                if (Math.random() < 0.01) { // Reduced shooting frequency
+                    enemyBullets.push({
+                        x: boss.x + bossWidth / 2,
+                        y: boss.y + bossHeight,
+                        speed: bulletSpeed
+                    });
                 }
             }
+        }
+
+        // Update boss health bar
+        function updateBossHealthBar() {
+            const healthPercent = (bossHealthCurrent / bossHealthMax) * 100;
+            bossHealth.style.width = `${healthPercent}%`;
         }
 
         // Spawn boss
@@ -278,41 +371,50 @@
                 boss = {
                     x: (canvas.width - bossWidth) / 2,
                     y: 0,
-                    health: bossHealth
+                    health: bossHealthMax
                 };
+                bossHealthCurrent = bossHealthMax;
+                bossHealthBar.style.display = "block";
+                updateBossHealthBar();
             }
         }
 
         // Spawn power-up
         function spawnPowerUp(x, y) {
+            const powerUpTypes = ["extraLife", "fastShoot", "spreadShoot"];
+            const type = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
             powerUps.push({
                 x: x,
                 y: y,
-                type: Math.random() > 0.5 ? "fastShoot" : "extraLife"
+                type: type
             });
         }
 
         // Draw power-ups
         function drawPowerUps() {
+            ctx.font = "20px Arial";
             powerUps.forEach((powerUp, index) => {
-                ctx.fillStyle = powerUp.type === "fastShoot" ? "green" : "purple";
-                ctx.fillRect(powerUp.x, powerUp.y, powerUpWidth, powerUpHeight);
+                ctx.fillStyle = powerUp.type === "fastShoot" ? "green" : powerUp.type === "spreadShoot" ? "blue" : "purple";
+                ctx.fillText(powerUp.type === "fastShoot" ? "⚡" : powerUp.type === "spreadShoot" ? "🌀" : "❤️", powerUp.x, powerUp.y);
                 powerUp.y += powerUpSpeed;
 
                 // Check for collision with player
                 if (
                     playerX < powerUp.x + powerUpWidth &&
                     playerX + playerWidth > powerUp.x &&
-                    canvas.height - playerHeight - 10 < powerUp.y + powerUpHeight &&
-                    canvas.height - playerHeight - 10 + playerHeight > powerUp.y
+                    playerY < powerUp.y + powerUpHeight &&
+                    playerY + playerHeight > powerUp.y
                 ) {
                     if (powerUp.type === "fastShoot") {
-                        bulletCooldown = 10;
+                        bulletCooldown = 5; // Faster shooting
+                    } else if (powerUp.type === "spreadShoot") {
+                        bulletSpread = 10; // Spread shooting
                     } else if (powerUp.type === "extraLife") {
                         playerLives++;
                     }
                     powerUps.splice(index, 1);
                     powerUpSound.play();
+                    updateUI();
                 }
 
                 // Remove power-up if it goes off screen
@@ -320,15 +422,6 @@
                     powerUps.splice(index, 1);
                 }
             });
-        }
-
-        // Draw UI
-        function drawUI() {
-            ctx.fillStyle = "white";
-            ctx.font = "20px Arial";
-            ctx.fillText(`Lives: ${playerLives}`, 10, 30);
-            ctx.fillText(`Score: ${playerScore}`, 10, 60);
-            ctx.fillText(`Wave: ${wave}`, 10, 90);
         }
 
         // Game over screen
@@ -365,11 +458,28 @@
             }
 
             drawPlayer();
-            drawBullets();
+            drawBullets(playerBullets, "yellow");
+            drawBullets(enemyBullets, "red");
             drawEnemies();
             drawBoss();
             drawPowerUps();
-            drawUI();
+
+            // Check for collision with enemy bullets
+            enemyBullets.forEach((bullet, index) => {
+                if (
+                    bullet.x < playerX + playerWidth &&
+                    bullet.x > playerX &&
+                    bullet.y < playerY + playerHeight &&
+                    bullet.y > playerY
+                ) {
+                    playerLives--;
+                    enemyBullets.splice(index, 1);
+                    if (playerLives <= 0) {
+                        isGameOver = true;
+                    }
+                    updateUI();
+                }
+            });
 
             // Update bullet cooldown
             if (bulletCooldown > 0) {
@@ -390,11 +500,30 @@
             if (e.key === "ArrowRight" && playerX < canvas.width - playerWidth) {
                 playerX += playerSpeed;
             }
+            if (e.key === "ArrowUp" && playerY > 0) {
+                playerY -= playerSpeed;
+            }
+            if (e.key === "ArrowDown" && playerY < canvas.height - playerHeight) {
+                playerY += playerSpeed;
+            }
             if (e.key === " " && bulletCooldown <= 0) {
-                bullets.push({
-                    x: playerX + playerWidth / 2 - bulletWidth / 2,
-                    y: canvas.height - playerHeight - 20
+                playerBullets.push({
+                    x: playerX + playerWidth / 2,
+                    y: playerY,
+                    speed: -bulletSpeed
                 });
+                if (bulletSpread > 0) {
+                    playerBullets.push({
+                        x: playerX + playerWidth / 2 - 10,
+                        y: playerY,
+                        speed: -bulletSpeed
+                    });
+                    playerBullets.push({
+                        x: playerX + playerWidth / 2 + 10,
+                        y: playerY,
+                        speed: -bulletSpeed
+                    });
+                }
                 bulletCooldown = 20;
                 shootSound.play();
             }
@@ -408,12 +537,31 @@
             document.getElementById("rightButton").addEventListener("touchstart", () => {
                 playerX = Math.min(canvas.width - playerWidth, playerX + playerSpeed);
             });
+            document.getElementById("upButton").addEventListener("touchstart", () => {
+                playerY = Math.max(0, playerY - playerSpeed);
+            });
+            document.getElementById("downButton").addEventListener("touchstart", () => {
+                playerY = Math.min(canvas.height - playerHeight, playerY + playerSpeed);
+            });
             document.getElementById("shootButton").addEventListener("touchstart", () => {
                 if (bulletCooldown <= 0) {
-                    bullets.push({
-                        x: playerX + playerWidth / 2 - bulletWidth / 2,
-                        y: canvas.height - playerHeight - 20
+                    playerBullets.push({
+                        x: playerX + playerWidth / 2,
+                        y: playerY,
+                        speed: -bulletSpeed
                     });
+                    if (bulletSpread > 0) {
+                        playerBullets.push({
+                            x: playerX + playerWidth / 2 - 10,
+                            y: playerY,
+                            speed: -bulletSpeed
+                        });
+                        playerBullets.push({
+                            x: playerX + playerWidth / 2 + 10,
+                            y: playerY,
+                            speed: -bulletSpeed
+                        });
+                    }
                     bulletCooldown = 20;
                     shootSound.play();
                 }
