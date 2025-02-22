@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game 2.0 with Sign-In</title>
+    <title>Snake Game 2.0 with Admin Ban Feature</title>
     <style>
+        /* Same CSS as before */
         body {
             margin: 0;
             padding: 0;
@@ -118,6 +119,23 @@
             padding: 0;
             margin: 0;
         }
+
+        #ban-button {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: #ff5e57;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #ban-button:hover {
+            background-color: #ff3b30;
+        }
     </style>
 </head>
 <body>
@@ -138,6 +156,8 @@
         </div>
     </div>
 
+    <button id="ban-button">Ban User</button>
+
     <div id="leaderboard">
         <h2>High Scores</h2>
         <ul id="high-scores-list"></ul>
@@ -147,6 +167,9 @@
         // GitHub OAuth Configuration
         const clientId = 'Ov23li9eCwl25M3oOVl9'; // Replace with your GitHub OAuth Client ID
         const redirectUri = 'https://thebware.github.io/-/Znakezzz.html'; // Replace with your GitHub Pages URL
+
+        // Discord Webhook for Anti-Cheat
+        const discordWebhookURL = 'https://discord.com/api/webhooks/1342239610415091772/l6Sp6mRCMc5LGIkH3aNzn_miyVT90UqkLQu3QBuFc5R5kM_foQ_Eo92Vtkh9d8FhT1Q-';
 
         // Game Variables
         const canvas = document.getElementById("gameCanvas");
@@ -158,9 +181,45 @@
         let fruit;
         let score = 0;
         let gameOver = false;
+        let gameInterval;
 
         // Initialize Game
         startGame();
+
+        // Anti-Cheat: Detect Console Tampering
+        const originalConsoleLog = console.log;
+        console.log = function (message) {
+            if (typeof message === 'string' && (message.includes('alert') || message.includes('eval'))) {
+                const user = JSON.parse(localStorage.getItem('github_user'));
+                if (user) {
+                    if (user.login === 'THEBWARE') {
+                        // THEBWARE can ban other users
+                        fetch(discordWebhookURL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                content: `🚨 **Admin Action**\nTHEBWARE banned a user for code injection.\nCode: ${message}`
+                            })
+                        });
+                        alert('You have banned a user for attempting to inject code.');
+                    } else {
+                        // Non-THEBWARE users get banned
+                        fetch(discordWebhookURL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                content: `🚨 **Code Injection Detected**\nUser: ${user.login}\nCode: ${message}`
+                            })
+                        });
+                        alert('You have been banned for attempting to inject code.');
+                        localStorage.removeItem('github_token');
+                        localStorage.removeItem('github_user');
+                        window.location.reload();
+                    }
+                }
+            }
+            originalConsoleLog.apply(console, arguments); // Preserve original console.log functionality
+        };
 
         // GitHub OAuth Flow
         document.getElementById('github-signin').addEventListener('click', () => {
@@ -187,6 +246,11 @@
             document.getElementById('user-profile').style.display = 'flex';
             document.getElementById('user-avatar').src = user.avatar_url;
             document.getElementById('user-name').textContent = user.name || user.login;
+
+            // Show ban button only for THEBWARE
+            if (user.login === 'THEBWARE') {
+                document.getElementById('ban-button').style.display = 'block';
+            }
         }
 
         // Sign Out
@@ -195,12 +259,30 @@
             localStorage.removeItem('github_user');
             document.getElementById('github-signin').style.display = 'block';
             document.getElementById('user-profile').style.display = 'none';
+            document.getElementById('ban-button').style.display = 'none'; // Hide ban button on sign out
+        });
+
+        // Ban Button Functionality
+        document.getElementById('ban-button').addEventListener('click', () => {
+            const user = JSON.parse(localStorage.getItem('github_user'));
+            if (user && user.login === 'THEBWARE') {
+                fetch(discordWebhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `🚨 **Admin Action**\nTHEBWARE manually banned a user.`
+                    })
+                });
+                alert('You have manually banned a user.');
+            }
         });
 
         // Check if User is Already Signed In
         const user = JSON.parse(localStorage.getItem('github_user'));
         if (user) {
             showUserProfile(user);
+        } else {
+            alert('You must sign in to play the game.');
         }
 
         // High Scores
@@ -223,22 +305,32 @@
                 .join('');
         }
 
-        // Game Logic (Same as before)
+        // Game Logic
         function startGame() {
+            const user = JSON.parse(localStorage.getItem('github_user'));
+            if (!user) {
+                alert('You must sign in to play the game.');
+                return;
+            }
+
             snake = new Snake();
             fruit = new Fruit();
             score = 0;
             gameOver = false;
             document.getElementById('score').textContent = `Score: ${score}`;
             document.getElementById('game-over').style.display = 'none';
-            window.setInterval(gameLoop, 100);
+
+            if (gameInterval) {
+                clearInterval(gameInterval);
+            }
+            gameInterval = setInterval(gameLoop, 100);
         }
 
         function gameLoop() {
             if (gameOver) return;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            snake.move();
+            snake.update();
             snake.draw();
             fruit.draw();
 
@@ -255,94 +347,98 @@
             }
         }
 
-        // Snake and Fruit Classes (Same as before)
+        // Snake Class
         function Snake() {
-            this.snakeArray = [{ x: 5 * scale, y: 5 * scale }];
-            this.direction = "right";
-        }
+            this.x = 0;
+            this.y = 0;
+            this.xSpeed = scale;
+            this.ySpeed = 0;
+            this.tail = [];
+            this.total = 1;
 
-        Snake.prototype.draw = function () {
-            this.snakeArray.forEach((segment, index) => {
-                ctx.fillStyle = index === 0 ? "gold" : "#009900";
-                ctx.beginPath();
-                ctx.arc(segment.x + scale / 2, segment.y + scale / 2, scale / 2, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = "#003300";
-                ctx.lineWidth = 4;
-                ctx.stroke();
-            });
-        };
+            this.draw = function () {
+                ctx.fillStyle = "#009900";
+                for (let i = 0; i < this.tail.length; i++) {
+                    ctx.fillRect(this.tail[i].x, this.tail[i].y, scale, scale);
+                }
+                ctx.fillRect(this.x, this.y, scale, scale);
+            };
 
-        Snake.prototype.move = function () {
-            const head = { x: this.snakeArray[0].x, y: this.snakeArray[0].y };
+            this.update = function () {
+                for (let i = 0; i < this.tail.length - 1; i++) {
+                    this.tail[i] = this.tail[i + 1];
+                }
+                this.tail[this.total - 1] = { x: this.x, y: this.y };
 
-            if (this.direction === "right") head.x += scale;
-            if (this.direction === "left") head.x -= scale;
-            if (this.direction === "up") head.y -= scale;
-            if (this.direction === "down") head.y += scale;
+                this.x += this.xSpeed;
+                this.y += this.ySpeed;
 
-            this.snakeArray.unshift(head);
-            this.snakeArray.pop();
-        };
+                if (this.x >= canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width - scale;
+                if (this.y >= canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height - scale;
+            };
 
-        Snake.prototype.changeDirection = function (direction) {
-            this.direction = direction;
-        };
+            this.changeDirection = function (direction) {
+                if (direction === "Up" && this.ySpeed === 0) {
+                    this.xSpeed = 0;
+                    this.ySpeed = -scale;
+                }
+                if (direction === "Down" && this.ySpeed === 0) {
+                    this.xSpeed = 0;
+                    this.ySpeed = scale;
+                }
+                if (direction === "Left" && this.xSpeed === 0) {
+                    this.xSpeed = -scale;
+                    this.ySpeed = 0;
+                }
+                if (direction === "Right" && this.xSpeed === 0) {
+                    this.xSpeed = scale;
+                    this.ySpeed = 0;
+                }
+            };
 
-        Snake.prototype.eat = function (fruit) {
-            if (this.snakeArray[0].x === fruit.x && this.snakeArray[0].y === fruit.y) {
-                this.snakeArray.push({});
-                return true;
-            }
-            return false;
-        };
-
-        Snake.prototype.collide = function () {
-            const head = this.snakeArray[0];
-
-            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-                return true;
-            }
-
-            for (let i = 1; i < this.snakeArray.length; i++) {
-                if (head.x === this.snakeArray[i].x && head.y === this.snakeArray[i].y) {
+            this.eat = function (fruit) {
+                if (this.x === fruit.x && this.y === fruit.y) {
+                    this.total++;
                     return true;
                 }
-            }
-            return false;
-        };
+                return false;
+            };
 
-        function Fruit() {
-            this.x = Math.floor(Math.random() * rows) * scale;
-            this.y = Math.floor(Math.random() * columns) * scale;
+            this.collide = function () {
+                for (let i = 0; i < this.tail.length; i++) {
+                    if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+                        return true;
+                    }
+                }
+                return false;
+            };
         }
 
-        Fruit.prototype.draw = function () {
-            ctx.fillStyle = "#FF1493";
-            ctx.shadowColor = "rgba(255, 20, 147, 0.8)";
-            ctx.shadowBlur = 20;
-            ctx.beginPath();
-            ctx.arc(this.x + scale / 2, this.y + scale / 2, scale / 2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowColor = "transparent";
-        };
+        // Fruit Class
+        function Fruit() {
+            this.x = Math.floor(Math.random() * columns) * scale;
+            this.y = Math.floor(Math.random() * rows) * scale;
+
+            this.draw = function () {
+                ctx.fillStyle = "#FF1493";
+                ctx.fillRect(this.x, this.y, scale, scale);
+            };
+        }
 
         // Keyboard Controls
         document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowUp" && snake.direction !== "down") {
-                snake.changeDirection("up");
-            } else if (e.key === "ArrowDown" && snake.direction !== "up") {
-                snake.changeDirection("down");
-            } else if (e.key === "ArrowLeft" && snake.direction !== "right") {
-                snake.changeDirection("left");
-            } else if (e.key === "ArrowRight" && snake.direction !== "left") {
-                snake.changeDirection("right");
-            }
+            const direction = e.key.replace("Arrow", "");
+            snake.changeDirection(direction);
 
             if (gameOver && e.key === "Enter") {
                 startGame();
             }
         });
+
+        // Display High Scores on Page Load
+        displayHighScores();
     </script>
 </body>
 </html>
