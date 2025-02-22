@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game 2.0</title>
+    <title>Snake Game 2.0 with Sign-In</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #111;
+            color: white;
             overflow: hidden;
         }
 
@@ -27,7 +29,6 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            color: white;
             font-size: 24px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
@@ -37,7 +38,6 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: white;
             font-size: 40px;
             text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
             text-align: center;
@@ -65,6 +65,59 @@
         .btn-restart:hover {
             background-color: #45a049;
         }
+
+        #auth {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #auth button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #auth button:hover {
+            background-color: #444;
+        }
+
+        #user-profile {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        #leaderboard {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #leaderboard h2 {
+            margin: 0 0 10px 0;
+        }
+
+        #high-scores-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +129,26 @@
         <button class="btn-restart" onclick="startGame()">Restart Game</button>
     </div>
 
+    <div id="auth">
+        <button id="github-signin">Sign in with GitHub</button>
+        <div id="user-profile">
+            <img id="user-avatar" />
+            <span id="user-name"></span>
+            <button id="sign-out">Sign Out</button>
+        </div>
+    </div>
+
+    <div id="leaderboard">
+        <h2>High Scores</h2>
+        <ul id="high-scores-list"></ul>
+    </div>
+
     <script>
+        // GitHub OAuth Configuration
+        const clientId = 'YOUR_GITHUB_CLIENT_ID'; // Replace with your GitHub OAuth Client ID
+        const redirectUri = 'https://your-username.github.io/snake-game'; // Replace with your GitHub Pages URL
+
+        // Game Variables
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         const scale = 20;
@@ -87,13 +159,78 @@
         let score = 0;
         let gameOver = false;
 
+        // Initialize Game
+        startGame();
+
+        // GitHub OAuth Flow
+        document.getElementById('github-signin').addEventListener('click', () => {
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
+        });
+
+        // Handle OAuth Callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            fetch(`https://your-backend-proxy.com/authenticate?code=${code}`) // Replace with your backend URL
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('github_token', data.access_token);
+                    localStorage.setItem('github_user', JSON.stringify(data.user));
+                    showUserProfile(data.user);
+                });
+        }
+
+        // Show User Profile
+        function showUserProfile(user) {
+            document.getElementById('github-signin').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'flex';
+            document.getElementById('user-avatar').src = user.avatar_url;
+            document.getElementById('user-name').textContent = user.name || user.login;
+        }
+
+        // Sign Out
+        document.getElementById('sign-out').addEventListener('click', () => {
+            localStorage.removeItem('github_token');
+            localStorage.removeItem('github_user');
+            document.getElementById('github-signin').style.display = 'block';
+            document.getElementById('user-profile').style.display = 'none';
+        });
+
+        // Check if User is Already Signed In
+        const user = JSON.parse(localStorage.getItem('github_user'));
+        if (user) {
+            showUserProfile(user);
+        }
+
+        // High Scores
+        function saveHighScore(score) {
+            const user = JSON.parse(localStorage.getItem('github_user'));
+            if (user) {
+                const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+                highScores.push({ user: user.login, score });
+                localStorage.setItem('highScores', JSON.stringify(highScores));
+                displayHighScores();
+            }
+        }
+
+        function displayHighScores() {
+            const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+            const list = document.getElementById('high-scores-list');
+            list.innerHTML = highScores
+                .sort((a, b) => b.score - a.score)
+                .map(score => `<li>${score.user}: ${score.score}</li>`)
+                .join('');
+        }
+
+        // Game Logic (Same as before)
         function startGame() {
             snake = new Snake();
             fruit = new Fruit();
             score = 0;
             gameOver = false;
-            document.getElementById("score").textContent = `Score: ${score}`;
-            document.getElementById("game-over").style.display = "none";
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('game-over').style.display = 'none';
             window.setInterval(gameLoop, 100);
         }
 
@@ -108,23 +245,25 @@
             if (snake.eat(fruit)) {
                 fruit = new Fruit();
                 score++;
-                document.getElementById("score").textContent = `Score: ${score}`;
+                document.getElementById('score').textContent = `Score: ${score}`;
             }
 
             if (snake.collide()) {
                 gameOver = true;
-                document.getElementById("game-over").style.display = "block";
+                document.getElementById('game-over').style.display = 'block';
+                saveHighScore(score);
             }
         }
 
+        // Snake and Fruit Classes (Same as before)
         function Snake() {
-            this.snakeArray = [{x: 5 * scale, y: 5 * scale}];
+            this.snakeArray = [{ x: 5 * scale, y: 5 * scale }];
             this.direction = "right";
         }
 
-        Snake.prototype.draw = function() {
+        Snake.prototype.draw = function () {
             this.snakeArray.forEach((segment, index) => {
-                ctx.fillStyle = index === 0 ? "gold" : "#009900"; // Golden head for extra flair
+                ctx.fillStyle = index === 0 ? "gold" : "#009900";
                 ctx.beginPath();
                 ctx.arc(segment.x + scale / 2, segment.y + scale / 2, scale / 2, 0, Math.PI * 2);
                 ctx.fill();
@@ -134,8 +273,8 @@
             });
         };
 
-        Snake.prototype.move = function() {
-            const head = {x: this.snakeArray[0].x, y: this.snakeArray[0].y};
+        Snake.prototype.move = function () {
+            const head = { x: this.snakeArray[0].x, y: this.snakeArray[0].y };
 
             if (this.direction === "right") head.x += scale;
             if (this.direction === "left") head.x -= scale;
@@ -146,27 +285,25 @@
             this.snakeArray.pop();
         };
 
-        Snake.prototype.changeDirection = function(direction) {
+        Snake.prototype.changeDirection = function (direction) {
             this.direction = direction;
         };
 
-        Snake.prototype.eat = function(fruit) {
+        Snake.prototype.eat = function (fruit) {
             if (this.snakeArray[0].x === fruit.x && this.snakeArray[0].y === fruit.y) {
-                this.snakeArray.push({}); 
+                this.snakeArray.push({});
                 return true;
             }
             return false;
         };
 
-        Snake.prototype.collide = function() {
+        Snake.prototype.collide = function () {
             const head = this.snakeArray[0];
 
-            // Collide with walls
             if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
                 return true;
             }
 
-            // Collide with itself
             for (let i = 1; i < this.snakeArray.length; i++) {
                 if (head.x === this.snakeArray[i].x && head.y === this.snakeArray[i].y) {
                     return true;
@@ -180,17 +317,17 @@
             this.y = Math.floor(Math.random() * columns) * scale;
         }
 
-        Fruit.prototype.draw = function() {
-            // Fruit is now a rotating glowing sphere
+        Fruit.prototype.draw = function () {
             ctx.fillStyle = "#FF1493";
             ctx.shadowColor = "rgba(255, 20, 147, 0.8)";
             ctx.shadowBlur = 20;
             ctx.beginPath();
             ctx.arc(this.x + scale / 2, this.y + scale / 2, scale / 2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.shadowColor = "transparent"; // Reset shadow
+            ctx.shadowColor = "transparent";
         };
 
+        // Keyboard Controls
         document.addEventListener("keydown", (e) => {
             if (e.key === "ArrowUp" && snake.direction !== "down") {
                 snake.changeDirection("up");
@@ -206,8 +343,6 @@
                 startGame();
             }
         });
-
-        startGame();
     </script>
 </body>
 </html>
