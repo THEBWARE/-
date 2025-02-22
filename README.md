@@ -48,6 +48,7 @@
         .welcome-content .buttons {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
         }
 
         .welcome-content button {
@@ -102,10 +103,13 @@
             <div class="buttons">
                 <button id="cevediPostsBtn">Go to Cevedi Posts</button>
                 <button id="keyPageBtn">Go to Key Page</button>
+                <button id="ticTacToeBtn">Tic Tac Toe</button>
+                <button id="pvmBtn">PVM</button>
             </div>
         </div>
         <div class="welcome-image">
-            <img src="https://via.placeholder.com/400" alt="Welcome Image">
+            <!-- Updated image source -->
+            <img src="https://t4.ftcdn.net/jpg/03/41/47/73/360_F_341477352_FPoRvWnWWqdzVFnIWn3on34gYWaSEX2K.jpg" alt="Welcome Image">
         </div>
     </div>
 
@@ -118,6 +122,14 @@
 
         document.getElementById('keyPageBtn').addEventListener('click', function() {
             window.open('https://thebware.github.io/-/key.html', '_blank');
+        });
+
+        document.getElementById('ticTacToeBtn').addEventListener('click', function() {
+            window.open('https://thebware.github.io/-/TicTacToe.html', '_blank');
+        });
+
+        document.getElementById('pvmBtn').addEventListener('click', function() {
+            window.open('https://thebware.github.io/-/PVM.html', '_blank');
         });
     </script>
 </body>
