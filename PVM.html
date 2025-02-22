@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pirates Vs Marines</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #game-container {
+            text-align: center;
+        }
+
+        #game-board {
+            width: 800px;
+            height: 600px;
+            background-color: #87CEEB;
+            position: relative;
+            border: 2px solid #000;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .pirate, .marine, .bullet {
+            position: absolute;
+        }
+
+        .pirate {
+            width: 30px;
+            height: 30px;
+            background-color: #8B4513; /* Brown */
+            border-radius: 50%;
+        }
+
+        .marine {
+            width: 30px;
+            height: 30px;
+            background-color: #000080; /* Navy Blue */
+            border-radius: 50%;
+        }
+
+        .bullet {
+            width: 5px;
+            height: 5px;
+            background-color: #FF0000; /* Red */
+            border-radius: 50%;
+        }
+
+        #stats {
+            margin-top: 20px;
+        }
+
+        #start-game {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="game-board"></div>
+        <div id="stats">
+            <div id="pirates-stats">Pirates: <span id="pirates-count">0</span></div>
+            <div id="marines-stats">Marines: <span id="marines-count">0</span></div>
+        </div>
+        <button id="start-game">Start Game</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameBoard = document.getElementById('game-board');
+            const piratesCount = document.getElementById('pirates-count');
+            const marinesCount = document.getElementById('marines-count');
+            const startGameButton = document.getElementById('start-game');
+
+            let pirates = [];
+            let marines = [];
+            let bullets = [];
+            let gameInterval;
+            const marineSpeed = 5;
+            const bulletSpeed = 10;
+
+            startGameButton.addEventListener('click', startGame);
+
+            function startGame() {
+                resetGame();
+                gameInterval = setInterval(updateGame, 50);
+            }
+
+            function resetGame() {
+                pirates = [];
+                marines = [];
+                bullets = [];
+                gameBoard.innerHTML = '';
+                createPirates(5);
+                createMarines(1); // Player-controlled marine
+                updateStats();
+            }
+
+            function createPirates(count) {
+                for (let i = 0; i < count; i++) {
+                    const pirate = document.createElement('div');
+                    pirate.className = 'pirate';
+                    pirate.style.left = `${Math.random() * 770}px`;
+                    pirate.style.top = `${Math.random() * 570}px`;
+                    pirate.health = 100; // Add health property
+                    gameBoard.appendChild(pirate);
+                    pirates.push(pirate);
+                }
+            }
+
+            function createMarines(count) {
+                for (let i = 0; i < count; i++) {
+                    const marine = document.createElement('div');
+                    marine.className = 'marine';
+                    marine.style.left = `${Math.random() * 770}px`;
+                    marine.style.top = `${Math.random() * 570}px`;
+                    marine.health = 100; // Add health property
+                    gameBoard.appendChild(marine);
+                    marines.push(marine);
+                }
+            }
+
+            function updateGame() {
+                movePirates();
+                moveBullets();
+                checkCollisions();
+                updateStats();
+            }
+
+            function movePirates() {
+                pirates.forEach(pirate => {
+                    // Simple AI: Move toward the nearest marine
+                    const nearestMarine = findNearestMarine(pirate);
+                    const dx = nearestMarine.x - parseFloat(pirate.style.left);
+                    const dy = nearestMarine.y - parseFloat(pirate.style.top);
+                    const angle = Math.atan2(dy, dx);
+                    const speed = 2;
+
+                    pirate.style.left = `${parseFloat(pirate.style.left) + Math.cos(angle) * speed}px`;
+                    pirate.style.top = `${parseFloat(pirate.style.top) + Math.sin(angle) * speed}px`;
+                });
+            }
+
+            function findNearestMarine(pirate) {
+                let nearestMarine = marines[0];
+                let minDistance = Infinity;
+
+                marines.forEach(marine => {
+                    const dx = parseFloat(marine.style.left) - parseFloat(pirate.style.left);
+                    const dy = parseFloat(marine.style.top) - parseFloat(pirate.style.top);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestMarine = marine;
+                    }
+                });
+
+                return {
+                    x: parseFloat(nearestMarine.style.left),
+                    y: parseFloat(nearestMarine.style.top)
+                };
+            }
+
+            function moveBullets() {
+                bullets.forEach((bullet, index) => {
+                    bullet.style.left = `${parseFloat(bullet.style.left) + bullet.dx * bulletSpeed}px`;
+                    bullet.style.top = `${parseFloat(bullet.style.top) + bullet.dy * bulletSpeed}px`;
+
+                    // Remove bullet if it goes off-screen
+                    if (parseFloat(bullet.style.left) < 0 || parseFloat(bullet.style.left) > 800 ||
+                        parseFloat(bullet.style.top) < 0 || parseFloat(bullet.style.top) > 600) {
+                        gameBoard.removeChild(bullet);
+                        bullets.splice(index, 1);
+                    }
+                });
+            }
+
+            function checkCollisions() {
+                // Check for collisions between bullets and pirates
+                bullets.forEach((bullet, bulletIndex) => {
+                    pirates.forEach((pirate, pirateIndex) => {
+                        const bulletRect = bullet.getBoundingClientRect();
+                        const pirateRect = pirate.getBoundingClientRect();
+
+                        if (bulletRect.left < pirateRect.right &&
+                            bulletRect.right > pirateRect.left &&
+                            bulletRect.top < pirateRect.bottom &&
+                            bulletRect.bottom > pirateRect.top) {
+                            // Collision detected
+                            pirate.health -= 20; // Reduce pirate health
+                            if (pirate.health <= 0) {
+                                gameBoard.removeChild(pirate);
+                                pirates.splice(pirateIndex, 1);
+                            }
+                            gameBoard.removeChild(bullet);
+                            bullets.splice(bulletIndex, 1);
+                        }
+                    });
+                });
+
+                // Check for collisions between pirates and marines
+                pirates.forEach((pirate, pirateIndex) => {
+                    marines.forEach((marine, marineIndex) => {
+                        const pirateRect = pirate.getBoundingClientRect();
+                        const marineRect = marine.getBoundingClientRect();
+
+                        if (pirateRect.left < marineRect.right &&
+                            pirateRect.right > marineRect.left &&
+                            pirateRect.top < marineRect.bottom &&
+                            pirateRect.bottom > marineRect.top) {
+                            // Collision detected
+                            marine.health -= 10; // Reduce marine health
+                            if (marine.health <= 0) {
+                                gameBoard.removeChild(marine);
+                                marines.splice(marineIndex, 1);
+                            }
+                        }
+                    });
+                });
+
+                if (pirates.length === 0 || marines.length === 0) {
+                    clearInterval(gameInterval);
+                    alert(pirates.length === 0 ? 'Marines Win!' : 'Pirates Win!');
+                }
+            }
+
+            function updateStats() {
+                piratesCount.textContent = pirates.length;
+                marinesCount.textContent = marines.length;
+            }
+
+            // Player controls
+            document.addEventListener('keydown', (e) => {
+                const marine = marines[0]; // Assume the player controls the first marine
+                if (!marine) return;
+
+                switch (e.key) {
+                    case 'ArrowUp':
+                        marine.style.top = `${Math.max(0, parseFloat(marine.style.top) - marineSpeed)}px`;
+                        break;
+                    case 'ArrowDown':
+                        marine.style.top = `${Math.min(570, parseFloat(marine.style.top) + marineSpeed)}px`;
+                        break;
+                    case 'ArrowLeft':
+                        marine.style.left = `${Math.max(0, parseFloat(marine.style.left) - marineSpeed)}px`;
+                        break;
+                    case 'ArrowRight':
+                        marine.style.left = `${Math.min(770, parseFloat(marine.style.left) + marineSpeed)}px`;
+                        break;
+                    case ' ': // Spacebar to shoot
+                        shootBullet(marine);
+                        break;
+                }
+            });
+
+            function shootBullet(marine) {
+                const bullet = document.createElement('div');
+                bullet.className = 'bullet';
+                bullet.style.left = `${parseFloat(marine.style.left) + 15}px`;
+                bullet.style.top = `${parseFloat(marine.style.top) + 15}px`;
+
+                // Calculate direction based on mouse position (optional)
+                const dx = 1; // Default direction (can be modified for mouse aiming)
+                const dy = 0;
+
+                bullet.dx = dx;
+                bullet.dy = dy;
+                gameBoard.appendChild(bullet);
+                bullets.push(bullet);
+            }
+        });
+    </script>
+</body>
+</html>
