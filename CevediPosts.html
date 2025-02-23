@@ -67,16 +67,16 @@
         /* Full-screen post selection panel */
         .post-quantum-list {
             position: fixed;
-            top: 5rem; /* Adjusted to make space for the search bar */
+            top: 5rem;
             left: 0;
             width: 100%;
-            height: calc(100vh - 5rem); /* Adjusted height to account for the search bar */
-            display: block; /* Changed from flex to block */
+            height: calc(100vh - 5rem);
+            display: block;
             backdrop-filter: blur(15px);
             background: rgba(0, 0, 0, 0.95);
             z-index: 100;
-            overflow-y: auto; /* Make the post section scrollable */
-            padding: 1rem 0; /* Add some padding at the top and bottom */
+            overflow-y: auto;
+            padding: 1rem 0;
         }
 
         .post-card {
@@ -90,7 +90,7 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
-            margin: 1rem auto; /* Centered the post cards */
+            margin: 1rem auto;
         }
 
         .post-card::before {
@@ -163,19 +163,19 @@
         /* Updated Button Container */
         .button-container {
             position: fixed;
-            top: 1rem; /* Adjusted to avoid blocking content */
-            left: 1rem; /* Adjusted to avoid blocking content */
-            right: 1rem; /* Adjusted to avoid blocking content */
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
             display: flex;
             justify-content: space-between;
             z-index: 102;
-            gap: 1rem; /* Add gap between buttons */
+            gap: 1rem;
         }
 
         /* Updated Back Button Styles */
         .back-button {
-            padding: 0.8rem 1.5rem; /* Smaller padding */
-            font-size: 1rem; /* Smaller font size */
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
             border: none;
             border-radius: 8px;
@@ -359,35 +359,52 @@
 
     <!-- Full-screen post selection panel -->
     <div class="post-quantum-list" id="postList">
+        <!-- Delta Executor -->
         <div class="post-card" onclick="showHolotheater('deltaTheater')">
             <h2>Delta Executor</h2>
             <p>Quantum Execution Interface</p>
         </div>
+
+        <!-- Xeno Executor -->
         <div class="post-card" onclick="showHolotheater('xenoTheater')">
             <h2>Xeno Executor</h2>
             <p>Advanced Execution Environment</p>
         </div>
+
+        <!-- Roblox Download -->
         <div class="post-card" onclick="showHolotheater('robloxTheater')">
             <h2>Download Roblox</h2>
             <p>Guide for iOS, Android, and Windows</p>
         </div>
+
+        <!-- Speed Hub X -->
         <div class="post-card" onclick="showHolotheater('speedHubTheater')">
             <h2>Speed Hub X</h2>
             <p>The best script for Blox Fruits, Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends</p>
         </div>
+
+        <!-- Thao Hub -->
         <div class="post-card" onclick="showHolotheater('thaoHubTheater')">
             <h2>Thao Hub</h2>
             <p>Mainly for Arsenal but features a universal aimbot</p>
         </div>
+
+        <!-- Cevor MM2V6 -->
         <div class="post-card" onclick="showHolotheater('cevorMM2Theater')">
             <h2>Cevor MM2V6</h2>
             <p>Murder Mystery 2 Script</p>
         </div>
 
-        <!-- New AI Scripts 2025 Post -->
+        <!-- AI Scripts 2025 -->
         <div class="post-card" onclick="showHolotheater('aiScriptsTheater')">
             <h2>AI Scripts 2025</h2>
             <p>Advanced AI-powered scripts for Roblox games</p>
+        </div>
+
+        <!-- SSS - Spaceship Shooting Showdown -->
+        <div class="post-card" onclick="showSSSTheater()">
+            <h2>SSS - Spaceship Shooting Showdown</h2>
+            <p>An epic spaceship battle game</p>
         </div>
     </div>
 
@@ -512,7 +529,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/
         </div>
     </div>
 
-    <!-- Theater view for Cevor MM2V5 -->
+    <!-- Theater view for Cevor MM2V6 -->
     <div class="holo-theater" id="cevorMM2Theater">
         <div class="button-container">
             <button class="back-button" onclick="goBackToPosts()">
@@ -546,6 +563,31 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBWARE/-/refs/heads
 loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts-2025/refs/heads/main/ExecutorTestsPanel.lua"))()
                 </pre>
                 <button class="copy-button" onclick="copyAIScripts()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theater view for SSS - Spaceship Shooting Showdown -->
+    <div class="holo-theater" id="sssTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+            <button class="download-singularity" onclick="showSSSDownloadAlert()">
+                <span>Download SSS</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <iframe 
+                class="singularity-video"
+                id="sssVideo"
+                src=""
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+            <div id="sssAccessDenied" style="display: none; text-align: center; margin-top: 2rem;">
+                <h2>Access Denied</h2>
+                <p>You do not have permission to view this content.</p>
             </div>
         </div>
     </div>
@@ -609,6 +651,24 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts
                 Download LDPlayer
             </button>
             <button class="abort" onclick="hideLdPlayerAlert()">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- SSS Download Popup -->
+    <div class="quantum-overlay" id="sssOverlay"></div>
+    <div class="quantum-alert" id="sssDownloadAlert">
+        <h2>✅ SSS - Spaceship Shooting Showdown</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Verification:</strong></p>
+            <p>This software is created and verified by Cevedi Studio. It is safe to download and use.</p>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://github.com/THEBWARE/-/releases/download/SSS/SSS.exe', '_blank')">
+                Download SSS
+            </button>
+            <button class="abort" onclick="hideSSSDownloadAlert()">
                 Close
             </button>
         </div>
@@ -689,53 +749,87 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts
         document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
         document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
 
+        // Function to copy text to clipboard with fallback
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text)
+                    .then(() => alert('Copied to clipboard!'))
+                    .catch(() => fallbackCopyToClipboard(text));
+            } else {
+                fallbackCopyToClipboard(text);
+            }
+        }
+
+        // Fallback method for copying text to clipboard
+        function fallbackCopyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Copied to clipboard!');
+            } catch (err) {
+                alert('Failed to copy text. Please manually copy the text.');
+            }
+            document.body.removeChild(textarea);
+        }
+
         // Function to copy the script to clipboard
         function copyScript() {
             const scriptCode = document.getElementById('scriptCode').textContent;
-            navigator.clipboard.writeText(scriptCode)
-                .then(() => {
-                    alert('Script copied to clipboard!');
-                })
-                .catch(() => {
-                    alert('Failed to copy script. Please manually copy the text.');
-                });
+            copyToClipboard(scriptCode);
         }
 
         // Function to copy the Thao Hub script to clipboard
         function copyThaoHubScript() {
             const scriptCode = document.getElementById('thaoHubScriptCode').textContent;
-            navigator.clipboard.writeText(scriptCode)
-                .then(() => {
-                    alert('Thao Hub script copied to clipboard!');
-                })
-                .catch(() => {
-                    alert('Failed to copy script. Please manually copy the text.');
-                });
+            copyToClipboard(scriptCode);
         }
 
         // Function to copy the Cevor MM2V5 script to clipboard
         function copyCevorMM2Script() {
             const scriptCode = document.getElementById('cevorMM2ScriptCode').textContent;
-            navigator.clipboard.writeText(scriptCode)
-                .then(() => {
-                    alert('Cevor MM2V5 script copied to clipboard!');
-                })
-                .catch(() => {
-                    alert('Failed to copy script. Please manually copy the text.');
-                });
+            copyToClipboard(scriptCode);
         }
 
         // Function to copy the AI Scripts 2025 script to clipboard
         function copyAIScripts() {
             const scriptCode = document.getElementById('aiScriptsCode').textContent;
-            navigator.clipboard.writeText(scriptCode)
-                .then(() => {
-                    alert('AI Scripts 2025 script copied to clipboard!');
-                })
-                .catch(() => {
-                    alert('Failed to copy script. Please manually copy the text.');
-                });
+            copyToClipboard(scriptCode);
         }
+
+        // Function to show SSS Theater
+        function showSSSTheater() {
+            const school = prompt("Enter your school name:");
+            if (school && school.toLowerCase() === "west lakes preparatory academy") {
+                document.getElementById('postList').style.display = 'none';
+                document.getElementById('searchBar').style.display = 'none';
+                document.getElementById('sssTheater').style.display = 'block';
+                document.getElementById('sssVideo').src = "https://drive.google.com/file/d/1tAKhQB3Dp7gwC4hQ-2w8olcdT3vw1ThO/preview";
+            } else {
+                document.getElementById('postList').style.display = 'none';
+                document.getElementById('searchBar').style.display = 'none';
+                document.getElementById('sssTheater').style.display = 'block';
+                document.getElementById('sssVideo').style.display = 'none';
+                document.getElementById('sssAccessDenied').style.display = 'block';
+            }
+        }
+
+        // Function to show SSS Download Alert
+        function showSSSDownloadAlert() {
+            document.getElementById('sssOverlay').style.display = 'block';
+            document.getElementById('sssDownloadAlert').style.display = 'block';
+        }
+
+        // Function to hide SSS Download Alert
+        function hideSSSDownloadAlert() {
+            document.getElementById('sssOverlay').style.display = 'none';
+            document.getElementById('sssDownloadAlert').style.display = 'none';
+        }
+
+        // Event listener for SSS overlay
+        document.getElementById('sssOverlay').addEventListener('click', hideSSSDownloadAlert);
     </script>
 </body>
 </html>
