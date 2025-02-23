@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cevor MM2 V5 Key System</title>
+    <title>Cevor MM2 V7 Key System</title>
     <style>
         /* General Styles */
         body {
@@ -202,6 +202,22 @@
             opacity: 1;
             visibility: visible;
         }
+
+        /* Step Styles */
+        .step {
+            margin: 20px 0;
+        }
+
+        .step.completed::after {
+            content: ' ✔';
+            color: #00ff88;
+        }
+
+        .notice {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -212,7 +228,7 @@
     <div class="container">
         <h1>Cevor MM2 V5 Key System</h1>
         <div id="content">
-            <!-- Content will be dynamically added here -->
+            <!-- Steps will be dynamically added here -->
         </div>
         <div class="footer">
             © 2025 Cevedi Studio. All rights reserved.
@@ -223,63 +239,81 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // Function to fetch and process the keys from sdadsa.txt
-        async function fetchKeys() {
-            try {
-                const response = await fetch('sdadsa.txt'); // Fetch the file
-                const text = await response.text(); // Read the file as text
-                const keys = text.split('\n').filter(key => key.trim() !== ''); // Split into array and remove empty lines
-                return keys;
-            } catch (error) {
-                console.error('Error fetching keys:', error);
-                return [];
-            }
-        }
-
-        // Function to get a random key from the array
-        function getRandomKey(keys) {
-            const randomIndex = Math.floor(Math.random() * keys.length);
-            return keys[randomIndex];
-        }
-
         // Get the content div
         const contentDiv = document.getElementById("content");
 
-        // Initially show the 'Discover Interesting Articles' button
-        contentDiv.innerHTML = `
-            <button id="discoverButton" class="copy-button">Discover Interesting Articles</button>
+        // Define the steps
+        const steps = [
+            {
+                title: "Step 1: Discover Interesting Articles",
+                url: "https://www.snoqap.com/",
+                completed: false,
+                timer: 30, // 30 seconds for Step 1
+            },
+            {
+                title: "Step 2: Do a LootLabs",
+                url: "https://lootdest.org/s?ZcSsMfdU",
+                completed: false,
+                timer: 60, // 60 seconds for Step 2
+            },
+            {
+                title: "Step 3: Do a LootLabs",
+                url: "https://lootdest.org/s?Ubtbklph",
+                completed: false,
+                timer: 60, // 60 seconds for Step 3
+            },
+        ];
+
+        // Render all steps initially
+        steps.forEach((step, index) => {
+            contentDiv.innerHTML += `
+                <div class="step" id="step${index + 1}">
+                    <button id="step${index + 1}Button" class="copy-button step-button">
+                        ${step.title}
+                    </button>
+                </div>
+            `;
+        });
+
+        // Add warning message and notice
+        contentDiv.innerHTML += `
             <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
+            <p class="notice">If you don't get authenticated but you finished the LootLabs, wait a while.</p>
         `;
 
-        // Get the discover button
-        const discoverButton = document.getElementById("discoverButton");
-        const toast = document.getElementById("toast");
+        // Add event listeners to step buttons
+        steps.forEach((step, index) => {
+            const stepButton = document.getElementById(`step${index + 1}Button`);
 
-        // Add event listener to discover button
-        discoverButton.addEventListener("click", async () => {
-            // Open the URL in a new tab
-            window.open("https://www.snoqap.com/", "_blank");
+            stepButton.addEventListener("click", () => {
+                if (!step.completed) {
+                    // Open the step's URL in a new tab
+                    window.open(step.url, "_blank");
 
-            // Fetch keys and get a random one
-            const keys = await fetchKeys();
-            if (keys.length === 0) {
-                showToast("Failed to load keys. Please try again later.");
-                return;
-            }
+                    // Mark the step as completed after the specified timer
+                    setTimeout(() => {
+                        step.completed = true;
+                        document.getElementById(`step${index + 1}`).classList.add("completed");
 
-            // Delay for 30 seconds to show the key
-            setTimeout(() => {
-                const randomKey = getRandomKey(keys);
-                // Display the key
-                contentDiv.innerHTML = `
-                    <p>Here is your key:</p>
-                    <div class="key-box" title="Hover to reveal">
-                        <div class="key">${randomKey}</div>
-                    </div>
-                    <button class="copy-button" onclick="copyToClipboard('${randomKey}')">Copy to Clipboard</button>
-                    <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
-                `;
-            }, 30000); // 30-second delay
+                        // Check if all steps are completed
+                        if (steps.every(step => step.completed)) {
+                            // Remove the notice and show the key
+                            const notice = document.querySelector(".notice");
+                            if (notice) notice.remove();
+
+                            contentDiv.innerHTML += `
+                                <div class="step" id="step4">
+                                    <p>Here is your key:</p>
+                                    <div class="key-box" title="Hover to reveal">
+                                        <div class="key">rB6!xw9$NpQ2&kZt</div>
+                                    </div>
+                                    <button class="copy-button" onclick="copyToClipboard('rB6!xw9$NpQ2&kZt')">Copy to Clipboard</button>
+                                </div>
+                            `;
+                        }
+                    }, step.timer * 1000); // Convert seconds to milliseconds
+                }
+            });
         });
 
         // Copy to clipboard function
@@ -312,6 +346,7 @@
 
         // Toast notification function
         function showToast(message) {
+            const toast = document.getElementById("toast");
             toast.textContent = message;
             toast.classList.add("show");
             setTimeout(() => {
