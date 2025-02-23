@@ -3,833 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cevedi Studio - Posts</title>
+    <title>Cevor MM2 V5 Key System</title>
     <style>
-        :root {
-            --stardust: rgba(255, 255, 255, 0.1);
-            --supernova: #ff00ff;
-            --quantum-blue: #00f7ff;
-            --event-horizon: #0a0a15;
-        }
-
+        /* General Styles */
         body {
-            font-family: 'Oxanium', sans-serif;
-            background: radial-gradient(circle at center, var(--event-horizon), #000);
-            color: var(--quantum-blue);
-            margin: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Search Bar */
-        .search-bar {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 103;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .search-bar input {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--quantum-blue);
-            border-radius: 8px;
-            color: var(--quantum-blue);
-            outline: none;
-            width: 300px;
-        }
-
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-bar button {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
-        }
-
-        .search-bar button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
-        }
-
-        /* Full-screen post selection panel */
-        .post-quantum-list {
-            position: fixed;
-            top: 5rem;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 5rem);
-            display: block;
-            backdrop-filter: blur(15px);
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 100;
-            overflow-y: auto;
-            padding: 1rem 0;
-        }
-
-        .post-card {
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            max-width: 600px;
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1e1e1e, #000000);
+            color: #ffffff;
             text-align: center;
-            margin: 1rem auto;
+            padding: 50px;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
 
-        .post-card::before {
-            content: '';
+        /* Quantum Holographic Background */
+        .quantum-holographic-bg {
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 247, 255, 0.1),
-                transparent
-            );
-            transition: 0.6s;
-        }
-
-        .post-card:hover {
-            transform: translateX(20px);
-            background: rgba(0, 247, 255, 0.05);
-        }
-
-        .post-card:hover::before {
-            left: 100%;
-        }
-
-        .post-card h2 {
-            margin: 0;
-            font-size: 2rem;
-        }
-
-        .post-card p {
-            margin: 0.5rem 0 0;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Theater view */
-        .holo-theater {
-            position: fixed;
-            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 4rem;
-            display: none;
-            z-index: 101;
-            overflow-y: auto;
-            box-sizing: border-box;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
+            animation: quantumHolographic 10s infinite linear;
+            z-index: -1;
         }
 
-        .holo-content {
-            max-width: 1200px;
+        @keyframes quantumHolographic {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.5);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .container {
+            max-width: 600px;
             margin: 0 auto;
-            position: relative;
-        }
-
-        .singularity-video {
-            width: 100%;
-            height: calc(100vh - 200px);
-            border: 2px solid var(--quantum-blue);
+            background: rgba(46, 46, 46, 0.8);
+            padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 0 80px rgba(0, 247, 255, 0.3);
-            background: #000;
-            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Updated Button Container */
-        .button-container {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            right: 1rem;
-            display: flex;
-            justify-content: space-between;
-            z-index: 102;
-            gap: 1rem;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Updated Back Button Styles */
-        .back-button {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+        h1 {
+            color: #00ff88;
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: glow 2s infinite alternate;
         }
 
-        .back-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            }
         }
 
-        .download-singularity {
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 10px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 40px rgba(0, 247, 255, 0.4);
+        .key-box {
+            background: rgba(62, 62, 62, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .download-singularity::before {
+        .key-box::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             width: 300%;
             height: 300%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.5s ease;
-            border-radius: 50%;
-            z-index: 0;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        .download-singularity:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 60px rgba(255, 0, 255, 0.8);
+        .key-box:hover::before {
+            opacity: 1;
         }
 
-        .download-singularity:hover::before {
-            transform: translate(-50%, -50%) scale(1);
+        .key-box:hover {
+            transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .download-singularity span {
+        .key {
+            font-size: 2em;
+            color: #00ff88;
+            font-weight: bold;
+            filter: blur(8px);
+            transition: filter 0.3s ease;
             position: relative;
             z-index: 1;
         }
 
-        /* Quantum Alert Responsive Fixes */
-        .quantum-alert {
-            max-width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: var(--event-horizon);
-            padding: 2rem;
-            border-radius: 12px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 104;
-            display: none;
-        }
-
-        .quantum-alert h2 {
-            color: var(--supernova);
-            margin-top: 0;
-        }
-
-        .quantum-alert p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .quantum-alert-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .quantum-alert-buttons button {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quantum-alert-buttons button:hover {
-            transform: scale(1.05);
-        }
-
-        .quantum-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 103;
-            display: none;
-        }
-
-        /* New Styles for Speed Hub X */
-        .script-container {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--quantum-blue);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            position: relative;
-        }
-
-        .script-container pre {
-            color: var(--quantum-blue);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
+        .key-box:hover .key {
+            filter: none;
         }
 
         .copy-button {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--quantum-blue), var(--supernova));
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #1e1e1e;
             border: none;
-            border-radius: 8px;
-            color: #000;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
-            margin-top: 1rem;
+            margin-top: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .copy-button:hover::before {
+            opacity: 1;
         }
 
         .copy-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+            transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.6);
         }
 
-        @media (max-width: 768px) {
-            .post-card {
-                padding: 1.5rem;
-            }
+        .warning {
+            color: #ff4444;
+            font-size: 0.9em;
+            margin-top: 25px;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
 
-            .holo-theater {
-                padding: 1rem;
-            }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #888;
+        }
 
-            .singularity-video {
-                height: calc(100vh - 160px);
-            }
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
 
-            .search-bar {
-                width: 90%;
-            }
-
-            .search-bar input {
-                width: 100%;
-            }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
 <body>
-    <!-- Search Bar -->
-    <div class="search-bar" id="searchBar">
-        <input type="text" id="searchInput" placeholder="Search posts..." />
-        <button onclick="searchPosts()">Search</button>
-    </div>
 
-    <!-- Full-screen post selection panel -->
-    <div class="post-quantum-list" id="postList">
-        <!-- Delta Executor -->
-        <div class="post-card" onclick="showHolotheater('deltaTheater')">
-            <h2>Delta Executor</h2>
-            <p>Quantum Execution Interface</p>
+    <!-- Quantum Holographic Background -->
+    <div class="quantum-holographic-bg"></div>
+
+    <div class="container">
+        <h1>Cevor MM2 V5 Key System</h1>
+        <div id="content">
+            <!-- Content will be dynamically added here -->
         </div>
-
-        <!-- Xeno Executor -->
-        <div class="post-card" onclick="showHolotheater('xenoTheater')">
-            <h2>Xeno Executor</h2>
-            <p>Advanced Execution Environment</p>
-        </div>
-
-        <!-- Roblox Download -->
-        <div class="post-card" onclick="showHolotheater('robloxTheater')">
-            <h2>Download Roblox</h2>
-            <p>Guide for iOS, Android, and Windows</p>
-        </div>
-
-        <!-- Speed Hub X -->
-        <div class="post-card" onclick="showHolotheater('speedHubTheater')">
-            <h2>Speed Hub X</h2>
-            <p>The best script for Blox Fruits, Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends</p>
-        </div>
-
-        <!-- Thao Hub -->
-        <div class="post-card" onclick="showHolotheater('thaoHubTheater')">
-            <h2>Thao Hub</h2>
-            <p>Mainly for Arsenal but features a universal aimbot</p>
-        </div>
-
-        <!-- Cevor MM2V6 -->
-        <div class="post-card" onclick="showHolotheater('cevorMM2Theater')">
-            <h2>Cevor MM2V6</h2>
-            <p>Murder Mystery 2 Script</p>
-        </div>
-
-        <!-- AI Scripts 2025 -->
-        <div class="post-card" onclick="showHolotheater('aiScriptsTheater')">
-            <h2>AI Scripts 2025</h2>
-            <p>Advanced AI-powered scripts for Roblox games</p>
-        </div>
-
-        <!-- SSS - Spaceship Shooting Showdown -->
-        <div class="post-card" onclick="showSSSTheater()">
-            <h2>SSS - Spaceship Shooting Showdown</h2>
-            <p>An epic spaceship battle game</p>
+        <div class="footer">
+            © 2025 Cevedi Studio. All rights reserved.
         </div>
     </div>
 
-    <!-- Theater view for Delta Executor -->
-    <div class="holo-theater" id="deltaTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-            <button class="download-singularity" onclick="showQuantumAlert()">
-                <span>⚛️ Download</span>
-            </button>
-            <button class="download-singularity" onclick="window.open('https://rekonise.com/delta-website-leic3', '_blank')">
-                <span>Delta Website</span>
-            </button>
-            <button class="download-singularity ldplayer" onclick="showLdPlayerAlert()">
-                <span>Download LDPlayer</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <iframe 
-                class="singularity-video"
-                src="https://drive.google.com/file/d/1_otCaScFKWUqTS0EA5bzX1K28zctRLUd/preview" 
-                allow="autoplay; fullscreen"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-
-    <!-- Theater view for Xeno Executor -->
-    <div class="holo-theater" id="xenoTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-            <button class="download-singularity" onclick="showXenoAlert()">
-                <span>⚛️ Download Xeno</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <iframe 
-                class="singularity-video"
-                src="https://drive.google.com/file/d/16o4daTrbuk93e5AIdwS44vSMeQJeEQsw/preview" 
-                allow="autoplay; fullscreen"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-
-    <!-- Theater view for Roblox Download -->
-    <div class="holo-theater" id="robloxTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-            <button class="download-singularity" onclick="window.open('https://www.roblox.com/download/client?os=win', '_blank')">
-                <span>Download Roblox (Windows)</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <div class="roblox-guide">
-                <h2>How to Download Roblox</h2>
-                <h3>For iOS:</h3>
-                <ol>
-                    <li>Open the App Store on your iOS device.</li>
-                    <li>Search for "Roblox" in the search bar.</li>
-                    <li>Tap "Get" to download and install the app.</li>
-                    <li>Launch Roblox and sign in or create an account.</li>
-                </ol>
-                <h3>For Android:</h3>
-                <ol>
-                    <li>Open the Google Play Store on your Android device.</li>
-                    <li>Search for "Roblox" in the search bar.</li>
-                    <li>Tap "Install" to download and install the app.</li>
-                    <li>Launch Roblox and sign in or create an account.</li>
-                </ol>
-                <h3>For Windows:</h3>
-                <ol>
-                    <li>Click the "Download Roblox (Windows)" button above.</li>
-                    <li>Run the installer and follow the on-screen instructions.</li>
-                    <li>Launch Roblox and sign in or create an account.</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theater view for Speed Hub X -->
-    <div class="holo-theater" id="speedHubTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <h2>Speed Hub X</h2>
-            <p>Speed Hub X is the best script for Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends. And Kind of good in blox fruits</p>
-            <div class="script-container">
-                <pre id="scriptCode">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
-                </pre>
-                <button class="copy-button" onclick="copyScript()">Copy to Clipboard</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theater view for Thao Hub -->
-    <div class="holo-theater" id="thaoHubTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <h2>Thao Hub</h2>
-            <p>Thao Hub is mainly for Arsenal but features a universal aimbot.</p>
-            <div class="script-container">
-                <pre id="thaoHubScriptCode">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenal"))()
-                </pre>
-                <button class="copy-button" onclick="copyThaoHubScript()">Copy to Clipboard</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theater view for Cevor MM2V6 -->
-    <div class="holo-theater" id="cevorMM2Theater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <h2>Cevor MM2V6</h2>
-            <p>Murder Mystery 2 Script</p>
-            <div class="script-container">
-                <pre id="cevorMM2ScriptCode">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBWARE/-/refs/heads/main/CevorMM2V6", true))()
-                </pre>
-                <button class="copy-button" onclick="copyCevorMM2Script()">Copy to Clipboard</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theater view for AI Scripts 2025 -->
-    <div class="holo-theater" id="aiScriptsTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <h2>AI Scripts 2025</h2>
-            <p>Advanced AI-powered scripts for Roblox games.</p>
-            <div class="script-container">
-                <pre id="aiScriptsCode">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts-2025/refs/heads/main/ExecutorTestsPanel.lua"))()
-                </pre>
-                <button class="copy-button" onclick="copyAIScripts()">Copy to Clipboard</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theater view for SSS - Spaceship Shooting Showdown -->
-    <div class="holo-theater" id="sssTheater">
-        <div class="button-container">
-            <button class="back-button" onclick="goBackToPosts()">
-                <span>← Back</span>
-            </button>
-            <button class="download-singularity" onclick="showSSSDownloadAlert()">
-                <span>Download SSS</span>
-            </button>
-        </div>
-        <div class="holo-content">
-            <iframe 
-                class="singularity-video"
-                id="sssVideo"
-                src=""
-                allow="autoplay; fullscreen"
-                allowfullscreen>
-            </iframe>
-            <div id="sssAccessDenied" style="display: none; text-align: center; margin-top: 2rem;">
-                <h2>Access Denied</h2>
-                <p>You do not have permission to view this content.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quantum Warning Popup -->
-    <div class="quantum-overlay" id="quantumOverlay"></div>
-    <div class="quantum-alert" id="quantumAlert">
-        <h2>⚠️ QUANTUM WARNING</h2>
-        <div class="quantum-warning">
-            <p><strong>Cevedi Studio Disclaimer:</strong></p>
-            <p>We are not affiliated with Delta Executor. This third-party software might contain malicious code. Use at your own risk.</p>
-            <ul>
-                <li>Potential system instability</li>
-                <li>Security vulnerabilities</li>
-                <li>Unauthorized data access</li>
-            </ul>
-        </div>
-        <div class="quantum-alert-buttons">
-            <button onclick="window.open('https://rekonise.com/delta-bootstrapper-d4sc9', '_blank')">
-                Proceed
-            </button>
-            <button class="abort" onclick="hideQuantumAlert()">
-                Abort
-            </button>
-        </div>
-    </div>
-
-    <!-- Xeno Warning Popup -->
-    <div class="quantum-overlay" id="xenoOverlay"></div>
-    <div class="quantum-alert" id="xenoAlert">
-        <h2>⚠️ QUANTUM WARNING</h2>
-        <div class="quantum-warning">
-            <p><strong>Cevedi Studio Disclaimer:</strong></p>
-            <p>We are not affiliated with Xeno Executor. This third-party software might contain malicious code. Use at your own risk.</p>
-            <ul>
-                <li>Potential system instability</li>
-                <li>Security vulnerabilities</li>
-                <li>Unauthorized data access</li>
-            </ul>
-        </div>
-        <div class="quantum-alert-buttons">
-            <button onclick="window.open('https://rekonise.com/xeno-executor-shkwg', '_blank')">
-                Proceed
-            </button>
-            <button class="abort" onclick="hideXenoAlert()">
-                Abort
-            </button>
-        </div>
-    </div>
-
-    <!-- LDPlayer Popup -->
-    <div class="quantum-overlay" id="ldPlayerOverlay"></div>
-    <div class="quantum-alert" id="ldPlayerAlert">
-        <h2>✅ LDPlayer</h2>
-        <div class="quantum-warning">
-            <p><strong>Cevedi Studio Verification:</strong></p>
-            <p>LDPlayer is a secure and trusted Android emulator. It is safe to download and use.</p>
-        </div>
-        <div class="quantum-alert-buttons">
-            <button onclick="window.open('https://www.ldplayer.net/', '_blank')">
-                Download LDPlayer
-            </button>
-            <button class="abort" onclick="hideLdPlayerAlert()">
-                Close
-            </button>
-        </div>
-    </div>
-
-    <!-- SSS Download Popup -->
-    <div class="quantum-overlay" id="sssOverlay"></div>
-    <div class="quantum-alert" id="sssDownloadAlert">
-        <h2>✅ SSS - Spaceship Shooting Showdown</h2>
-        <div class="quantum-warning">
-            <p><strong>Cevedi Studio Verification:</strong></p>
-            <p>This software is created and verified by Cevedi Studio. It is safe to download and use.</p>
-        </div>
-        <div class="quantum-alert-buttons">
-            <button onclick="window.open('https://github.com/THEBWARE/-/releases/download/SSS/SSS.exe', '_blank')">
-                Download SSS
-            </button>
-            <button class="abort" onclick="hideSSSDownloadAlert()">
-                Close
-            </button>
-        </div>
-    </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script>
-        // Function to filter posts based on search input
-        function searchPosts() {
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            const posts = document.querySelectorAll('.post-card');
-
-            posts.forEach(post => {
-                const title = post.querySelector('h2').textContent.toLowerCase();
-                const description = post.querySelector('p').textContent.toLowerCase();
-
-                if (title.includes(searchQuery) || description.includes(searchQuery)) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-        }
-
-        // Add event listener to the search input for real-time filtering
-        document.getElementById('searchInput').addEventListener('input', searchPosts);
-
-        // Function to show theater view
-        function showHolotheater(theaterId) {
-            document.getElementById('postList').style.display = 'none';
-            document.getElementById('searchBar').style.display = 'none';
-            document.getElementById(theaterId).style.display = 'block';
-        }
-
-        // Function to go back to posts
-        function goBackToPosts() {
-            document.querySelectorAll('.holo-theater').forEach(theater => {
-                theater.style.display = 'none';
-            });
-            document.getElementById('postList').style.display = 'block';
-            document.getElementById('searchBar').style.display = 'flex';
-        }
-
-        // Functions for Quantum Alert
-        function showQuantumAlert() {
-            document.getElementById('quantumOverlay').style.display = 'block';
-            document.getElementById('quantumAlert').style.display = 'block';
-        }
-
-        function hideQuantumAlert() {
-            document.getElementById('quantumOverlay').style.display = 'none';
-            document.getElementById('quantumAlert').style.display = 'none';
-        }
-
-        // Functions for Xeno Alert
-        function showXenoAlert() {
-            document.getElementById('xenoOverlay').style.display = 'block';
-            document.getElementById('xenoAlert').style.display = 'block';
-        }
-
-        function hideXenoAlert() {
-            document.getElementById('xenoOverlay').style.display = 'none';
-            document.getElementById('xenoAlert').style.display = 'none';
-        }
-
-        // Functions for LDPlayer Alert
-        function showLdPlayerAlert() {
-            document.getElementById('ldPlayerOverlay').style.display = 'block';
-            document.getElementById('ldPlayerAlert').style.display = 'block';
-        }
-
-        function hideLdPlayerAlert() {
-            document.getElementById('ldPlayerOverlay').style.display = 'none';
-            document.getElementById('ldPlayerAlert').style.display = 'none';
-        }
-
-        // Event listeners for overlays
-        document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
-        document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
-        document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
-
-        // Function to copy text to clipboard with fallback
-        function copyToClipboard(text) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text)
-                    .then(() => alert('Copied to clipboard!'))
-                    .catch(() => fallbackCopyToClipboard(text));
-            } else {
-                fallbackCopyToClipboard(text);
+        // Function to fetch and process the keys from sdadsa.txt
+        async function fetchKeys() {
+            try {
+                const response = await fetch('sdadsa.txt'); // Fetch the file
+                const text = await response.text(); // Read the file as text
+                const keys = text.split('\n').filter(key => key.trim() !== ''); // Split into array and remove empty lines
+                return keys;
+            } catch (error) {
+                console.error('Error fetching keys:', error);
+                return [];
             }
         }
 
-        // Fallback method for copying text to clipboard
-        function fallbackCopyToClipboard(text) {
-            const textarea = document.createElement('textarea');
+        // Function to get a random key from the array
+        function getRandomKey(keys) {
+            const randomIndex = Math.floor(Math.random() * keys.length);
+            return keys[randomIndex];
+        }
+
+        // Get the content div
+        const contentDiv = document.getElementById("content");
+
+        // Initially show the 'Discover Interesting Articles' button
+        contentDiv.innerHTML = `
+            <button id="discoverButton" class="copy-button">Discover Interesting Articles</button>
+            <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
+        `;
+
+        // Get the discover button
+        const discoverButton = document.getElementById("discoverButton");
+        const toast = document.getElementById("toast");
+
+        // Add event listener to discover button
+        discoverButton.addEventListener("click", async () => {
+            // Open the URL in a new tab
+            window.open("https://www.snoqap.com/", "_blank");
+
+            // Fetch keys and get a random one
+            const keys = await fetchKeys();
+            if (keys.length === 0) {
+                showToast("Failed to load keys. Please try again later.");
+                return;
+            }
+
+            // Delay for 30 seconds to show the key
+            setTimeout(() => {
+                const randomKey = getRandomKey(keys);
+                // Display the key
+                contentDiv.innerHTML = `
+                    <p>Here is your key:</p>
+                    <div class="key-box" title="Hover to reveal">
+                        <div class="key">${randomKey}</div>
+                    </div>
+                    <button class="copy-button" onclick="copyToClipboard('${randomKey}')">Copy to Clipboard</button>
+                    <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
+                `;
+            }, 30000); // 30-second delay
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("Key copied to clipboard!");
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // Fallback for copying text
+        function fallbackCopy(text) {
+            const textarea = document.createElement("textarea");
             textarea.value = text;
             document.body.appendChild(textarea);
             textarea.select();
             try {
-                document.execCommand('copy');
-                alert('Copied to clipboard!');
+                document.execCommand("copy");
+                showToast("Key copied to clipboard!");
             } catch (err) {
-                alert('Failed to copy text. Please manually copy the text.');
+                showToast("Failed to copy key. Please copy it manually.");
             }
             document.body.removeChild(textarea);
         }
 
-        // Function to copy the script to clipboard
-        function copyScript() {
-            const scriptCode = document.getElementById('scriptCode').textContent;
-            copyToClipboard(scriptCode);
+        // Toast notification function
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
         }
-
-        // Function to copy the Thao Hub script to clipboard
-        function copyThaoHubScript() {
-            const scriptCode = document.getElementById('thaoHubScriptCode').textContent;
-            copyToClipboard(scriptCode);
-        }
-
-        // Function to copy the Cevor MM2V5 script to clipboard
-        function copyCevorMM2Script() {
-            const scriptCode = document.getElementById('cevorMM2ScriptCode').textContent;
-            copyToClipboard(scriptCode);
-        }
-
-        // Function to copy the AI Scripts 2025 script to clipboard
-        function copyAIScripts() {
-            const scriptCode = document.getElementById('aiScriptsCode').textContent;
-            copyToClipboard(scriptCode);
-        }
-
-        // Function to show SSS Theater
-        function showSSSTheater() {
-            const school = prompt("Enter your school name:");
-            if (school && school.toLowerCase() === "west lakes preparatory academy") {
-                document.getElementById('postList').style.display = 'none';
-                document.getElementById('searchBar').style.display = 'none';
-                document.getElementById('sssTheater').style.display = 'block';
-                document.getElementById('sssVideo').src = "https://drive.google.com/file/d/1tAKhQB3Dp7gwC4hQ-2w8olcdT3vw1ThO/preview";
-            } else {
-                document.getElementById('postList').style.display = 'none';
-                document.getElementById('searchBar').style.display = 'none';
-                document.getElementById('sssTheater').style.display = 'block';
-                document.getElementById('sssVideo').style.display = 'none';
-                document.getElementById('sssAccessDenied').style.display = 'block';
-            }
-        }
-
-        // Function to show SSS Download Alert
-        function showSSSDownloadAlert() {
-            document.getElementById('sssOverlay').style.display = 'block';
-            document.getElementById('sssDownloadAlert').style.display = 'block';
-        }
-
-        // Function to hide SSS Download Alert
-        function hideSSSDownloadAlert() {
-            document.getElementById('sssOverlay').style.display = 'none';
-            document.getElementById('sssDownloadAlert').style.display = 'none';
-        }
-
-        // Event listener for SSS overlay
-        document.getElementById('sssOverlay').addEventListener('click', hideSSSDownloadAlert);
     </script>
+
 </body>
 </html>
