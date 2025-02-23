@@ -33,7 +33,7 @@ end
 local Window = Rayfield:CreateWindow({
     Name = "Cevor MM2 V5",
     Icon = 0,
-    LoadingTitle = "Cevor MM2 V4",
+    LoadingTitle = "Cevor MM2 V7",
     LoadingSubtitle = "by ScripterBob",
     Theme = "Default",
     DisableRayfieldPrompts = false,
@@ -52,7 +52,7 @@ local Window = Rayfield:CreateWindow({
     KeySettings = {
         Title = "Cevor MM2 V5",
         Subtitle = "Key System",
-        Note = "Key Link is https://thebware.github.io/-/key.html which can also be accesed by joining our discord https://discord.gg/PpYn4v5vR2",
+        Note = "https://thebware.github.io/-/key.html",
         FileName = "CevorMM2Key",
         SaveKey = false,
         GrabKeyFromSite = false, -- Disable grabbing key from site (we handle it manually)
