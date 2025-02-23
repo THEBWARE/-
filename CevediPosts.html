@@ -371,20 +371,23 @@
             <h2>Download Roblox</h2>
             <p>Guide for iOS, Android, and Windows</p>
         </div>
-        <!-- New Speed Hub X Post -->
         <div class="post-card" onclick="showHolotheater('speedHubTheater')">
             <h2>Speed Hub X</h2>
             <p>The best script for Blox Fruits, Fisch, Pet Simulator 99, The Strongest Battlegrounds, and Muscle Legends</p>
         </div>
-        <!-- New Thao Hub Post -->
         <div class="post-card" onclick="showHolotheater('thaoHubTheater')">
             <h2>Thao Hub</h2>
             <p>Mainly for Arsenal but features a universal aimbot</p>
         </div>
-        <!-- New Cevor MM2V5 Post -->
         <div class="post-card" onclick="showHolotheater('cevorMM2Theater')">
             <h2>Cevor MM2V6</h2>
             <p>Murder Mystery 2 Script</p>
+        </div>
+
+        <!-- New AI Scripts 2025 Post -->
+        <div class="post-card" onclick="showHolotheater('aiScriptsTheater')">
+            <h2>AI Scripts 2025</h2>
+            <p>Advanced AI-powered scripts for Roblox games</p>
         </div>
     </div>
 
@@ -524,6 +527,25 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBWARE/-/refs/heads/main/CevorMM2V6", true))()
                 </pre>
                 <button class="copy-button" onclick="copyCevorMM2Script()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theater view for AI Scripts 2025 -->
+    <div class="holo-theater" id="aiScriptsTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <h2>AI Scripts 2025</h2>
+            <p>Advanced AI-powered scripts for Roblox games.</p>
+            <div class="script-container">
+                <pre id="aiScriptsCode">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts-2025/refs/heads/main/ExecutorTestsPanel.lua"))()
+                </pre>
+                <button class="copy-button" onclick="copyAIScripts()">Copy to Clipboard</button>
             </div>
         </div>
     </div>
@@ -697,6 +719,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/THEBWARE/-/refs/heads
             navigator.clipboard.writeText(scriptCode)
                 .then(() => {
                     alert('Cevor MM2V5 script copied to clipboard!');
+                })
+                .catch(() => {
+                    alert('Failed to copy script. Please manually copy the text.');
+                });
+        }
+
+        // Function to copy the AI Scripts 2025 script to clipboard
+        function copyAIScripts() {
+            const scriptCode = document.getElementById('aiScriptsCode').textContent;
+            navigator.clipboard.writeText(scriptCode)
+                .then(() => {
+                    alert('AI Scripts 2025 script copied to clipboard!');
                 })
                 .catch(() => {
                     alert('Failed to copy script. Please manually copy the text.');
