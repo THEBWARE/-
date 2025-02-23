@@ -138,6 +138,9 @@ Rayfield:Notify({
     Image = nil,
 })
 
+local MainTab = Window:CreateTab("🏠 Main", nil)
+local Section = MainTab:CreateSection("Main Features")
+
 local Aimbot = Window:CreateTab("Aimbot 🎯")
 local AntiAim = Window:CreateTab("Anti-Aim 😡")
 local Misc = Window:CreateTab("Misc 🤷‍♂️")
@@ -618,10 +621,6 @@ local ServerHop = Misc:CreateButton({
         end
 	end,
 })
-
--- Main Tab
-local MainTab = Window:CreateTab("🏠 Main", nil)
-local Section = MainTab:CreateSection("Main Features")
 
 -- Server Hop Tab
 local ServerHopTab = Window:CreateTab("🌐 Server Hop", nil)
