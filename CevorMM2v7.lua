@@ -1,4 +1,3 @@
-
 local outdatedVersion = true  -- Set to true if the client has an outdated version
 local discordLink = "https://discord.gg/PpYn4v5vR2"
 
