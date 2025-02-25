@@ -3,8 +3,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Rivals Script - Fluent " .. Fluent.Version,
-    SubTitle = "by YourName",
+    Title = "Rivals Script - Rivals " .. Fluent.Version,
+    SubTitle = "by ScripterBob",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true,
