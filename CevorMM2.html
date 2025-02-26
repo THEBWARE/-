@@ -17,15 +17,18 @@
     <script>
         async function loadLuaScript() {
             try {
-                const response = await fetch('test6.lua'); // Load the Lua file
+                const response = await fetch('test6.lua', {
+                    headers: { 'Content-Type': 'text/plain' } // Ensures it's treated as raw text
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch Lua script");
+
                 const luaText = await response.text();
 
                 // Store in a hidden div
-                const luaDiv = document.getElementById('luaData');
-                luaDiv.textContent = luaText; // Raw Lua code
+                document.getElementById('luaData').textContent = luaText;
 
-                // Log for debugging
-                console.log("Lua Script Loaded:", luaText);
+                console.log("Lua Script Loaded Successfully!");
             } catch (error) {
                 console.error('Error loading Lua script:', error);
             }
