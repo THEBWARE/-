@@ -1,67 +1,3 @@
-
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local HttpService = game:GetService("HttpService")
-local RunService = game:GetService("RunService")
-local TeleportService = game:GetService("TeleportService")
-local players = game:GetService("Players")
-local wrk = game:GetService("Workspace")
-local plr = players.LocalPlayer
-local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
-local humanoid = plr.Character:FindFirstChild("Humanoid")
-
-local function onCharacterAdded(character)
-    hrp = character:WaitForChild("HumanoidRootPart")
-    humanoid = character:WaitForChild("Humanoid")
-end
-
-plr.CharacterAdded:Connect(onCharacterAdded)
-
-if plr.Character then
-    onCharacterAdded(plr.Character)
-end
-
-local camera = wrk.CurrentCamera
-local mouse = plr:GetMouse()
-
-local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-
-local hue = 0
-local rainbowFov = false
-local rainbowSpeed = 0.005
-
-local aimFov = 100
-local aimParts = {"Head"}
-local aiming = false
-local predictionStrength = 0.065
-local smoothing = 0.05
-
-local aimbotEnabled = false
-local wallCheck = true
-local stickyAimEnabled = false
-local teamCheck = false
-local healthCheck = false
-local minHealth = 0
-
-local antiAim = false
-
-local antiAimAmountX = 0
-local antiAimAmountY = -100
-local antiAimAmountZ = 0
-
-local antiAimMethod = "Reset Velo"
-
-local randomVeloRange = 100
-
-local spinBot = false
-local spinBotSpeed = 20
-
-local circleColor = Color3.fromRGB(255, 0, 0)
-local targetedCircleColor = Color3.fromRGB(0, 255, 0)
-
-local aimViewerEnabled = false
-local ignoreSelf = true
-
 -- Function to fetch keys from a URL
 local function fetchKeys(url)
     local success, response = pcall(function()
@@ -91,14 +27,16 @@ for _, key in ipairs(pastebinKeys) do
     table.insert(validKeys, key)
 end
 
--- Copy key link to clipboard automatically
-setclipboard("https://thebware.github.io/-/key.html")
-Rayfield:Notify({
-    Title = "Key Link Copied",
-    Content = "The key link has been copied to your clipboard!",
-    Duration = 6.5,
-    Image = nil,
-})
+-- Auto-copy key link to clipboard only if getgenv().setautoclipboard is true
+if getgenv().setautoclipboard == true then
+    setclipboard("https://thebware.github.io/-/key.html")
+    Rayfield:Notify({
+        Title = "Key Link Copied",
+        Content = "The key link has been copied to your clipboard!",
+        Duration = 6.5,
+        Image = nil,
+    })
+end
 
 -- Create Window with Key System
 local Window = Rayfield:CreateWindow({
