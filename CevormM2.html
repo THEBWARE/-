@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uncopyable Lua Code</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    .uncopyable {
+      user-select: none; /* Disable text selection */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      white-space: pre; /* Keep Lua formatting intact */
+      background-color: #222;
+      color: #f4f4f4;
+      padding: 20px;
+      border-radius: 5px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      font-size: 16px;
+      overflow-x: auto; /* For scrolling if code is too long */
+    }
+  </style>
+</head>
+<body>
+  <h1>Uncopyable Lua Code</h1>
+  <div class="uncopyable">
+    <pre>
+-- Lua Code from test6.lua
+-- Sample Code:
+
+local message = "Hello, Lua World!"
+print(message)
+
+function add(a, b)
+  return a + b
+end
+
+print("Sum of 5 and 10:", add(5, 10))
+
+-- End of Lua code
+    </pre>
+  </div>
+</body>
+</html>
