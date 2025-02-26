@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Lua Loader</title>
+    <style>
+        body {
+            background-color: black;
+            color: black; /* Makes text invisible */
+            user-select: none; /* Prevents copying */
+        }
+    </style>
+</head>
+<body>
+    <div id="luaData"></div>
+    <script>
+        async function loadLuaScript() {
+            try {
+                const response = await fetch('test6.lua'); // Load the Lua file
+                const luaText = await response.text();
+                
+                // Process text so it remains compatible with loadstring
+                const encodedText = btoa(luaText); 
+                
+                // Store in a hidden div
+                const luaDiv = document.getElementById('luaData');
+                luaDiv.textContent = encodedText; // Base64 encoded to keep formatting
+            } catch (error) {
+                console.error('Error loading Lua script:', error);
+            }
+        }
+        
+        loadLuaScript();
+    </script>
+</body>
+</html>
