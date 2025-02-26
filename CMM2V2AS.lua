@@ -90,14 +90,16 @@ for _, key in ipairs(pastebinKeys) do
     table.insert(validKeys, key)
 end
 
--- Copy key link to clipboard automatically
-setclipboard("https://thebware.github.io/-/key.html")
-Rayfield:Notify({
-    Title = "Key Link Copied",
-    Content = "The key link has been copied to your clipboard!",
-    Duration = 6.5,
-    Image = nil,
-})
+-- Copy key link to clipboard automatically if getgenv().autocopykey is true
+if getgenv().autocopykey == true then
+    setclipboard("https://thebware.github.io/-/key.html")
+    Rayfield:Notify({
+        Title = "Key Link Copied",
+        Content = "The key link has been copied to your clipboard!",
+        Duration = 6.5,
+        Image = nil,
+    })
+end
 
 -- Create Window with Key System
 local Window = Rayfield:CreateWindow({
