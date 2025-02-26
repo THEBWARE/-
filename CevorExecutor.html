@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Cevor.V.1.1.0</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .download-container {
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            font-size: 1rem;
+            width: 80%;
+            border: 2px solid #00ff88;
+            border-radius: 5px;
+            background-color: #2d2d2d;
+            color: #fff;
+            margin-bottom: 15px;
+            transition: box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px #00ff88;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background-color: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #00cc66;
+            transform: scale(1.05);
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+            display: none;
+        }
+        .download-link {
+            margin-top: 20px;
+            display: none;
+        }
+        .download-link a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .get-key-button {
+            margin-top: 15px;
+        }
+        .terms-disclaimer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .terms-disclaimer:hover {
+            color: #00ff88;
+        }
+        .checkbox-container {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #00ff88;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            color: #fff;
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .modal-content button {
+            margin-top: 20px;
+            background-color: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-content button:hover {
+            background-color: #00cc66;
+        }
+        .modal-content ol {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .modal-content ol li {
+            margin-bottom: 10px;
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent);
+            pointer-events: none;
+            animation: glow-animation 3s infinite alternate;
+        }
+        @keyframes glow-animation {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="download-container">
+        <div class="glow"></div>
+        <h1>Download Cevor.V.1.1.0</h1>
+        <p>Enter the key to access the download link:</p>
+        <input type="text" id="keyInput" placeholder="Enter your key here">
+        <button onclick="checkKey()">Submit</button>
+        <p class="error-message" id="errorMessage">Invalid key or ToS not agreed! Please try again.</p>
+        <div class="download-link" id="downloadLink">
+            <p>Your download is ready!</p>
+            <a href="https://github.com/THEBWARE/-/releases/download/Cevor.V.1.1.0.zip/Cevor.V.1.1.0.zip" download>
+                Download Cevor.V.1.1.0
+            </a>
+        </div>
+        <div class="get-key-button">
+            <button onclick="window.location.href='https://thebware.github.io/-/CevorKey.html'">Get Key</button>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="agreeCheckbox">
+            <label for="agreeCheckbox">I agree to the <span class="terms-disclaimer" onclick="openModal()">Terms of Service</span>.</label>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <h2>Terms of Service</h2>
+            <ol>
+                <li><strong>Intended Use</strong>: This executor is designed for scripting and exploiting in Roblox. Use it at your own risk.</li>
+                <li><strong>No Harmful Activities</strong>: Do not use this tool to harm other players, disrupt games, or engage in malicious activities.</li>
+                <li><strong>Account Responsibility</strong>: Using this tool may result in a ban from Roblox. You are solely responsible for any consequences.</li>
+                <li><strong>Educational Use</strong>: While primarily for scripting, this tool can also be used for educational purposes to learn about game mechanics and scripting.</li>
+                <li><strong>Compliance</strong>: By using this tool, you agree to comply with all applicable laws and Roblox's terms of service.</li>
+                <li><strong>No Redistribution</strong>: You are not allowed to redistribute this tool without explicit permission from the developer.</li>
+                <li><strong>No Warranty</strong>: This tool is provided "as is" without any warranties. The developer is not responsible for any damages or losses.</li>
+                <li><strong>Updates</strong>: The developer reserves the right to update or discontinue this tool at any time.</li>
+            </ol>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function checkKey() {
+            const correctKey = "Cevor-Executor-Windows78932332334984#@##$Nfj";
+            const userKey = document.getElementById("keyInput").value;
+            const agreeCheckbox = document.getElementById("agreeCheckbox");
+            const errorMessage = document.getElementById("errorMessage");
+            const downloadLink = document.getElementById("downloadLink");
+
+            if (userKey === correctKey && agreeCheckbox.checked) {
+                // Correct key and ToS agreed
+                errorMessage.style.display = "none";
+                downloadLink.style.display = "block";
+            } else {
+                // Incorrect key or ToS not agreed
+                errorMessage.style.display = "block";
+                downloadLink.style.display = "none";
+            }
+        }
+
+        // Modal functionality
+        const modal = document.getElementById("termsModal");
+
+        function openModal() {
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>
