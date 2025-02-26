@@ -95,7 +95,7 @@ if getgenv().autocopykey == true then
     setclipboard("https://thebware.github.io/-/key.html")
     Rayfield:Notify({
         Title = "Key Link Copied",
-        Content = "The key link has been copied to your clipboard!",
+        Content = "The key link has been copied to your clipboard if you set getgenv().autocopykey to true",
         Duration = 6.5,
         Image = nil,
     })
