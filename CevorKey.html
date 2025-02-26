@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cevor MM2 V8 Key System</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1e1e1e, #000000);
+            color: #ffffff;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Quantum Holographic Background */
+        .quantum-holographic-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
+            animation: quantumHolographic 10s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes quantumHolographic {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.5);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(46, 46, 46, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #00ff88;
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            }
+        }
+
+        .key-box {
+            background: rgba(62, 62, 62, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .key-box:hover::before {
+            opacity: 1;
+        }
+
+        .key-box:hover {
+            transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .key {
+            font-size: 2em;
+            color: #00ff88;
+            font-weight: bold;
+            filter: blur(8px);
+            transition: filter 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .key-box:hover .key {
+            filter: none;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #1e1e1e;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .copy-button:hover::before {
+            opacity: 1;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.6);
+        }
+
+        .warning {
+            color: #ff4444;
+            font-size: 0.9em;
+            margin-top: 25px;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #888;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Step Styles */
+        .step {
+            margin: 20px 0;
+        }
+
+        .step.completed::after {
+            content: ' ✔';
+            color: #00ff88;
+        }
+
+        .notice {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Quantum Holographic Background -->
+    <div class="quantum-holographic-bg"></div>
+
+    <div class="container">
+        <h1>Cevor MM2 V8 Key System</h1>
+        <div id="content">
+            <!-- Steps will be dynamically added here -->
+        </div>
+        <div class="footer">
+            © 2025 Cevedi Studio. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Get the content div
+        const contentDiv = document.getElementById("content");
+
+        // Define the steps
+        const steps = [
+            {
+                title: "Step 1: Discover Interesting Articles",
+                url: "https://www.snoqap.com/",
+                completed: false,
+                timer: 30, // 30 seconds for Step 1
+            },
+            {
+                title: "Step 2: Do a LootLabs",
+                url: "https://lootdest.org/s?ZcSsMfdU",
+                completed: false,
+                timer: 90, // 120 seconds for Step 2
+            },
+            {
+                title: "Step 3: Do a LootLabs",
+                url: "https://lootdest.org/s?ZcSsMfdU",
+                completed: false,
+                timer: 90, // 120 seconds for Step 3
+            },
+        ];
+
+        // Render all steps initially
+        steps.forEach((step, index) => {
+            contentDiv.innerHTML += `
+                <div class="step" id="step${index + 1}">
+                    <button id="step${index + 1}Button" class="copy-button step-button">
+                        ${step.title}
+                    </button>
+                </div>
+            `;
+        });
+
+        // Add warning message and notice
+        contentDiv.innerHTML += `
+            <p class="warning">Do not share this license key. Sharing is against our Terms of Service (TOS).</p>
+            <p class="notice">If you don't get authenticated but you finished the LootLabs, wait a while.</p>
+        `;
+
+        // Add event listeners to step buttons
+        steps.forEach((step, index) => {
+            const stepButton = document.getElementById(`step${index + 1}Button`);
+
+            stepButton.addEventListener("click", () => {
+                if (!step.completed) {
+                    // Open the step's URL in a new tab
+                    window.open(step.url, "_blank");
+
+                    // Mark the step as completed after the specified timer
+                    setTimeout(() => {
+                        step.completed = true;
+                        document.getElementById(`step${index + 1}`).classList.add("completed");
+
+                        // Check if all steps are completed
+                        if (steps.every(step => step.completed)) {
+                            // Remove the notice and show the key
+                            const notice = document.querySelector(".notice");
+                            if (notice) notice.remove();
+
+                            contentDiv.innerHTML += `
+                                <div class="step" id="step4">
+                                    <p>Here is your key:</p>
+                                    <div class="key-box" title="Hover to reveal">
+                                        <div class="key">rB6!xw9$NpQ2&kZt</div>
+                                    </div>
+                                    <button class="copy-button" onclick="copyToClipboard('Cevor-Executor-Windows78932332334984#@##$Nfj')">Copy to Clipboard</button>
+                                </div>
+                            `;
+                        }
+                    }, step.timer * 1000); // Convert seconds to milliseconds
+                }
+            });
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("Key copied to clipboard!");
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // Fallback for copying text
+        function fallbackCopy(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                showToast("Key copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy key. Please copy it manually.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
