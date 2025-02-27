@@ -406,6 +406,18 @@
             <h2>SSS - Spaceship Shooting Showdown</h2>
             <p>An epic spaceship battle game</p>
         </div>
+
+        <!-- Atlantis Executor -->
+        <div class="post-card" onclick="showHolotheater('atlantisTheater')">
+            <h2>Atlantis Executor</h2>
+            <p>Advanced Roblox Exploit</p>
+        </div>
+
+        <!-- Cevor Executor -->
+        <div class="post-card" onclick="showHolotheater('cevorExecutorTheater')">
+            <h2>Cevor Executor</h2>
+            <p>Trusted Executor by Cevedi Studio</p>
+        </div>
     </div>
 
     <!-- Theater view for Delta Executor -->
@@ -592,6 +604,42 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts
         </div>
     </div>
 
+    <!-- Theater view for Atlantis Executor -->
+    <div class="holo-theater" id="atlantisTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+            <button class="download-singularity" onclick="showAtlantisAlert()">
+                <span>Download Atlantis</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <iframe 
+                class="singularity-video"
+                src="https://drive.google.com/file/d/1Ag3lgeYqzgpdYWVrtvl82AxYcnq7M8WM/preview" 
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Theater view for Cevor Executor -->
+    <div class="holo-theater" id="cevorExecutorTheater">
+        <div class="button-container">
+            <button class="back-button" onclick="goBackToPosts()">
+                <span>← Back</span>
+            </button>
+            <button class="download-singularity" onclick="showCevorExecutorAlert()">
+                <span>Download Cevor Executor</span>
+            </button>
+        </div>
+        <div class="holo-content">
+            <h2>Cevor Executor</h2>
+            <p>Trusted Executor by Cevedi Studio</p>
+        </div>
+    </div>
+
     <!-- Quantum Warning Popup -->
     <div class="quantum-overlay" id="quantumOverlay"></div>
     <div class="quantum-alert" id="quantumAlert">
@@ -674,6 +722,51 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts
         </div>
     </div>
 
+    <!-- Atlantis Alert Popup -->
+    <div class="quantum-overlay" id="atlantisOverlay"></div>
+    <div class="quantum-alert" id="atlantisAlert">
+        <h2>⚠️ WARNING</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Disclaimer:</strong></p>
+            <p>We are not affiliated with Atlantis Executor. This third-party software might contain malicious code. Use at your own risk.</p>
+            <ul>
+                <li>Potential system instability</li>
+                <li>Security vulnerabilities</li>
+                <li>Unauthorized data access</li>
+            </ul>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://www.kingexploits.com/post/atlantis-exploit', '_blank')">
+                Proceed
+            </button>
+            <button class="abort" onclick="hideAtlantisAlert()">
+                Abort
+            </button>
+        </div>
+    </div>
+
+    <!-- Cevor Executor Alert Popup -->
+    <div class="quantum-overlay" id="cevorExecutorOverlay"></div>
+    <div class="quantum-alert" id="cevorExecutorAlert">
+        <h2>⚠️ WARNING</h2>
+        <div class="quantum-warning">
+            <p><strong>Cevedi Studio Disclaimer:</strong></p>
+            <p>Cevor Executor is made by Cevedi Studio and is trusted. However, the API it uses (Forlorn API) is not 100% safe.</p>
+            <ul>
+                <li>Potential API instability</li>
+                <li>Use at your own risk</li>
+            </ul>
+        </div>
+        <div class="quantum-alert-buttons">
+            <button onclick="window.open('https://thebware.github.io/-/CevorExecutor.html', '_blank')">
+                Proceed
+            </button>
+            <button class="abort" onclick="hideCevorExecutorAlert()">
+                Abort
+            </button>
+        </div>
+    </div>
+
     <script>
         // Function to filter posts based on search input
         function searchPosts() {
@@ -744,10 +837,34 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/RealBatu20/AI-Scripts
             document.getElementById('ldPlayerAlert').style.display = 'none';
         }
 
+        // Functions for Atlantis Alert
+        function showAtlantisAlert() {
+            document.getElementById('atlantisOverlay').style.display = 'block';
+            document.getElementById('atlantisAlert').style.display = 'block';
+        }
+
+        function hideAtlantisAlert() {
+            document.getElementById('atlantisOverlay').style.display = 'none';
+            document.getElementById('atlantisAlert').style.display = 'none';
+        }
+
+        // Functions for Cevor Executor Alert
+        function showCevorExecutorAlert() {
+            document.getElementById('cevorExecutorOverlay').style.display = 'block';
+            document.getElementById('cevorExecutorAlert').style.display = 'block';
+        }
+
+        function hideCevorExecutorAlert() {
+            document.getElementById('cevorExecutorOverlay').style.display = 'none';
+            document.getElementById('cevorExecutorAlert').style.display = 'none';
+        }
+
         // Event listeners for overlays
         document.getElementById('quantumOverlay').addEventListener('click', hideQuantumAlert);
         document.getElementById('xenoOverlay').addEventListener('click', hideXenoAlert);
         document.getElementById('ldPlayerOverlay').addEventListener('click', hideLdPlayerAlert);
+        document.getElementById('atlantisOverlay').addEventListener('click', hideAtlantisAlert);
+        document.getElementById('cevorExecutorOverlay').addEventListener('click', hideCevorExecutorAlert);
 
         // Function to copy text to clipboard with fallback
         function copyToClipboard(text) {
