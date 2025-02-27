@@ -1,0 +1,6 @@
+{
+    "SoftwareVersion": "2.0",
+    "SoftwareUrl":"https://github.com/THEBWARE/-/releases/download/CevorV2/Cevor.V2.zip",
+    "Status":"False",
+    "Changelog":"[+] Added Bootstrapper, Went Down💀💀💀😭😭😭"
+}
