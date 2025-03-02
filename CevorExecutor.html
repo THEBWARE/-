@@ -31,26 +31,6 @@
             height: 100vh;
             overflow: hidden;
         }
-        .top-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .top-buttons button {
-            padding: 10px 20px;
-            background-color: #00ff88;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .top-buttons button:hover {
-            background-color: #00cc66;
-            transform: scale(1.05);
-        }
         .download-container {
             background-color: #1a1a1a;
             padding: 30px;
@@ -188,67 +168,37 @@
                 opacity: 1;
             }
         }
-        .code-key-message {
-            color: #00ff88;
-            margin-top: 20px;
-            font-size: 1rem;
+        .loading-gui {
             display: none;
-        }
-        .submit-button-container {
-            display: flex;
-            justify-content: center;
             margin-top: 20px;
-            gap: 10px; /* Add spacing between buttons */
-        }
-        .get-key-button {
-            background-color: #00aaff; /* Blue color for the "Get Key" button */
-        }
-        .get-key-button:hover {
-            background-color: #0088cc; /* Darker blue on hover */
+            font-size: 1.2rem;
+            color: #00ff88;
         }
     </style>
 </head>
 <body>
-    <div class="top-buttons">
-        <button id="signInButton" onclick="openSignInTab()">Sign In</button>
-        <button id="registerButton" onclick="window.location.href='https://forms.gle/NQPiF71j1NBDZTbNA'">Register</button>
-        <button id="signOutButton" style="display: none;" onclick="signOut()">Sign Out</button>
-    </div>
-
     <div class="download-container">
         <div class="glow"></div>
         <h1>Download Cevor</h1>
-        <p>Enter the key to access the download link:</p>
-        <input type="text" id="keyInput" placeholder="Enter your key here">
+        <p>Key System:</p>
+        <input type="text" id="keyInput" placeholder="Key System" readonly>
         <div class="submit-button-container">
-            <button onclick="checkKey()">Submit</button>
-            <!-- Updated "Get Key" button -->
-            <button class="get-key-button" onclick="window.open('https://thebware.github.io/-/CevorKey.html', '_blank')">Get Key</button>
+            <button id="submitButton">Submit</button>
         </div>
-        <p class="error-message" id="errorMessage">Invalid key or ToS not agreed! Please try again.</p>
+        <p class="error-message" id="errorMessage">You must agree to the Terms of Service to proceed.</p>
         <div class="download-link" id="downloadLink">
             <p>Your download is ready!</p>
             <a href="https://github.com/THEBWARE/Cevor/releases/tag/Executor" download>
                 Download Cevor
             </a>
         </div>
+        <div class="loading-gui" id="loadingGui">
+            Loading... Please wait.
+        </div>
         <div class="checkbox-container">
             <input type="checkbox" id="agreeCheckbox" disabled>
             <label for="agreeCheckbox">I agree to the <span class="highlight-blue" onclick="openModal()">Terms of Service</span>.</label>
         </div>
-        <p class="code-key-message" id="codeKeyMessage">Since You Have A Code Key, You Don't Have To Do A Key System</p>
-    </div>
-
-    <div id="signInTab" class="download-container" style="display: none;">
-        <div class="glow"></div>
-        <h1>Sign In</h1>
-        <p>Enter your Code Key to sign in:</p>
-        <input type="text" id="codeKeyInput" placeholder="Enter your Code Key">
-        <div class="submit-button-container">
-            <button onclick="signIn()">Sign In</button>
-        </div>
-        <p class="error-message" id="codeKeyErrorMessage">Invalid Code Key! Please try again.</p>
-        <button onclick="closeSignInTab()">Close</button>
     </div>
 
     <div id="termsModal" class="modal">
@@ -270,129 +220,55 @@
     </div>
 
     <script>
-        let validCodeKeys = [];
-        let timeSpentInModal = 0;
-        let timerInterval = null;
-
-        async function fetchCodeKeys() {
-            try {
-                const response = await fetch('CodeKeys.txt');
-                const text = await response.text();
-                validCodeKeys = text.split('\n').map(key => key.trim());
-            } catch (error) {
-                console.error('Error fetching CodeKeys.txt:', error);
-            }
-        }
-
-        function checkSignIn() {
-            const isSignedIn = localStorage.getItem('signedIn') === 'true';
-            if (isSignedIn) {
-                document.getElementById('signInButton').style.display = 'none';
-                document.getElementById('signOutButton').style.display = 'block';
-                document.getElementById('downloadLink').style.display = 'block';
-                document.getElementById('codeKeyMessage').style.display = 'block';
-                document.getElementById('keyInput').style.display = 'none';
-                document.getElementById('agreeCheckbox').style.display = 'none';
-                document.querySelector('.submit-button-container').style.display = 'none';
-                document.querySelector('label[for="agreeCheckbox"]').style.display = 'none';
-            }
-        }
-
-        function openSignInTab() {
-            document.getElementById('signInTab').style.display = 'block';
-            document.querySelector('.download-container').style.display = 'none';
-        }
-
-        function closeSignInTab() {
-            document.getElementById('signInTab').style.display = 'none';
-            document.querySelector('.download-container').style.display = 'block';
-        }
-
-        function signIn() {
-            const codeKey = document.getElementById('codeKeyInput').value;
-            if (validCodeKeys.includes(codeKey)) {
-                localStorage.setItem('signedIn', 'true');
-                document.getElementById('signInButton').style.display = 'none';
-                document.getElementById('signOutButton').style.display = 'block';
-                document.getElementById('downloadLink').style.display = 'block';
-                document.getElementById('codeKeyMessage').style.display = 'block';
-                document.getElementById('keyInput').style.display = 'none';
-                document.getElementById('agreeCheckbox').style.display = 'none';
-                document.querySelector('.submit-button-container').style.display = 'none';
-                document.querySelector('label[for="agreeCheckbox"]').style.display = 'none';
-                closeSignInTab();
-            } else {
-                document.getElementById('codeKeyErrorMessage').style.display = 'block';
-            }
-        }
-
-        function signOut() {
-            localStorage.removeItem('signedIn');
-            document.getElementById('signInButton').style.display = 'block';
-            document.getElementById('signOutButton').style.display = 'none';
-            document.getElementById('downloadLink').style.display = 'none';
-            document.getElementById('codeKeyMessage').style.display = 'none';
-            document.getElementById('keyInput').style.display = 'block';
-            document.getElementById('agreeCheckbox').style.display = 'block';
-            document.querySelector('.submit-button-container').style.display = 'flex';
-            document.querySelector('label[for="agreeCheckbox"]').style.display = 'block';
-        }
-
-        function checkKey() {
-            const correctKey = "Cevor-Executor-Windows78932332334984#@##$Nfj";
-            const userKey = document.getElementById("keyInput").value;
-            const agreeCheckbox = document.getElementById("agreeCheckbox");
-            const errorMessage = document.getElementById("errorMessage");
-            const downloadLink = document.getElementById("downloadLink");
-
-            if (userKey === correctKey && agreeCheckbox.checked) {
-                errorMessage.style.display = "none";
-                downloadLink.style.display = "block";
-            } else {
-                errorMessage.style.display = "block";
-                downloadLink.style.display = "none";
-            }
-        }
-
+        const keyInput = document.getElementById("keyInput");
+        const errorMessage = document.getElementById("errorMessage");
+        const downloadLink = document.getElementById("downloadLink");
+        const loadingGui = document.getElementById("loadingGui");
+        const agreeCheckbox = document.getElementById("agreeCheckbox");
+        const submitButton = document.getElementById("submitButton");
         const modal = document.getElementById("termsModal");
 
+        // Automatically type "Key System Removed" into the input field
+        function autoTypeKeySystem() {
+            const text = "Key System Removed";
+            let index = 0;
+            const typingInterval = setInterval(() => {
+                keyInput.value += text[index];
+                index++;
+                if (index === text.length) {
+                    clearInterval(typingInterval);
+                    openModal(); // Open the ToS modal after typing
+                }
+            }, 100);
+        }
+
+        // Open the Terms of Service modal
         function openModal() {
             modal.style.display = "block";
-            startTimer();
+            setTimeout(() => {
+                agreeCheckbox.disabled = false; // Enable the checkbox after 5 seconds
+                agreeCheckbox.checked = true; // Auto-agree to the ToS
+                closeModal(); // Close the modal
+                simulateKeySystem(); // Automatically click the submit button
+            }, 5000); // Wait 5 seconds before auto-agreeing
         }
 
+        // Close the modal
         function closeModal() {
             modal.style.display = "none";
-            stopTimer();
         }
 
-        function startTimer() {
-            if (!timerInterval) {
-                timerInterval = setInterval(() => {
-                    timeSpentInModal++;
-                    if (timeSpentInModal >= 5) {
-                        document.getElementById('agreeCheckbox').disabled = false;
-                        stopTimer();
-                    }
-                }, 1000);
-            }
+        // Simulate the key system process
+        function simulateKeySystem() {
+            loadingGui.style.display = "block";
+            setTimeout(() => {
+                loadingGui.style.display = "none";
+                downloadLink.style.display = "block";
+            }, 3000); // Simulate a 3-second loading process
         }
 
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-
-        fetchCodeKeys();
-        checkSignIn();
+        // Automatically start the process when the page loads
+        window.onload = autoTypeKeySystem;
     </script>
 </body>
 </html>
