@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Cevor</title>
     <style>
+        .highlight-blue {
+            color: #00aaff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Disable checkbox styling */
+        .checkbox-container input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Rest of your CSS remains the same */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #0a0a0a;
@@ -189,14 +202,12 @@
     </style>
 </head>
 <body>
-    <!-- Top Buttons -->
     <div class="top-buttons">
         <button id="signInButton" onclick="openSignInTab()">Sign In</button>
         <button id="registerButton" onclick="window.location.href='https://forms.gle/NQPiF71j1NBDZTbNA'">Register</button>
         <button id="signOutButton" style="display: none;" onclick="signOut()">Sign Out</button>
     </div>
 
-    <!-- Download Cevor Tab -->
     <div class="download-container">
         <div class="glow"></div>
         <h1>Download Cevor</h1>
@@ -213,13 +224,12 @@
             </a>
         </div>
         <div class="checkbox-container">
-            <input type="checkbox" id="agreeCheckbox">
-            <label for="agreeCheckbox">I agree to the <span class="terms-disclaimer" onclick="openModal()">Terms of Service</span>.</label>
+            <input type="checkbox" id="agreeCheckbox" disabled>
+            <label for="agreeCheckbox">I agree to the <span class="highlight-blue" onclick="openModal()">Terms of Service</span>.</label>
         </div>
         <p class="code-key-message" id="codeKeyMessage">Since You Have A Code Key, You Don't Have To Do A Key System</p>
     </div>
 
-    <!-- Sign In Tab -->
     <div id="signInTab" class="download-container" style="display: none;">
         <div class="glow"></div>
         <h1>Sign In</h1>
@@ -232,7 +242,6 @@
         <button onclick="closeSignInTab()">Close</button>
     </div>
 
-    <!-- Terms of Service Modal -->
     <div id="termsModal" class="modal">
         <div class="modal-content">
             <h2>Terms of Service</h2>
@@ -252,20 +261,20 @@
     </div>
 
     <script>
-        // Fetch CodeKeys.txt and parse it into an array
         let validCodeKeys = [];
+        let timeSpentInModal = 0;
+        let timerInterval = null;
 
         async function fetchCodeKeys() {
             try {
-                const response = await fetch('CodeKeys.txt'); // Path to the CodeKeys.txt file
+                const response = await fetch('CodeKeys.txt');
                 const text = await response.text();
-                validCodeKeys = text.split('\n').map(key => key.trim()); // Split by newline and trim whitespace
+                validCodeKeys = text.split('\n').map(key => key.trim());
             } catch (error) {
                 console.error('Error fetching CodeKeys.txt:', error);
             }
         }
 
-        // Check if the user is already signed in
         function checkSignIn() {
             const isSignedIn = localStorage.getItem('signedIn') === 'true';
             if (isSignedIn) {
@@ -280,19 +289,16 @@
             }
         }
 
-        // Open Sign In Tab
         function openSignInTab() {
             document.getElementById('signInTab').style.display = 'block';
             document.querySelector('.download-container').style.display = 'none';
         }
 
-        // Close Sign In Tab
         function closeSignInTab() {
             document.getElementById('signInTab').style.display = 'none';
             document.querySelector('.download-container').style.display = 'block';
         }
 
-        // Sign In function
         function signIn() {
             const codeKey = document.getElementById('codeKeyInput').value;
             if (validCodeKeys.includes(codeKey)) {
@@ -311,7 +317,6 @@
             }
         }
 
-        // Sign Out function
         function signOut() {
             localStorage.removeItem('signedIn');
             document.getElementById('signInButton').style.display = 'block';
@@ -324,7 +329,6 @@
             document.querySelector('label[for="agreeCheckbox"]').style.display = 'block';
         }
 
-        // Check Key function for Download Cevor
         function checkKey() {
             const correctKey = "Cevor-Executor-Windows78932332334984#@##$Nfj";
             const userKey = document.getElementById("keyInput").value;
@@ -341,28 +345,44 @@
             }
         }
 
-        // Modal functionality
         const modal = document.getElementById("termsModal");
 
         function openModal() {
             modal.style.display = "block";
+            startTimer();
         }
 
         function closeModal() {
             modal.style.display = "none";
+            stopTimer();
         }
 
-        // Close modal when clicking outside of it
+        function startTimer() {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    timeSpentInModal++;
+                    if (timeSpentInModal >= 5) {
+                        document.getElementById('agreeCheckbox').disabled = false;
+                        stopTimer();
+                    }
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
         window.onclick = function(event) {
             if (event.target === modal) {
-                modal.style.display = "none";
+                closeModal();
             }
         };
 
-        // Fetch CodeKeys.txt on page load
         fetchCodeKeys();
-
-        // Check sign-in state on page load
         checkSignIn();
     </script>
 </body>
