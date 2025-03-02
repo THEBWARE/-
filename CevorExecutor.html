@@ -198,6 +198,13 @@
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            gap: 10px; /* Add spacing between buttons */
+        }
+        .get-key-button {
+            background-color: #00aaff; /* Blue color for the "Get Key" button */
+        }
+        .get-key-button:hover {
+            background-color: #0088cc; /* Darker blue on hover */
         }
     </style>
 </head>
@@ -215,6 +222,8 @@
         <input type="text" id="keyInput" placeholder="Enter your key here">
         <div class="submit-button-container">
             <button onclick="checkKey()">Submit</button>
+            <!-- Updated "Get Key" button -->
+            <button class="get-key-button" onclick="window.open('https://thebware.github.io/-/CevorKey.html', '_blank')">Get Key</button>
         </div>
         <p class="error-message" id="errorMessage">Invalid key or ToS not agreed! Please try again.</p>
         <div class="download-link" id="downloadLink">
